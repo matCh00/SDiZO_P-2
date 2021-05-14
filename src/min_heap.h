@@ -1,14 +1,29 @@
-//
-// Created by matic on 15.05.2021.
-//
-
-#ifndef SDIZO_P_2_V2_MIN_HEAP_H
-#define SDIZO_P_2_V2_MIN_HEAP_H
+#pragma once
 
 
-class min_heap {
+struct Edge {
 
+    int start_vertex;
+    int end_vertex;
+    int weight;
 };
 
 
-#endif //SDIZO_P_2_V2_MIN_HEAP_H
+class Min_Heap {
+
+    int size;
+    Edge *array;
+
+public:
+    void push(int, int, int);
+    void pop();
+    bool is_empty();
+    void clear();
+
+    Edge get_root();
+    Min_Heap();
+    ~Min_Heap();
+};
+
+
+

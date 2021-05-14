@@ -1,14 +1,29 @@
-//
-// Created by matic on 15.05.2021.
-//
-
-#ifndef SDIZO_P_2_V2_GRAPH_LIST_H
-#define SDIZO_P_2_V2_GRAPH_LIST_H
+#pragma once
+#include "list.h"
 
 
-class graph_list {
+class Graph_List {
 
+    int edge;
+    int vertex;
+    int density;
+    List *directed_graph;
+    List *not_directed_graph;
+
+public:
+    Graph_List();
+    ~Graph_List();
+
+    void create_random();
+    void load();
+    void clear();
+    void print();
+
+    void dijkstra(int, int);
+    void ford_bellman(int, int);
+    void prim();
+    void kruskal();
 };
 
 
-#endif //SDIZO_P_2_V2_GRAPH_LIST_H
+

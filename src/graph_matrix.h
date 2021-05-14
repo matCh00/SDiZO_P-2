@@ -1,14 +1,30 @@
-//
-// Created by matic on 15.05.2021.
-//
-
-#ifndef SDIZO_P_2_V2_GRAPH_MATRIX_H
-#define SDIZO_P_2_V2_GRAPH_MATRIX_H
+#pragma once
 
 
-class graph_matrix {
+class Graph_Matrix {
 
+    int edge;
+    int vertex;
+    int density;
+
+    int **directed_graph;
+    int **not_directed_graph;
+    int ** wages;
+
+public:
+    Graph_Matrix();
+    ~Graph_Matrix();
+
+    void create_random();
+    void load();
+    void clear();
+    void print();
+
+    void dijkstra(int, int);
+    void ford_bellman(int, int);
+    void prim();
+    void kruskal();
 };
 
 
-#endif //SDIZO_P_2_V2_GRAPH_MATRIX_H
+
