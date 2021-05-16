@@ -13,6 +13,9 @@ private:
     vector<int> weight_array;                //
 
 public:
+    Graph(int);
+    ~Graph();
+
     void add_edge(int, int, int);
     void add_u_edge(int, int, int);
     void remove_edge(int, int);
@@ -20,9 +23,6 @@ public:
     void print();
     int find_vertex(int);
     int find_edge(int, int);
-
-    Graph(int);
-    ~Graph();
 };
 
 
