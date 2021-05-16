@@ -24,3 +24,27 @@ wierzchołki \     |    E1   |    E2   |    E3   |    E4   |    E5   |
              --------------------------------------------------------
 
  */
+
+
+// tworzenie grafu - reprezentacja macierzowa (dzidziczenie po obiekcie Graph)
+Graph_Matrix::Graph_Matrix(int size, bool directed) : Graph(size, directed) {
+
+    // uzupełnianie macierzy zerami (pusty graf)
+    for (int i = 0; i < size; i++) {
+
+        for (int j = 0; j < size; j++)
+            incidence_matrix[i][j] = 0;
+    }
+}
+
+
+// usuwanie grafu
+Graph_Matrix::~Graph_Matrix() {
+
+    // usuwanie wszystkich wierszy (wszystkich elementów)
+    for (int i = 0; i < vertex_array.size(); i++) {
+        incidence_matrix[i].clear();
+        incidence_matrix[i].shrink_to_fit();
+    }
+    incidence_matrix.clear();   // usuwanie wskaźnika na macierz incydencji
+}

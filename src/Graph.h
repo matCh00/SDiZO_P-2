@@ -5,7 +5,7 @@ using namespace std;
 
 class Graph {
 
-private:
+protected:
     vector<int> vertex_array;                // reprezentuje zbiór wierzchołków
 
     vector<int> origin_vertex_array;         //
@@ -13,16 +13,16 @@ private:
     vector<int> weight_array;                //
 
 public:
-    Graph(int);
+    Graph(int size, bool directed);
     ~Graph();
 
-    void add_edge(int, int, int);
-    void add_u_edge(int, int, int);
-    void remove_edge(int, int);
-    void add_vertex(int);
+    void add_edge(int origin, int destination, int weight);
+    void add_u_edge(int origin, int destination, int weight);
+    void remove_edge(int origin, int destination);
+    void add_vertex(int vertex);
     void print();
-    int find_vertex(int);
-    int find_edge(int, int);
+    int find_vertex(int vertex);
+    int find_edge(int origin, int destination);
 };
 
 

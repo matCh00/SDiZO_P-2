@@ -4,7 +4,7 @@ using namespace std;
 
 
 // konstruktor grafu
-Graph::Graph(int size) {
+Graph::Graph(int size, bool directed) {
 
     // tworzenie wierzchołków numerowanych od 0
     for (int i = 0; i < size; i++){

@@ -4,7 +4,7 @@ using namespace std;
 
 int main(){
 
-    Graph *graph = new Graph(6);
+    Graph *graph = new Graph(6, true);
 
     graph->add_edge(0, 1, 11);
     graph->add_edge(0, 2, 10);
