@@ -29,10 +29,14 @@ using namespace std;
 
 
 // tworzenie (pustego) grafu - reprezentacja listowa (dzidziczenie po obiekcie Graph)
-Graph_List::Graph_List(int size, bool directed) : Graph(size, directed) {
+Graph_List::Graph_List(int vertexes, int edges, bool directed) {
+
+    vertex_count = vertexes;
+    edge_count = edges;
+    this->directed = directed;
 
     // każdy element ma wartość NULL
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i < vertex_count; i++)
         adjacency_list.push_back(nullptr);
 }
 
@@ -41,6 +45,6 @@ Graph_List::Graph_List(int size, bool directed) : Graph(size, directed) {
 Graph_List::~Graph_List() {
 
     // usuwanie wszystkich elementów
-    for (int i = 0; i < vertex_array.size(); i++)
+    for (int i = 0; i < vertex_count; i++)
         adjacency_list.pop_back();
 }

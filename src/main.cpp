@@ -6,7 +6,7 @@ using namespace std;
 
 int main(){
 
-    Graph_Matrix *graphM = new Graph_Matrix(6, true);
+    Graph_Matrix *graphM = new Graph_Matrix(6, 6, true);
 
     graphM->add_edge(0, 4, 1);
     graphM->add_edge(0, 2, 2);

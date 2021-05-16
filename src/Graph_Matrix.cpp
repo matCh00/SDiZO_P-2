@@ -32,15 +32,15 @@ wierzchołki \     |    E1   |    E2   |    E3   |    E4   |    E5   |
 // tworzenie grafu - reprezentacja macierzowa (dzidziczenie po obiekcie Graph)
 Graph_Matrix::Graph_Matrix(int vertexes, int edges, bool directed) {
 
-    vertex_count = vertexes;
-    edge_count = edges;
+    vertex_count = vertexes;    // liczba wierzchołków
+    edge_count = 0;             // liczba krawędzi - inkrementacja w funkcji print
     this->directed = directed;
 
     // uzupełnianie macierzy zerami (pusty graf)
     for (int v = 0; v < vertex_count; v++) {
 
         vector<int> temp;
-        for (int e = 0; e < edge_count; e++) {
+        for (int e = 0; e < edges; e++) {   
             temp.push_back(0);
         }
 
@@ -66,10 +66,8 @@ void Graph_Matrix::print() {
 
     cout << "Graf - macierz: " << endl << endl;
 
-    int v, e;
-
-    for (v = 0; v < incidence_matrix.size(); v++) {
-        for (e = 0; e < incidence_matrix[v].size(); e++)
+    for (int v = 0; v < incidence_matrix.size(); v++) {
+        for (int e = 0; e < incidence_matrix[v].size(); e++)
             cout << setw(4) << incidence_matrix[v][e] << "  ";
 
         cout << endl;
