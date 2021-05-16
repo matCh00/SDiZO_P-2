@@ -3,14 +3,17 @@
 using namespace std;
 
 
+// konstruktor grafu
 Graph::Graph(int size) {
 
+    // tworzenie wierzchołków numerowanych od 0
     for (int i = 0; i < size; i++){
         add_vertex(i);
     }
 };
 
 
+// destruktor grafu
 Graph::~Graph() {
 
     vertex_array.clear();
@@ -20,12 +23,14 @@ Graph::~Graph() {
 };
 
 
+// dodanie wierzchołka
 void Graph::add_vertex(int vertex) {
 
     vertex_array.push_back(vertex);
 }
 
 
+// dodanie krawędzi nieskierowanej
 void Graph::add_edge(int origin, int destination, int weight) {
 
     origin_vertex_array.push_back(origin);
@@ -34,6 +39,7 @@ void Graph::add_edge(int origin, int destination, int weight) {
 }
 
 
+// dodanie krawędzi skierowanej
 void Graph::add_u_edge(int origin, int destination, int weight) {
 
     add_edge(origin, destination, weight);
@@ -41,6 +47,7 @@ void Graph::add_u_edge(int origin, int destination, int weight) {
 }
 
 
+// szukanie wierzchołka
 int Graph::find_vertex(int vertex) {
 
     for (int i = 0; i < vertex_array.size(); i++) {
@@ -51,6 +58,7 @@ int Graph::find_vertex(int vertex) {
 }
 
 
+// szukanie krawędzi
 int Graph::find_edge(int origin, int destination) {
 
     for (int i = 0; i < origin_vertex_array.size(); i++) {
@@ -61,6 +69,7 @@ int Graph::find_edge(int origin, int destination) {
 }
 
 
+// wypisanie elementów grafu
 void Graph::print() {
 
     cout << "lista wierzcholkow:  ";
