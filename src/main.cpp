@@ -1,20 +1,22 @@
 #include "Graph.h"
+#include "Graph_List.h"
+#include "Graph_Matrix.h"
 #include <iostream>
 using namespace std;
 
 int main(){
 
-    Graph *graph = new Graph(6, true);
+    Graph_Matrix *graphM = new Graph_Matrix(6, true);
 
-    graph->add_edge(0, 1, 11);
-    graph->add_edge(0, 2, 10);
-    graph->add_edge(0, 5, 15);
-    graph->add_edge(1, 3, 33);
-    graph->add_edge(4, 2, 20);
-    graph->add_edge(5, 1, 51);
-    graph->add_edge(4, 3, 43);
+    graphM->add_edge(0, 4, 1);
+    graphM->add_edge(0, 2, 2);
+    graphM->add_edge(1, 4, 3);
+    graphM->add_edge(2, 3, 4);
+    graphM->add_edge(3, 2, 5);
+    graphM->add_edge(4, 5, 6);
 
-    graph->print();
+    graphM->print();
+
 
     return 0;
 }

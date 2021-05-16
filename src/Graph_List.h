@@ -13,8 +13,8 @@ public:
     ~Graph_List();
 
     void print();
-    void add_edge(int origin, int destination, int weight);
-    void remove_edge(int origin, int destination);
+    //void add_edge(int origin, int destination, int weight);
+    //void remove_edge(int origin, int destination);
     void prim_algorithm();
     void kruskal_algorithm();
     void dijkstra_algorithm(int origin, int destination);

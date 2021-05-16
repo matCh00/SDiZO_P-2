@@ -1,4 +1,7 @@
 #include "Graph_Matrix.h"
+#include <iostream>
+#include <iomanip>
+using namespace std;
 
 
 /*---------------------------------MACIERZ INCYDENCJI---------------------------------
@@ -27,13 +30,21 @@ wierzchołki \     |    E1   |    E2   |    E3   |    E4   |    E5   |
 
 
 // tworzenie grafu - reprezentacja macierzowa (dzidziczenie po obiekcie Graph)
-Graph_Matrix::Graph_Matrix(int size, bool directed) : Graph(size, directed) {
+Graph_Matrix::Graph_Matrix(int vertexes, int edges, bool directed) {
+
+    vertex_count = vertexes;
+    edge_count = edges;
+    this->directed = directed;
 
     // uzupełnianie macierzy zerami (pusty graf)
-    for (int i = 0; i < size; i++) {
+    for (int v = 0; v < vertex_count; v++) {
 
-        for (int j = 0; j < size; j++)
-            incidence_matrix[i][j] = 0;
+        vector<int> temp;
+        for (int e = 0; e < edge_count; e++) {
+            temp.push_back(0);
+        }
+
+        incidence_matrix.push_back(temp);
     }
 }
 
@@ -42,9 +53,43 @@ Graph_Matrix::Graph_Matrix(int size, bool directed) : Graph(size, directed) {
 Graph_Matrix::~Graph_Matrix() {
 
     // usuwanie wszystkich wierszy (wszystkich elementów)
-    for (int i = 0; i < vertex_array.size(); i++) {
-        incidence_matrix[i].clear();
-        incidence_matrix[i].shrink_to_fit();
+    for (int v = 0; v < vertex_count; v++) {
+        incidence_matrix[v].clear();
+        incidence_matrix[v].shrink_to_fit();
     }
     incidence_matrix.clear();   // usuwanie wskaźnika na macierz incydencji
+}
+
+
+// wypisanie grafu w postaci macierzy
+void Graph_Matrix::print() {
+
+    cout << "Graf - macierz: " << endl << endl;
+
+    int v, e;
+
+    for (v = 0; v < incidence_matrix.size(); v++) {
+        for (e = 0; e < incidence_matrix[v].size(); e++)
+            cout << setw(4) << incidence_matrix[v][e] << "  ";
+
+        cout << endl;
+    }
+}
+
+
+// dodanie krawędzi
+void Graph_Matrix::add_edge(int origin, int destination, int weight) {
+
+    if (origin >= 0 && origin < vertex_count && destination >= 0 && destination < vertex_count) {
+        incidence_matrix[origin][edge_count] = 1 * weight;   // [wierzchołek początkowy] [krawędź]
+
+        if (directed)
+            incidence_matrix[destination][edge_count] = -1 * weight;  //  [wierzchołek końcowy] [krawędź]
+        else
+            incidence_matrix[destination][edge_count] = 1 * weight;   //  [wierzchołek końcowy] [krawędź]
+
+        edge_count++;
+    }
+    else
+        cout << "Blad podczas dodawania krawedzi";
 }
