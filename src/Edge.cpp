@@ -3,7 +3,16 @@
 
 Edge::Edge() {
 
-    Vertex *start = nullptr;
-    Vertex *end = nullptr;
-    int weight = 0;
+    start = 0;
+    end = 0;
+    weight = 0;
+};
+
+
+
+Edge::~Edge() {
+
+    start = -1;
+    end = -1;
+    weight = 0;
 };

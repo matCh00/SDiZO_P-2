@@ -1,13 +1,13 @@
 #pragma once
-#include "Vertex.h"
 
 
 class Edge {
 
 public:
-    Vertex *start;
-    Vertex *end;
+    int start;
+    int end;
     int weight;
+    bool directed;
 
     Edge();
     ~Edge();
