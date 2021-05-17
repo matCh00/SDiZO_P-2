@@ -1,11 +1,12 @@
 #pragma once
-#include <list>
+#include <vector>
+#include "Node.h"
 using namespace std;
 
 
 class Graph_List {
 
-    list<int*> adjacency_list;   // lista sąsiedztwa
+    vector<Node*> adjacency_list;   // lista sąsiedztwa
 
     int vertex_count;
     int edge_count;

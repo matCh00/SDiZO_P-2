@@ -1,5 +1,6 @@
 #include "Graph_List.h"
 #include <iostream>
+#include <iomanip>
 using namespace std;
 
 
@@ -32,7 +33,7 @@ using namespace std;
 Graph_List::Graph_List(int vertexes, int edges, bool directed) {
 
     vertex_count = vertexes;
-    edge_count = edges;
+    edge_count = 0;
     this->directed = directed;
 
     // każdy element ma wartość NULL
@@ -48,3 +49,49 @@ Graph_List::~Graph_List() {
     for (int i = 0; i < vertex_count; i++)
         adjacency_list.pop_back();
 }
+
+
+// wypisanie grafu w postaci macierzy
+void Graph_List::print() {
+
+    Node *node;
+
+    cout << "\nGraf - lista:" << endl << endl;
+
+    for (int v = 0; v < vertex_count; v++) {
+
+        cout << "[" << v << "] ";
+        node = adjacency_list[v];
+
+        while (node) {
+            cout << "  -> " << setw(3) << "(" << node->vertex << ")";   // wypisanie wszystkich krawędzi wychodzących z tego wierzchołka
+            node = node->next;
+        }
+        cout << endl;
+    }
+}
+
+
+// dodanie krawędzi
+void Graph_List::add_edge(int origin, int destination, int weight) {
+
+    Node *node = new Node();            // nowe połączenie
+    node->vertex = destination;         // wierzchołek początkowy
+    node->weight = weight;              // przypisanie wagi
+    node->next = adjacency_list[origin];   // wierzchołek końcowy krawędzi
+    adjacency_list[origin] = node;         // dodanie nowej krawędzi
+
+    // jeżeli graf nie jest skierowany
+    if (!directed) {
+        node = new Node();              // nowe połączenie
+        node->vertex = origin;          // wierzchołek początkowy
+        node->weight = weight;          // przypisanie wagi
+        node->next = adjacency_list[destination];   // wierzchołek końcowy krawędzi
+        adjacency_list[destination] = node;         // dodanie nowej krawędzi
+    }
+
+    edge_count++;
+}
+
+
+

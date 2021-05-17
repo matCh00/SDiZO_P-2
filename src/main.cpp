@@ -18,5 +18,18 @@ int main(){
     graphM->print();
 
 
+
+    Graph_List *graphL = new Graph_List(6, 6, true);
+
+    graphL->add_edge(0, 4, 1);
+    graphL->add_edge(0, 2, 2);
+    graphL->add_edge(1, 4, 3);
+    graphL->add_edge(2, 3, 4);
+    graphL->add_edge(3, 2, 5);
+    graphL->add_edge(4, 5, 6);
+
+    graphL->print();
+
+
     return 0;
 }

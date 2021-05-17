@@ -40,7 +40,7 @@ Graph_Matrix::Graph_Matrix(int vertexes, int edges, bool directed) {
     for (int v = 0; v < vertex_count; v++) {
 
         vector<int> temp;
-        for (int e = 0; e < edges; e++) {   
+        for (int e = 0; e < edges; e++) {
             temp.push_back(0);
         }
 
