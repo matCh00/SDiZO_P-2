@@ -17,6 +17,8 @@ public:
 
     void print();
     void add_edge(int origin, int destination, int weight);
+    Graph_Matrix random(int vertexes, float density, bool directed);
+
     void prim_algorithm();
     void kruskal_algorithm();
     void dijkstra_algorithm(int origin, int destination);

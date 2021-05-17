@@ -91,3 +91,24 @@ void Graph_Matrix::add_edge(int origin, int destination, int weight) {
     else
         cout << "Blad podczas dodawania krawedzi";
 }
+
+
+// losowe generowanie grafu
+Graph_Matrix Graph_Matrix::random(int vertexes, float density, bool directed){
+
+    int ed;
+
+    if (directed)
+        ed = vertexes * (vertexes - 1);
+    else
+        ed = (vertexes * (vertexes - 1)) / 2;
+
+
+    int edg = (int)(density * ed / 100);
+
+    Graph_Matrix *graph = new Graph_Matrix(vertexes, edg, directed);
+
+    //TODO add edges
+
+    return *graph;
+}

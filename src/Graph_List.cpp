@@ -94,4 +94,25 @@ void Graph_List::add_edge(int origin, int destination, int weight) {
 }
 
 
+// losowe generowanie grafu
+Graph_List Graph_List::random(int vertexes, float density, bool directed){
+
+    int ed;
+
+    if (directed)
+        ed = vertexes * (vertexes - 1);
+    else
+        ed = (vertexes * (vertexes - 1)) / 2;
+
+
+    int edg = (int)(density * ed / 100);
+
+    Graph_List *graph = new Graph_List(vertexes, edg, directed);
+
+    //TODO add edges
+
+    return *graph;
+}
+
+
 
