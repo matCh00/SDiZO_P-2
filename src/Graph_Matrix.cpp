@@ -90,6 +90,8 @@ void Graph_Matrix::add_edge(int origin, int destination, int weight) {
     }
     else
         cout << "Blad podczas dodawania krawedzi";
+
+    list_of_pairs.push_back(make_pair(origin,destination));  // pary powiązanych wierzchołków
 }
 
 

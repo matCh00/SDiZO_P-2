@@ -17,7 +17,6 @@ int main(){
 
     graphM->print();
 
-    graphM->dijkstra_algorithm(0, 4);
 
 
     Graph_List *graphL = new Graph_List(6, 6, true);

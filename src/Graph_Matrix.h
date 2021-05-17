@@ -1,5 +1,4 @@
 #pragma once
-#include "Vertex.h"
 #include <vector>
 #include <queue>
 using namespace std;
