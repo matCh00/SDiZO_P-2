@@ -36,15 +36,14 @@ Graph_Matrix::Graph_Matrix(int vertexes, int edges, bool directed) {
     edge_count = 0;             // liczba krawędzi - inkrementacja w funkcji print
     this->directed = directed;
 
+    incidence_matrix = new int *[vertex_count];
+
     // uzupełnianie macierzy zerami (pusty graf)
-    for (int v = 0; v < vertex_count; v++) {
+    for (int i = 0; i < vertexes; i++) {
+        incidence_matrix[i] = new int[vertex_count];
 
-        vector<int> temp;
-        for (int e = 0; e < edges; e++) {
-            temp.push_back(0);
-        }
-
-        incidence_matrix.push_back(temp);
+        for (int j = 0; j < edges; j++)
+            incidence_matrix[i][j] = 0;
     }
 }
 
@@ -53,11 +52,10 @@ Graph_Matrix::Graph_Matrix(int vertexes, int edges, bool directed) {
 Graph_Matrix::~Graph_Matrix() {
 
     // usuwanie wszystkich wierszy (wszystkich elementów)
-    for (int v = 0; v < vertex_count; v++) {
-        incidence_matrix[v].clear();
-        incidence_matrix[v].shrink_to_fit();
-    }
-    incidence_matrix.clear();   // usuwanie wskaźnika na macierz incydencji
+    for (int i = 0; i < vertex_count; i++)
+        delete[] incidence_matrix[i];
+
+    delete[] incidence_matrix;
 }
 
 
@@ -66,9 +64,9 @@ void Graph_Matrix::print() {
 
     cout << "Graf - macierz: " << endl << endl;
 
-    for (int v = 0; v < incidence_matrix.size(); v++) {
-        for (int e = 0; e < incidence_matrix[v].size(); e++)
-            cout << setw(4) << incidence_matrix[v][e] << "  ";
+    for (int i = 0; i < vertex_count; i++) {
+        for (int j = 0; j < vertex_count; j++)
+            cout << setw(4) << incidence_matrix[i][j] << "  ";
 
         cout << endl;
     }
@@ -90,8 +88,6 @@ void Graph_Matrix::add_edge(int origin, int destination, int weight) {
     }
     else
         cout << "Blad podczas dodawania krawedzi";
-
-    list_of_pairs.push_back(make_pair(origin,destination));  // pary powiązanych wierzchołków
 }
 
 

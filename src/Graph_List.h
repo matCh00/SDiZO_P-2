@@ -1,16 +1,16 @@
 #pragma once
-#include <vector>
+#include "Min_Heap.h"
 #include "Node.h"
 using namespace std;
 
 
 class Graph_List {
 
-    vector<Node*> adjacency_list;   // lista sąsiedztwa
+    Node **adjacency_list;   // lista sąsiedztwa
 
-    int vertex_count;
-    int edge_count;
-    bool directed;
+    int vertex_count;//
+    int edge_count;//
+    bool directed;//
 
 public:
     Graph_List(int vertexes, int edges, bool directed);

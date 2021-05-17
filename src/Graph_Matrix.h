@@ -1,15 +1,14 @@
 #pragma once
-#include <vector>
-#include <queue>
+#include "Min_Heap.h"
 using namespace std;
 
 class Graph_Matrix {
 
-    vector<vector<int>> incidence_matrix;   // macierz incydencji
+    int **incidence_matrix;   // macierz incydencji
 
-    int vertex_count;
-    int edge_count;
-    bool directed;
+    int vertex_count;//
+    int edge_count;//
+    bool directed;//
 
 public:
     Graph_Matrix(int vertexes, int edges, bool directed);

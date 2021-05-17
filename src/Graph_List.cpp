@@ -36,9 +36,11 @@ Graph_List::Graph_List(int vertexes, int edges, bool directed) {
     edge_count = 0;
     this->directed = directed;
 
+    adjacency_list = new Node *[vertex_count];
+
     // każdy element ma wartość NULL
     for (int i = 0; i < vertex_count; i++)
-        adjacency_list.push_back(nullptr);
+        adjacency_list[i] = nullptr;
 }
 
 
@@ -47,7 +49,9 @@ Graph_List::~Graph_List() {
 
     // usuwanie wszystkich elementów
     for (int i = 0; i < vertex_count; i++)
-        adjacency_list.pop_back();
+        delete adjacency_list[i];
+
+    delete[] adjacency_list;
 }
 
 
@@ -58,13 +62,12 @@ void Graph_List::print() {
 
     cout << "\nGraf - lista:" << endl << endl;
 
-    for (int v = 0; v < vertex_count; v++) {
-
-        cout << "[" << v << "] ";
-        node = adjacency_list[v];
+    for (int i = 0; i < vertex_count; i++) {
+        cout << "[" << i << "] =";
+        node = adjacency_list[i];
 
         while (node) {
-            cout << "  -> " << setw(3) << "(" << node->vertex << ")";   // wypisanie wszystkich krawędzi wychodzących z tego wierzchołka
+            cout << setw(3) << node->vertex;
             node = node->next;
         }
         cout << endl;
