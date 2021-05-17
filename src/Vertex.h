@@ -1,14 +1,18 @@
-//
-// Created by matic on 17.05.2021.
-//
-
-#ifndef SDIZO_P_2_V2_VERTEX_H
-#define SDIZO_P_2_V2_VERTEX_H
+#pragma once
 
 
 class Vertex {
 
+public:
+    Vertex(int index);
+    Vertex();
+    ~Vertex();
+
+    int cost;
+    int index;
+    int connected_matrix;
+
 };
 
 
-#endif //SDIZO_P_2_V2_VERTEX_H
+

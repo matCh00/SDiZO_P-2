@@ -1,7 +1,8 @@
 #pragma once
+#include "Vertex.h"
 #include <vector>
+#include <queue>
 using namespace std;
-
 
 class Graph_Matrix {
 
@@ -13,6 +14,7 @@ class Graph_Matrix {
 
 public:
     Graph_Matrix(int vertexes, int edges, bool directed);
+    Graph_Matrix(int V);
     ~Graph_Matrix();
 
     void print();
@@ -22,6 +24,7 @@ public:
     void prim_algorithm();
     void kruskal_algorithm();
     void dijkstra_algorithm(int origin, int destination);
+    void dijkstra_algorithm(int origin);
     void ford_bellman_algorithm(int origin, int destination);
 };
 

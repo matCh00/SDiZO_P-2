@@ -112,3 +112,46 @@ Graph_Matrix Graph_Matrix::random(int vertexes, float density, bool directed){
 
     return *graph;
 }
+
+
+
+//=============================================================================================
+//                                     ALGORYTM  DIJKSTRY
+//=============================================================================================
+
+// algorytm Dijkstry służy do wyznaczania najkrótszej drogi
+// pomędzy wierzchołkiem startowym do wszystkich wierzchołków
+
+
+
+
+
+//=============================================================================================
+//                               ALGORYTM  FORDA-BELLMANA
+//=============================================================================================
+
+// algorytm Forda-Bellmana służy do wyznaczania najkrótszej drogi
+// pomędzy wierzchołkiem startowym do wszystkich wierzchołków
+// w porównaniu do Dijkstry opiera się na metodzie relaksacji
+// nie opiera się na założeniu że wagi w grafie są nieujemne
+
+
+
+
+
+
+//=============================================================================================
+//                                     ALGORYTM  PRIMA
+//=============================================================================================
+
+// MST - minimalne drzewo rozpinające (graf nieskierowany)
+// MST zawiera wszystkie wierzchołki grafu i podzbiór jego krawędzi
+// MST grafu to jego podgraf z którego usunięto niektóre krawędzie (aby nie było cykli)
+
+
+
+
+
+//=============================================================================================
+//                                     ALGORYTM  KRUSKALA
+//=============================================================================================
