@@ -16,7 +16,9 @@ int main(){
     graphM->add_edge(4, 5, 6);
 
     graphM->print();
-
+    graphM->dijkstra_algorithm(0, 3);
+    graphM->prim_algorithm();
+    graphM->kruskal_algorithm();
 
 
     Graph_List *graphL = new Graph_List(6, 6, true);
@@ -29,6 +31,10 @@ int main(){
     graphL->add_edge(4, 5, 6);
 
     graphL->print();
+
+    graphL->dijkstra_algorithm(0, 3);
+    graphL->prim_algorithm();
+    graphL->kruskal_algorithm();
 
 
     return 0;

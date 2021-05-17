@@ -8,9 +8,9 @@ class Graph_List {
 
     Node **adjacency_list;   // lista sąsiedztwa
 
-    int vertex_count;//
-    int edge_count;//
-    bool directed;//
+    int vertex_count;
+    int edge_count;
+    bool directed;
 
 public:
     Graph_List(int vertexes, int edges, bool directed);

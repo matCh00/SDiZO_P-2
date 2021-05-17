@@ -6,13 +6,16 @@ class Graph_Matrix {
 
     int **incidence_matrix;   // macierz incydencji
 
-    int vertex_count;//
-    int edge_count;//
-    bool directed;//
+    int vertex_count;
+    int edge_count;
+    bool directed;
+
+    int min_key(int *, bool *);
+    int find(int, int *);
+    int unify(int, int, int *);
 
 public:
     Graph_Matrix(int vertexes, int edges, bool directed);
-    Graph_Matrix(int V);
     ~Graph_Matrix();
 
     void print();
