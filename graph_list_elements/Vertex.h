@@ -1,14 +1,16 @@
-//
-// Created by matic on 18.05.2021.
-//
-
-#ifndef SDIZO_P_2_V2_VERTEX_H
-#define SDIZO_P_2_V2_VERTEX_H
+#pragma once
 
 
 class Vertex {
 
+public:
+    int neighbour;      //wartość elementu
+    int edge_weight;
+
+    Vertex *next;     // wskaźnik na następny element
+    Vertex *prev;     // wskaźnik na poprzedni element
+
+    explicit Vertex(int, int, Vertex *, Vertex *);
 };
 
 
-#endif //SDIZO_P_2_V2_VERTEX_H
