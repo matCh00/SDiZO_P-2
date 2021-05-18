@@ -16,7 +16,7 @@ Adjacency_List::~Adjacency_List() {
 
 
 void Adjacency_List::add_edge(int neighbour, int edgeWeight) {
-    auto *newElement = new Vertex(neighbour, edgeWeight, tail, nullptr);
+    auto *newElement = new List_Element(neighbour, edgeWeight, tail, nullptr);
 
     if (tail == nullptr)
         head = newElement;   // dodanie elementu będącego ogonem i głową (gdy ogon wskazuje na NULL)
@@ -27,7 +27,7 @@ void Adjacency_List::add_edge(int neighbour, int edgeWeight) {
 
 
 bool Adjacency_List::remove_edge(int neighbour) {
-    Vertex *temp = head;
+    List_Element *temp = head;
 
     while (temp != nullptr) {
         if (temp->neighbour == neighbour) {
@@ -40,10 +40,10 @@ bool Adjacency_List::remove_edge(int neighbour) {
 }
 
 
-void Adjacency_List::remove_vertex(Vertex *temp) {
+void Adjacency_List::remove_vertex(List_Element *temp) {
     --list_size;
-    Vertex *left = temp->prev;
-    Vertex *right = temp->next;
+    List_Element *left = temp->prev;
+    List_Element *right = temp->next;
     delete temp;
 
     if (left != nullptr)
@@ -53,6 +53,6 @@ void Adjacency_List::remove_vertex(Vertex *temp) {
 }
 
 
-Vertex *Adjacency_List::get_head() {
+List_Element *Adjacency_List::get_head() {
     return head;
 }

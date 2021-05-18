@@ -3,14 +3,18 @@
 // klasa reprezentująca wierzchołek
 class Vertex {
 
+    int index;       // index (Dijkstra, Prim)
+    int key;         // klucz (Prim)
+    int distance;    // dystans (Dijkstra)
+
 public:
-    int neighbour;      //wartość elementu
-    int edge_weight;
 
-    Vertex *next;     // wskaźnik na następny element
-    Vertex *prev;     // wskaźnik na poprzedni element
+    Vertex(int, int);    // konstruktor
 
-    explicit Vertex(int, int, Vertex *, Vertex *);
+    int get_vertex_index();     // pobierz indeks
+    int get_key();              // pobierz klucz (Prim)
+    void set_key(int);          // ustaw klucz (Prim)
+    int get_distance();         // pobierz dystans (Dijkstra)
+    void set_distance(int);     // ustaw dystans (Dijkstra)
 };
-
 

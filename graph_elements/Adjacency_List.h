@@ -1,11 +1,11 @@
 #pragma once
-#include "Vertex.h"
+#include "List_Element.h"
 
 // klasa reprezentująca listę sąsiedztwa
 class Adjacency_List {
 
-    Vertex *head;   // wskaźnik na głowę
-    Vertex *tail;   // wskaźnik na ogon
+    List_Element *head;   // wskaźnik na głowę
+    List_Element *tail;   // wskaźnik na ogon
     int list_size;  // długość listy
 
 public:
@@ -14,9 +14,9 @@ public:
 
     void add_edge(int , int);        // dodanie krawędzi
     bool remove_edge(int);           // usunięcie krawędzi
-    void remove_vertex(Vertex *);   // usunięcie wierzchołka
+    void remove_vertex(List_Element *);   // usunięcie wierzchołka
 
-    Vertex *get_head();   // pobieranie wskaźnika na głowę listy
+    List_Element *get_head();   // pobieranie wskaźnika na głowę listy
 
 };
 
