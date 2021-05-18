@@ -1,5 +1,7 @@
 #pragma once
-#include "Min_Heap.h"
+#include <iostream>
+#include "C:\Users\matic\OneDrive\Pulpit\SDiZO_P-2-v2\graph_elements\Edge.h"
+#include "C:\Users\matic\OneDrive\Pulpit\SDiZO_P-2-v2\graph_elements\Incidence_Matrix.h"
 using namespace std;
 
 class Graph_Matrix {

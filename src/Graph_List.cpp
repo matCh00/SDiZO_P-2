@@ -29,95 +29,41 @@ using namespace std;
 */
 
 
-// tworzenie (pustego) grafu - reprezentacja listowa (dzidziczenie po obiekcie Graph)
-Graph_List::Graph_List(int vertexes, int edges, bool directed) {
-
-    vertex_count = vertexes;
-    edge_count = 0;
-    this->directed = directed;
-
-    adjacency_list = new Node *[vertex_count];
-
-    // każdy element ma wartość NULL
-    for (int i = 0; i < vertex_count; i++)
-        adjacency_list[i] = nullptr;
+Graph_List::Graph_List(int vertices) {
+    this->vertices = vertices;
+    edges = 0;
+    adjacency_list = new Adjacency_List *[vertices];
+    for (int i = 0; i < vertices; ++i) {
+        adjacency_list[i] = new Adjacency_List();
+    }
 }
 
-
-// usuwanie grafu
 Graph_List::~Graph_List() {
-
-    // usuwanie wszystkich elementów
-    for (int i = 0; i < vertex_count; i++)
+    for (int i = 0; i < vertices; ++i)
         delete adjacency_list[i];
-
     delete[] adjacency_list;
 }
 
-
-// wypisanie grafu w postaci macierzy
-void Graph_List::print() {
-
-    Node *node;
-
-    cout << "\nGraf - lista:" << endl << endl;
-
-    for (int i = 0; i < vertex_count; i++) {
-        cout << "[" << i << "] =";
-        node = adjacency_list[i];
-
-        while (node) {
-            cout << setw(3) << node->vertex;
-            node = node->next;
-        }
-        cout << endl;
+void Graph_List::add_vertex() {
+    auto newAdjacencyLists = new Adjacency_List *[vertices + 1];
+    for (int i = 0; i < vertices; ++i) {
+        newAdjacencyLists[i] = adjacency_list[i];
+        delete adjacency_list[i];
     }
+    newAdjacencyLists[vertices] = new Adjacency_List();
+    delete[] adjacency_list;
+    ++vertices;
 }
 
-
-// dodanie krawędzi
-void Graph_List::add_edge(int origin, int destination, int weight) {
-
-    Node *node = new Node();            // nowe połączenie
-    node->vertex = destination;         // wierzchołek początkowy
-    node->weight = weight;              // przypisanie wagi
-    node->next = adjacency_list[origin];   // wierzchołek końcowy krawędzi
-    adjacency_list[origin] = node;         // dodanie nowej krawędzi
-
-    // jeżeli graf nie jest skierowany
-    if (!directed) {
-        node = new Node();              // nowe połączenie
-        node->vertex = origin;          // wierzchołek początkowy
-        node->weight = weight;          // przypisanie wagi
-        node->next = adjacency_list[destination];   // wierzchołek końcowy krawędzi
-        adjacency_list[destination] = node;         // dodanie nowej krawędzi
-    }
-
-    edge_count++;
+void Graph_List::add_undirected_edge(int vertex1, int vertex2, int edgeWeight) {
+    adjacency_list[vertex1]->add_edge(vertex2, edgeWeight);
+    adjacency_list[vertex2]->add_edge(vertex1, edgeWeight);
+    ++edges;
 }
 
-
-// losowe generowanie grafu
-Graph_List Graph_List::random(int vertexes, float density, bool directed){
-
-    int ed;
-
-    if (directed)
-        ed = vertexes * (vertexes - 1);
-    else
-        ed = (vertexes * (vertexes - 1)) / 2;
-
-
-    int edg = (int)(density * ed / 100);
-
-    Graph_List *graph = new Graph_List(vertexes, edg, directed);
-
-    for (int i = 0; i < edg; i++) {
-
-        //TODO add random edges
-    }
-
-    return *graph;
+void Graph_List::add_directed_edge(int vertex1, int vertex2, int edgeWeight) {
+    adjacency_list[vertex1]->add_edge(vertex2, edgeWeight);
+    ++edges;
 }
 
 
