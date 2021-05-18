@@ -6,29 +6,29 @@ using namespace std;
 
 class Graph_Matrix {
 
-    int **incidence_matrix;   // macierz incydencji
+    int vertices;        // liczba wierzchołków
+    int edges;           // liczba krawędzi
+    int *edge_weights;   // wagi krawędzi
 
-    int vertex_count;
-    int edge_count;
-    bool directed;
-
-    int min_key(int *, bool *);
-    int find(int, int *);
-    int unify(int, int, int *);
+    Incidence_Matrix *incidence_matrix;   // macierz incydencji
 
 public:
-    Graph_Matrix(int vertexes, int edges, bool directed);
-    ~Graph_Matrix();
 
-    void print();
-    void add_edge(int origin, int destination, int weight);
-    Graph_Matrix random(int vertexes, float density, bool directed);
+    explicit Graph_Matrix(int vertices = 0);   // konstruktor
+    ~Graph_Matrix();                           // destruktor
 
-    void prim_algorithm();
-    void kruskal_algorithm();
-    void dijkstra_algorithm(int origin, int destination);
-    void dijkstra_algorithm(int origin);
-    void ford_bellman_algorithm(int origin, int destination);
+    void add_undirected_edge(int vertex1, int vertex2, int weight);   // dodaj krawędź nieskierowaną
+    void add_directed_edge(int vertex1, int vertex2, int weight);     // dodaj krawędź skierowaną
+    void new_edge_weights(int added_weight);                          // wagi
+
+    void Prim_algorithm(int *&key, int *&parent, int start_vertex = 0);                // algorytm Prima
+    void Kruskal_algorithm(Edge **mst_edges);                                          // algorytm Kruskala
+    void Dijkstra_algorithm(int *&distance, int *&parent, int start_vertex = 0);       // algorytm Dijkstry
+    bool Bellman_Ford_algorithm(int *&distance, int *&parent, int start_vertex = 0);   // algorytm Bellmana-Forda
+
+    void print();        // wypisz graf w postaci listy sąsiedztwa
+    int get_vertices();  // pobierz liczbę wierzchołków
+    int get_edges();     // pobierz liczbę krawędzi
 };
 
 
