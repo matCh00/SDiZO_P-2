@@ -7,6 +7,7 @@ Edge::Edge(int v1, int v2, int weight) {
     edge_weight = weight;
 }
 
+
 int Edge::get_vertex1() {
     return vertex1;
 }

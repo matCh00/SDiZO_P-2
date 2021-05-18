@@ -1,6 +1,6 @@
 #pragma once
 
-
+// klasa reprezentująca krawędź
 class Edge {
 
     int vertex1;       // wierzchołek początkowy

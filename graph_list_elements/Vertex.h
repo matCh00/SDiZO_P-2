@@ -1,6 +1,6 @@
 #pragma once
 
-
+// klasa reprezentująca wierzchołek
 class Vertex {
 
 public:
