@@ -17,7 +17,7 @@ public:
 
     bool is_in_heap(int);    // czy jest w kopcu
     bool has_elements();     // czy ma elementy
-    void create_mni_heap();  // tworzenie kopca minimalnego
+    void create_min_heap();  // tworzenie kopca minimalnego
     void min_heapify(int);   // naprawa w dół kopca minimalnego
 
     Vertex *extract_min();   // pobranie najmniejszego elementu i usunięcie go z kopca

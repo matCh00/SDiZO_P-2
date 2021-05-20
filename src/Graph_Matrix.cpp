@@ -77,6 +77,40 @@ void Graph_Matrix::new_edge_weights(int added_weight) {
 // algorytm Dijkstry służy do wyznaczania najkrótszej drogi
 // pomędzy wierzchołkiem startowym do wszystkich wierzchołków
 
+void Graph_Matrix::Prim_algorithm(int *&key, int *&parent, int start_vertex) {
+    //stos wierzchołków Prima (tzn. obiektów wierzchołek posiadających swój numer, oraz key)
+    auto *heap = new Vertex_Min_Heap(vertices);
+    heap->vertexes[start_vertex]->set_key(0);
+    key[start_vertex] = 0;
+    parent[start_vertex] = -1;
+    while (heap->has_elements()) {
+        //tworzymy stos (aby mieć wierzchołek o najmniejszej wadze), trzeba co pętlę ponieważ w pętli zmieniają się elementy stosu
+        heap->create_min_heap();
+        Vertex *vertexU = heap->extract_min();
+        int vertexNumber = vertexU->get_vertex_index();
+        for (int i = 0; i < edges; ++i) {
+            if (incidence_matrix->get(i, vertexNumber) == 1) {
+                int edgeWeight = edge_weights[i];
+                for (int j = 0; j < vertices; ++j) {
+                    if (incidence_matrix->get(i, j) == 1 && j != vertexNumber) {
+                        // 'j' to sąsiad (neighbour)
+                        if (heap->is_in_heap(j)) {
+                            int neighbourPosition = heap->position[j];
+                            if (edgeWeight < heap->vertexes[neighbourPosition]->get_key()) {
+                                heap->vertexes[neighbourPosition]->set_key(edgeWeight);
+                                key[j] = edgeWeight;
+                                parent[j] = vertexU->get_vertex_index();
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    delete heap;
+}
+
 
 
 

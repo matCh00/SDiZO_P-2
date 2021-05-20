@@ -29,7 +29,7 @@ bool Vertex_Min_Heap::has_elements() {
     return heap_size > 0;
 }
 
-void Vertex_Min_Heap::create_mni_heap() {
+void Vertex_Min_Heap::create_min_heap() {
     for (int i = (heap_size - 2) / 2; i >= 0; --i)
         min_heapify(i);
 }

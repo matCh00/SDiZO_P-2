@@ -2,6 +2,7 @@
 #include <iostream>
 #include "C:\Users\matic\OneDrive\Pulpit\SDiZO_P-2-v2\graph_elements\Edge.h"
 #include "C:\Users\matic\OneDrive\Pulpit\SDiZO_P-2-v2\graph_elements\Incidence_Matrix.h"
+#include "../graph_elements/Vertex_Min_Heap.h"
 using namespace std;
 
 class Graph_Matrix {
