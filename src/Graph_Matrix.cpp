@@ -67,6 +67,15 @@ void Graph_Matrix::new_edge_weights(int added_weight) {
     edge_weights = newEdgeWeights;
 }
 
+void Graph_Matrix::print() {
+    cout << "E:    ";
+    for (int i = 0; i < edges; ++i) {
+        cout << "\t" << edge_weights[i];
+    }
+    cout << "\n\n";
+    incidence_matrix->print();
+}
+
 
 
 
@@ -76,6 +85,33 @@ void Graph_Matrix::new_edge_weights(int added_weight) {
 
 // algorytm Dijkstry służy do wyznaczania najkrótszej drogi
 // pomędzy wierzchołkiem startowym do wszystkich wierzchołków
+
+
+
+
+
+
+//=============================================================================================
+//                               ALGORYTM  FORDA-BELLMANA
+//=============================================================================================
+
+// algorytm Forda-Bellmana służy do wyznaczania najkrótszej drogi
+// pomędzy wierzchołkiem startowym do wszystkich wierzchołków
+// w porównaniu do Dijkstry opiera się na metodzie relaksacji
+// nie opiera się na założeniu że wagi w grafie są nieujemne
+
+
+
+
+
+
+//=============================================================================================
+//                                     ALGORYTM  PRIMA
+//=============================================================================================
+
+// MST - minimalne drzewo rozpinające (graf nieskierowany)
+// MST zawiera wszystkie wierzchołki grafu i podzbiór jego krawędzi
+// MST grafu to jego podgraf z którego usunięto niektóre krawędzie (aby nie było cykli)
 
 void Graph_Matrix::Prim_algorithm(int *&key, int *&parent, int start_vertex) {
     //stos wierzchołków Prima (tzn. obiektów wierzchołek posiadających swój numer, oraz key)
@@ -113,33 +149,18 @@ void Graph_Matrix::Prim_algorithm(int *&key, int *&parent, int start_vertex) {
 
 
 
-
-//=============================================================================================
-//                               ALGORYTM  FORDA-BELLMANA
-//=============================================================================================
-
-// algorytm Forda-Bellmana służy do wyznaczania najkrótszej drogi
-// pomędzy wierzchołkiem startowym do wszystkich wierzchołków
-// w porównaniu do Dijkstry opiera się na metodzie relaksacji
-// nie opiera się na założeniu że wagi w grafie są nieujemne
-
-
-
-
-
-
-//=============================================================================================
-//                                     ALGORYTM  PRIMA
-//=============================================================================================
-
-// MST - minimalne drzewo rozpinające (graf nieskierowany)
-// MST zawiera wszystkie wierzchołki grafu i podzbiór jego krawędzi
-// MST grafu to jego podgraf z którego usunięto niektóre krawędzie (aby nie było cykli)
-
-
-
-
 //=============================================================================================
 //                                     ALGORYTM  KRUSKALA
 //=============================================================================================
 
+
+
+
+
+int Graph_Matrix::get_vertices() {
+    return vertices;
+}
+
+int Graph_Matrix::get_edges() {
+    return edges;
+}
