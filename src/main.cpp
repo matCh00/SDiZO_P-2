@@ -34,12 +34,12 @@ cout<<endl<<endl<<endl;*/
 
     Graph_List *graph = new Graph_List(6);
 
-    graph->add_undirected_edge(0, 4, 3);
-    graph->add_undirected_edge(0, 2, 2);
-    graph->add_undirected_edge(1, 4, 3);
-    graph->add_undirected_edge(2, 3, 1);
-    graph->add_undirected_edge(3, 2, 5);
-    graph->add_undirected_edge(4, 5, 9);
+    graph->add_directed_edge(0, 4, 3);
+    graph->add_directed_edge(0, 2, 2);
+    graph->add_directed_edge(4, 1, 3);
+    graph->add_directed_edge(2, 3, 1);
+    graph->add_directed_edge(3, 4, 5);
+    graph->add_directed_edge(4, 5, 9);
 
     graph->print();
 
