@@ -24,7 +24,7 @@ public:
     void Prim_algorithm(int *&, int *&, int);           // algorytm Prima
     void Kruskal_algorithm(Edge **);                    // algorytm Kruskala
     void Dijkstra_algorithm(int *&, int *&, int);       // algorytm Dijkstry
-    bool Bellman_Ford_algorithm(int *&, int *&, int);   // algorytm Bellmana-Forda
+    bool Bellman_Ford_algorithm(int);   // algorytm Bellmana-Forda
 
     void print();        // wypisz graf w postaci listy sąsiedztwa
     int get_vertices();  // pobierz liczbę wierzchołków

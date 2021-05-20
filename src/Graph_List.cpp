@@ -100,7 +100,68 @@ void Graph_List::print() {
 // w porównaniu do Dijkstry opiera się na metodzie relaksacji
 // nie opiera się na założeniu że wagi w grafie są nieujemne
 
+bool Graph_List::Bellman_Ford_algorithm(int startingVertex = 0) {
+    Edge **graphEdges = new Edge *[edges];
+    int *distance = new int[vertices];
+    int *parent = new int[vertices];
 
+    int i = 0;
+    for (int j = 0; j < vertices; ++j) {
+        distance[j] = INT_MAX / 2;
+        parent[j] = -1;
+        auto listTraverse = adjacency_list[j]->get_head();
+        while (listTraverse != nullptr) {
+            graphEdges[i] = new Edge(j, listTraverse->neighbour, listTraverse->edge_weight);
+            ++i;
+            listTraverse = listTraverse->next;
+        }
+    }
+    parent[startingVertex] = startingVertex;
+    distance[startingVertex] = 0;
+    bool relaxed = true;
+    for (int ii = 1; ii < vertices && relaxed; ++ii) {
+        relaxed = false;
+        for (int j = 0; j < edges; ++j) {
+            Edge *edge = graphEdges[j];
+            int u = edge->get_vertex1();
+            int v = edge->get_vertex2();
+            int weight = edge->get_edge_weight();
+            if (distance[v] > distance[u] + weight) {
+                distance[v] = distance[u] + weight;
+                parent[v] = u;
+                relaxed = true;
+            }
+        }
+    }
+
+    if (relaxed) {
+        cout << "Wykryto cykl o lacznej ujemnej wadze\n";
+    } else {
+        cout << "Algorytm Bellmana-Forda listowo; Wierzcholek: distance/parent\n";
+        for (int i = 0; i < vertices; ++i) {
+            cout << i << ": " << distance[i] << "/" << parent[i] << "\n";
+        }
+    }
+
+    if (relaxed) {
+        for (int j = 0; j < edges; ++j) {
+            Edge *edge = graphEdges[j];
+            int u = edge->get_vertex1();
+            int v = edge->get_vertex2();
+            int weight = edge->get_edge_weight();
+            if (distance[v] > distance[u] + weight) {
+                delete[] distance;
+                delete[] parent;
+                return false;
+            }
+        }
+    }
+    for (int j = 0; j < edges; ++j) {
+        delete graphEdges[j];
+    }
+    delete[] graphEdges;
+    return true;
+}
 
 
 
