@@ -100,7 +100,78 @@ void Graph_Matrix::print() {
 // w porównaniu do Dijkstry opiera się na metodzie relaksacji
 // nie opiera się na założeniu że wagi w grafie są nieujemne
 
+void Graph_Matrix::Bellman_Ford_algorithm(int startingVertex) {
+    int *distance = new int[vertices];
+    int *parent = new int[vertices];
 
+    for (int i = 0; i < vertices; ++i) {
+        distance[i] = INT_MAX / 2;
+        parent[i] = -1;
+    }
+    parent[startingVertex] = startingVertex;
+    distance[startingVertex] = 0;
+    Edge **graphEdges = new Edge *[edges];
+    int graphEdgeIndex = 0;
+    for (int i = 0; i < edges; ++i) {
+        int vertex1 = 0;
+        int vertex2 = 0;
+        for (int j = 0; j < edges; ++j) {
+            if (incidence_matrix->get(i, j) == 1) {
+                vertex1 = j;
+                break;
+            }
+        }
+        for (int j = 0; j < edges; ++j) {
+            if (incidence_matrix->get(i, j) == -1) {
+                vertex2 = j;
+                break;
+            }
+        }
+        graphEdges[graphEdgeIndex] = new Edge(vertex1, vertex2, edge_weights[i]);
+        ++graphEdgeIndex;
+    }
+    bool relaxed = true;
+    for (int ii = 1; ii < vertices && relaxed; ++ii) {
+        relaxed = false;
+        for (int j = 0; j < edges; ++j) {
+            Edge *edge = graphEdges[j];
+            int u = edge->get_vertex1();
+            int v = edge->get_vertex2();
+            int weight = edge->get_edge_weight();
+            if (distance[v] > distance[u] + weight) {
+                distance[v] = distance[u] + weight;
+                parent[v] = u;
+                relaxed = true;
+            }
+        }
+    }
+
+    if (relaxed) {
+        cout << "Wykryto cykl o lacznej ujemnej wadze\n";
+    } else {
+        cout << "Algorytm Bellmana-Forda macierzowo; Wierzcholek: distance/parent\n";
+        for (int i = 0; i < vertices; ++i) {
+            cout << i << ": " << distance[i] << "/" << parent[i] << "\n";
+        }
+    }
+
+    if (relaxed) {
+        for (int j = 0; j < edges; ++j) {
+            Edge *edge = graphEdges[j];
+            int u = edge->get_vertex1();
+            int v = edge->get_vertex2();
+            int weight = edge->get_edge_weight();
+            if (distance[v] > distance[u] + weight) {
+                delete[] distance;
+                delete[] parent;
+            }
+        }
+    }
+    for (int j = 0; j < edges; ++j) {
+        delete graphEdges[j];
+    }
+    delete[] graphEdges;
+}
 
 
 

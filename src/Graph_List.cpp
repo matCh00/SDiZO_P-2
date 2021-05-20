@@ -100,7 +100,7 @@ void Graph_List::print() {
 // w porównaniu do Dijkstry opiera się na metodzie relaksacji
 // nie opiera się na założeniu że wagi w grafie są nieujemne
 
-bool Graph_List::Bellman_Ford_algorithm(int startingVertex = 0) {
+void Graph_List::Bellman_Ford_algorithm(int startingVertex = 0) {
     Edge **graphEdges = new Edge *[edges];
     int *distance = new int[vertices];
     int *parent = new int[vertices];
@@ -152,7 +152,6 @@ bool Graph_List::Bellman_Ford_algorithm(int startingVertex = 0) {
             if (distance[v] > distance[u] + weight) {
                 delete[] distance;
                 delete[] parent;
-                return false;
             }
         }
     }
@@ -160,7 +159,6 @@ bool Graph_List::Bellman_Ford_algorithm(int startingVertex = 0) {
         delete graphEdges[j];
     }
     delete[] graphEdges;
-    return true;
 }
 
 
