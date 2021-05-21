@@ -23,13 +23,14 @@ public:
     void new_edge_weights(int added_weight);                          // wagi
 
     void Prim_algorithm(int *&key, int *&parent, int start_vertex = 0);                // algorytm Prima
-    void Kruskal_algorithm(Edge **mst_edges);                                          // algorytm Kruskala
+    void Kruskal_algorithm();                                          // algorytm Kruskala
     void Dijkstra_algorithm(int *&distance, int *&parent, int start_vertex = 0);       // algorytm Dijkstry
     void Bellman_Ford_algorithm(int start_vertex = 0);   // algorytm Bellmana-Forda
 
     void print();        // wypisz graf w postaci listy sąsiedztwa
     int get_vertices();  // pobierz liczbę wierzchołków
     int get_edges();     // pobierz liczbę krawędzi
+    int kruskal_find_setM(int *, int); // funkcja pomocnicza do algorytmu Kruskala
 };
 
 

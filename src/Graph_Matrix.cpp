@@ -170,6 +170,9 @@ void Graph_Matrix::Bellman_Ford_algorithm(int startingVertex) {
     for (int j = 0; j < edges; ++j) {
         delete graphEdges[j];
     }
+
+    delete[] distance;
+    delete[] parent;
     delete[] graphEdges;
 }
 
@@ -215,6 +218,8 @@ void Graph_Matrix::Prim_algorithm(int *&key, int *&parent, int start_vertex) {
             }
         }
     }
+    delete[] key;
+    delete[] parent;
     delete heap;
 }
 
@@ -224,9 +229,96 @@ void Graph_Matrix::Prim_algorithm(int *&key, int *&parent, int start_vertex) {
 //                                     ALGORYTM  KRUSKALA
 //=============================================================================================
 
+void Graph_Matrix::Kruskal_algorithm() {
+    Edge **mstEdges = new Edge *[vertices - 1];
+    for (int i = 0; i < vertices-1; i++)
+    {
+        mstEdges[i] = new Edge(0,0,0);
+    }
+
+    int *parent = new int[vertices];
+    int *rank = new int[vertices];
+    Edge **graphEdges = new Edge *[edges];
+    int graphEdgeIndex = 0;
+    int mstEdgeIndex = 0;
+    for (int i = 0; i < vertices; ++i) {
+        parent[i] = i;
+        rank[i] = 0;
+    }
+    //tworzenie pomocniczych obiektów - krawędzi oraz ich sortowanie metodą insertionsort
+    for (int i = 0; i < edges; ++i) {
+        int vertex1 = 0;
+        int vertex2 = 0;
+        int j = 0;
+        for (; j < edges; ++j) {
+            if (incidence_matrix->get(i, j) == 1) {
+                vertex1 = j;
+                ++j;
+                break;
+            }
+        }
+        for (; j < edges; ++j) {
+            if (incidence_matrix->get(i, j) == 1) {
+                vertex2 = j;
+                break;
+            }
+        }
+        graphEdges[graphEdgeIndex] = new Edge(vertex1, vertex2, edge_weights[i]);
+        Edge *swap = graphEdges[graphEdgeIndex];
+        int k = graphEdgeIndex - 1;
+        while (k >= 0 && graphEdges[k]->get_edge_weight() > swap->get_edge_weight()) {
+            graphEdges[k + 1] = graphEdges[k];
+            --k;
+        }
+        graphEdges[k + 1] = swap;
+        ++graphEdgeIndex;
+    }
+    for (graphEdgeIndex = 0; graphEdgeIndex < edges; ++graphEdgeIndex) {
+        Edge *edge = graphEdges[graphEdgeIndex];
+        int v1 = edge->get_vertex1();
+        int v2 = edge->get_vertex2();
+        int set1 = kruskal_find_setM(parent, v1);
+        int set2 = kruskal_find_setM(parent, v2);
+        if (set1 != set2) {
+            mstEdges[mstEdgeIndex]->set_vertex1(v1);
+            mstEdges[mstEdgeIndex]->set_vertex2(v2);
+            mstEdges[mstEdgeIndex]->set_edge_weight(edge->get_edge_weight());
+            ++mstEdgeIndex;
+            if (rank[set1] < rank[set2])
+                parent[set1] = set2;
+            else
+                parent[set2] = set1;
+            if (rank[set1] == rank[set2])
+                ++rank[set1];
+        }
+        delete graphEdges[graphEdgeIndex];
+    }
+
+    cout << "Algorytm Kruskala macierzowo; krawedzie MST:\n";
+    for (int i = 0; i < vertices - 1; ++i) {
+        cout << mstEdges[i]->get_vertex1() << " - " << mstEdges[i]->get_vertex2() << " : Waga = "
+             << mstEdges[i]->get_edge_weight()
+             << "\n";
+    }
+
+    for (int i = 0; i < vertices - 1; ++i) {
+        delete mstEdges[i];
+    }
+    delete[] mstEdges;
+    delete[] parent;
+    delete[] rank;
+    delete[] graphEdges;
+}
 
 
 
+
+
+int Graph_Matrix::kruskal_find_setM(int *parent, int x) {
+    if (parent[x] != x)
+        parent[x] = kruskal_find_setM(parent, parent[x]);
+    return parent[x];
+}
 
 int Graph_Matrix::get_vertices() {
     return vertices;

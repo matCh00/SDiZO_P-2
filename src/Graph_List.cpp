@@ -158,6 +158,9 @@ void Graph_List::Bellman_Ford_algorithm(int startingVertex = 0) {
     for (int j = 0; j < edges; ++j) {
         delete graphEdges[j];
     }
+
+    delete[] distance;
+    delete[] parent;
     delete[] graphEdges;
 }
 
@@ -172,7 +175,9 @@ void Graph_List::Bellman_Ford_algorithm(int startingVertex = 0) {
 // MST zawiera wszystkie wierzchołki grafu i podzbiór jego krawędzi
 // MST grafu to jego podgraf z którego usunięto niektóre krawędzie (aby nie było cykli)
 
-void Graph_List::Prim_algorithm(int *&key, int *&parent, int startingVertex = 0) {
+void Graph_List::Prim_algorithm(int startingVertex = 0) {
+    int *key = new int[vertices];
+    int *parent = new int[vertices];
     //stos wierzchołków Prima (tzn. obiektów wierzchołek posiadających swój numer, oraz key)
     auto *heap = new Vertex_Min_Heap(vertices);
     heap->vertexes[startingVertex]->set_key(0);
@@ -198,6 +203,20 @@ void Graph_List::Prim_algorithm(int *&key, int *&parent, int startingVertex = 0)
             neighbourTraverse = neighbourTraverse->next;
         }
     }
+
+    cout << "Algorytm Prima listowo; wierzcholek: key/parent\n";
+    for (int i = 0; i < vertices; ++i) {
+        cout << i << ": " << key[i] << "/" << parent[i] << "\n";
+    }
+    cout << "\nKrawedzie MST:\n";
+    for (int i = 0; i < vertices; ++i) {
+        if (parent[i] != -1) {
+            cout << i << " - " << parent[i] << " : Waga = " << key[i] << "\n";
+        }
+    }
+
+    delete[] key;
+    delete[] parent;
     delete heap;
 }
 
@@ -208,9 +227,81 @@ void Graph_List::Prim_algorithm(int *&key, int *&parent, int startingVertex = 0)
 //                                     ALGORYTM  KRUSKALA
 //=============================================================================================
 
+void Graph_List::Kruskal_algorithm() {
+    Edge **mstEdges = new Edge *[vertices - 1];
+    for (int i = 0; i < vertices-1; i++)
+    {
+        mstEdges[i] = new Edge(0,0,0);
+    }
+
+    int *parent = new int[vertices];
+    int *rank = new int[vertices];
+    Edge **graphEdges = new Edge *[2 * edges]; //2*edges bo będziemy mieć duplikaty krawędzi
+    int graphEdgeIndex = 0;
+    //tworzenie pomocniczych obiektów - krawędzi oraz ich sortowanie metodą insertionsort
+    for (int j = 0; j < vertices; ++j) {
+        parent[j] = j;
+        rank[j] = 0;
+        auto listTraverse = adjacency_list[j]->get_head();
+        while (listTraverse != nullptr) {
+            graphEdges[graphEdgeIndex] = new Edge(j, listTraverse->neighbour, listTraverse->edge_weight);
+            Edge *swap = graphEdges[graphEdgeIndex];
+            int k = graphEdgeIndex - 1;
+            while (k >= 0 && graphEdges[k]->get_edge_weight() > swap->get_edge_weight()) {
+                graphEdges[k + 1] = graphEdges[k];
+                --k;
+            }
+            graphEdges[k + 1] = swap;
+            ++graphEdgeIndex;
+            listTraverse = listTraverse->next;
+        }
+    }
+    int mstEdgeIndex = 0;
+    for (graphEdgeIndex = 0; graphEdgeIndex < 2 * edges; ++graphEdgeIndex) {
+        Edge *edge = graphEdges[graphEdgeIndex];
+        int v1 = edge->get_vertex1();
+        int v2 = edge->get_vertex2();
+        int set1 = kruskal_find_setL(parent, v1);
+        int set2 = kruskal_find_setL(parent, v2);
+        if (set1 != set2) {
+            mstEdges[mstEdgeIndex]->set_vertex1(v1);
+            mstEdges[mstEdgeIndex]->set_vertex2(v2);
+            mstEdges[mstEdgeIndex]->set_edge_weight(edge->get_edge_weight());
+            ++mstEdgeIndex;
+            if (rank[set1] < rank[set2])
+                parent[set1] = set2;
+            else
+                parent[set2] = set1;
+            if (rank[set1] == rank[set2])
+                ++rank[set1];
+        }
+        delete graphEdges[graphEdgeIndex];
+    }
+
+    cout << "Algorytm Kruskala listowo; krawedzie MST:\n";
+    for (int i = 0; i < vertices - 1; ++i) {
+        cout << mstEdges[i]->get_vertex1() << " - " << mstEdges[i]->get_vertex2() << " : Waga = "
+             << mstEdges[i]->get_edge_weight()
+             << "\n";
+    }
+
+    for (int i = 0; i < vertices - 1; ++i) {
+        delete mstEdges[i];
+    }
+    delete[] mstEdges;
+    delete[] parent;
+    delete[] rank;
+    delete[] graphEdges;
+}
 
 
 
+
+int Graph_List::kruskal_find_setL(int *parent, int x) {
+    if (parent[x] != x)
+        parent[x] = kruskal_find_setL(parent, parent[x]);
+    return parent[x];
+}
 
 int Graph_List::get_vertices() {
     return vertices;
