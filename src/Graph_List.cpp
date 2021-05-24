@@ -68,11 +68,11 @@ void Graph_List::add_directed_edge(int vertex1, int vertex2, int edgeWeight) {
 
 void Graph_List::print() {
     for (int i = 0; i < vertices; ++i) {
-        cout << "Wierz. " << i << " Nastepnicy: ";
-        auto listTraverse = adjacency_list[i]->get_head();
-        while (listTraverse != nullptr) {
-            cout << listTraverse->neighbour << " waga: " << listTraverse->edge_weight << ";\t";
-            listTraverse = listTraverse->next;
+        cout << "V " << i << ":";
+        auto list = adjacency_list[i]->get_head();
+        while (list != nullptr) {
+            cout << setw(7) << list->neighbour << " (" << list->edge_weight << ")";
+            list = list->next;
         }
         cout << "\n";
     }

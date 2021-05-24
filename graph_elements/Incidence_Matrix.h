@@ -6,11 +6,13 @@
 
 class Incidence_Matrix {
 
+public:  // zmienne potrzebne do wypisania macierzy incydencji w klasie Graph_Matrix
+
     int **array;    // wskaźnik na wskaźnik
     int size_x;     // liczba wierszy
     int size_y;     // liczba kolumn
 
-public:
+//public:
 
     Incidence_Matrix(int, int);  // konstruktor
     ~Incidence_Matrix();         // destruktor

@@ -68,12 +68,15 @@ void Graph_Matrix::new_edge_weights(int added_weight) {
 }
 
 void Graph_Matrix::print() {
-    cout << "E:    ";
-    for (int i = 0; i < edges; ++i) {
-        cout << "\t" << edge_weights[i];
+
+    for (int y = 0; y < incidence_matrix->size_y; ++y) {
+        cout << "V " << y << ":";
+        for (int x = 0; x < incidence_matrix->size_x; ++x) {
+            cout << setw(7) << incidence_matrix->array[x][y] * edge_weights[x];
+        }
+        cout << "\n";
     }
-    cout << "\n\n";
-    incidence_matrix->print();
+    cout << "\n";
 }
 
 
