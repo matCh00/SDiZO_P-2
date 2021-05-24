@@ -1,27 +1,21 @@
 #include "Vertex.h"
 
 
-Vertex::Vertex(int id, int dist) {
+Vertex::Vertex(int id, int elem) {
     index = id;
-    distance = dist;
+    element = elem;
 }
 
 int Vertex::get_vertex_index() {
     return index;
 }
 
-int Vertex::get_distance() {
-    return distance;
+int Vertex::get_element() {
+    return element;
 }
 
-void Vertex::set_distance(int dist) {
-    distance = dist;
+void Vertex::set_element(int elem) {
+    element = elem;
 }
 
-int Vertex::get_key() {
-    return key;
-}
 
-void Vertex::set_key(int k) {
-    key = k;
-}
