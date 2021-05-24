@@ -16,8 +16,10 @@ int main(){
 
     graphM->print(); //ok
 
-    //graphM->Bellman_Ford_algorithm(0); //ok
-    graphM->Kruskal_algorithm(); //ok
+    //graphM->Bellman_Ford_algorithm(); //ok
+    //graphM->Kruskal_algorithm(); //ok
+    //graphM->Dijkstra_algorithm();  // nie
+    graphM->Prim_algorithm();  // nie
 
 
 cout<<endl<<endl<<endl;
@@ -34,8 +36,10 @@ cout<<endl<<endl<<endl;
 
     graphL->print(); //ok
 
-    //graphL->Bellman_Ford_algorithm(0); //ok
-    graphL->Kruskal_algorithm(); //ok
+    //graphL->Bellman_Ford_algorithm(); //ok
+    //graphL->Kruskal_algorithm(); //ok
+    //graphL->Dijkstra_algorithm();  // ok
+    graphL->Prim_algorithm();  // nie
 
 
     return 0;

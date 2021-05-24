@@ -86,6 +86,43 @@ void Graph_List::print() {
 // algorytm Dijkstry służy do wyznaczania najkrótszej drogi
 // pomędzy wierzchołkiem startowym do wszystkich wierzchołków
 
+void Graph_List::Dijkstra_algorithm() {
+    int *distance = new int[vertices];
+    int *parent = new int[vertices];
+
+    //stos wierzchołków Dijkstry (tzn. obiektów wierzchołek posiadających swój numer, oraz distance)
+    auto *heap = new Vertex_Min_Heap(vertices);
+    heap->vertexes[0]->set_distance(0);
+    distance[0] = 0;
+    parent[0] = -1;
+    while (heap->has_elements()) {
+        //tworzymy stos (aby mieć wierzchołek o najmniejszym dystansie), trzeba co pętlę ponieważ w pętli zmieniają się elementy stosu
+        heap->create_min_heap();
+        Vertex *vertexU = heap->extract_min();
+        //neighbourTraverse - obiekt (ListElement) za pomocą którego dobieramy się do wszystkich sąsiadów wierzchołka z listy sąsiedztwa
+        auto neighbourTraverse = adjacency_list[vertexU->get_vertex_index()]->get_head();
+        while (neighbourTraverse != nullptr) {
+            int neighbour = neighbourTraverse->neighbour;
+            int edgeWeight = neighbourTraverse->edge_weight;
+            int neighbourPosition = heap->position[neighbour];
+            int distanceU = vertexU->get_distance();
+            int distanceV = heap->vertexes[neighbourPosition]->get_distance();
+            if (distanceV > distanceU + edgeWeight) {
+                heap->vertexes[neighbourPosition]->set_distance(distanceU + edgeWeight);
+                distance[neighbour] = distanceU + edgeWeight;
+                parent[neighbour] = vertexU->get_vertex_index();
+            }
+            neighbourTraverse = neighbourTraverse->next;
+        }
+    }
+
+    cout << "Algorytm Dijkstry listowo; Wierzcholek: distance/parent\n";
+    for (int i = 0; i < vertices; ++i) {
+        cout << i << ": " << distance[i] << "/" << parent[i] << "\n";
+    }
+
+    delete heap;
+}
 
 
 
@@ -100,7 +137,7 @@ void Graph_List::print() {
 // w porównaniu do Dijkstry opiera się na metodzie relaksacji
 // nie opiera się na założeniu że wagi w grafie są nieujemne
 
-void Graph_List::Bellman_Ford_algorithm(int startingVertex = 0) {
+void Graph_List::Bellman_Ford_algorithm() {
     Edge **graphEdges = new Edge *[edges];
     int *distance = new int[vertices];
     int *parent = new int[vertices];
@@ -116,8 +153,8 @@ void Graph_List::Bellman_Ford_algorithm(int startingVertex = 0) {
             listTraverse = listTraverse->next;
         }
     }
-    parent[startingVertex] = startingVertex;
-    distance[startingVertex] = 0;
+    parent[0] = 0;
+    distance[0] = 0;
     bool relaxed = true;
     for (int ii = 1; ii < vertices && relaxed; ++ii) {
         relaxed = false;
@@ -175,14 +212,14 @@ void Graph_List::Bellman_Ford_algorithm(int startingVertex = 0) {
 // MST zawiera wszystkie wierzchołki grafu i podzbiór jego krawędzi
 // MST grafu to jego podgraf z którego usunięto niektóre krawędzie (aby nie było cykli)
 
-void Graph_List::Prim_algorithm(int startingVertex = 0) {
+void Graph_List::Prim_algorithm() {
     int *key = new int[vertices];
     int *parent = new int[vertices];
     //stos wierzchołków Prima (tzn. obiektów wierzchołek posiadających swój numer, oraz key)
     auto *heap = new Vertex_Min_Heap(vertices);
-    heap->vertexes[startingVertex]->set_key(0);
-    key[startingVertex] = 0;
-    parent[startingVertex] = -1;
+    heap->vertexes[0]->set_key(0);
+    key[0] = 0;
+    parent[0] = -1;
     while (heap->has_elements()) {
         //tworzymy stos (aby mieć wierzchołek o najmniejszej wadze), trzeba co pętlę ponieważ w pętli zmieniają się elementy stosu
         heap->create_min_heap();

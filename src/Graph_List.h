@@ -21,10 +21,10 @@ public:
     void add_undirected_edge(int, int, int);   // dodaj krawęź nieskierowaną
     void add_directed_edge(int, int, int);     // dodaj krawęź skierowaną
 
-    void Prim_algorithm(int);           // algorytm Prima
+    void Prim_algorithm();           // algorytm Prima
     void Kruskal_algorithm();                    // algorytm Kruskala
-    void Dijkstra_algorithm(int *&, int *&, int);       // algorytm Dijkstry
-    void Bellman_Ford_algorithm(int);   // algorytm Bellmana-Forda
+    void Dijkstra_algorithm();       // algorytm Dijkstry
+    void Bellman_Ford_algorithm();   // algorytm Bellmana-Forda
 
     void print();        // wypisz graf w postaci listy sąsiedztwa
     int get_vertices();  // pobierz liczbę wierzchołków

@@ -22,10 +22,10 @@ public:
     void add_directed_edge(int vertex1, int vertex2, int weight);     // dodaj krawędź skierowaną
     void new_edge_weights(int added_weight);                          // wagi
 
-    void Prim_algorithm(int *&key, int *&parent, int start_vertex = 0);                // algorytm Prima
+    void Prim_algorithm();                // algorytm Prima
     void Kruskal_algorithm();                                          // algorytm Kruskala
-    void Dijkstra_algorithm(int *&distance, int *&parent, int start_vertex = 0);       // algorytm Dijkstry
-    void Bellman_Ford_algorithm(int start_vertex = 0);   // algorytm Bellmana-Forda
+    void Dijkstra_algorithm();       // algorytm Dijkstry
+    void Bellman_Ford_algorithm();   // algorytm Bellmana-Forda
 
     void print();        // wypisz graf w postaci listy sąsiedztwa
     int get_vertices();  // pobierz liczbę wierzchołków

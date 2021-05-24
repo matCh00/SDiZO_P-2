@@ -86,7 +86,46 @@ void Graph_Matrix::print() {
 // algorytm Dijkstry służy do wyznaczania najkrótszej drogi
 // pomędzy wierzchołkiem startowym do wszystkich wierzchołków
 
+void Graph_Matrix::Dijkstra_algorithm() {
+    int *distance = new int[vertices];
+    int *parent = new int[vertices];
 
+    auto *heap = new Vertex_Min_Heap(vertices);
+    heap->vertexes[0]->set_distance(0);
+    distance[0] = 0;
+    parent[0] = -1;
+    while (heap->has_elements()) {
+        heap->create_min_heap();
+        Vertex *vertexU = heap->extract_min();
+        int vertexNumber = vertexU->get_vertex_index();
+        for (int i = 0; i < edges; ++i) {
+            if (incidence_matrix->get(i, vertexNumber) == 1) {
+                int edgeWeight = edge_weights[i];
+                for (int j = 0; j < vertices; ++j) {
+                    if (incidence_matrix->get(i, j) == -1) {
+                        // 'j' to sąsiad (neighbour)
+                        int neighbourPosition = heap->position[j];
+                        int distanceU = vertexU->get_distance();
+                        int distanceV = heap->vertexes[neighbourPosition]->get_distance();
+                        if (distanceV > distanceU + edgeWeight) {
+                            heap->vertexes[neighbourPosition]->set_distance(distanceU + edgeWeight);
+                            distance[j] = distanceU + edgeWeight;
+                            parent[j] = vertexU->get_vertex_index();
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    cout << "Algorytm Dijkstry macierzowo; Wierzcholek: distance/parent\n";
+    for (int i = 0; i < vertices; ++i) {
+        cout << i << ": " << distance[i] << "/" << parent[i] << "\n";
+    }
+
+    delete heap;
+}
 
 
 
@@ -100,7 +139,7 @@ void Graph_Matrix::print() {
 // w porównaniu do Dijkstry opiera się na metodzie relaksacji
 // nie opiera się na założeniu że wagi w grafie są nieujemne
 
-void Graph_Matrix::Bellman_Ford_algorithm(int startingVertex) {
+void Graph_Matrix::Bellman_Ford_algorithm() {
     int *distance = new int[vertices];
     int *parent = new int[vertices];
 
@@ -108,8 +147,8 @@ void Graph_Matrix::Bellman_Ford_algorithm(int startingVertex) {
         distance[i] = INT_MAX / 2;
         parent[i] = -1;
     }
-    parent[startingVertex] = startingVertex;
-    distance[startingVertex] = 0;
+    parent[0] = 0;
+    distance[0] = 0;
     Edge **graphEdges = new Edge *[edges];
     int graphEdgeIndex = 0;
     for (int i = 0; i < edges; ++i) {
@@ -187,12 +226,15 @@ void Graph_Matrix::Bellman_Ford_algorithm(int startingVertex) {
 // MST zawiera wszystkie wierzchołki grafu i podzbiór jego krawędzi
 // MST grafu to jego podgraf z którego usunięto niektóre krawędzie (aby nie było cykli)
 
-void Graph_Matrix::Prim_algorithm(int *&key, int *&parent, int start_vertex) {
+void Graph_Matrix::Prim_algorithm() {
+    int *key = new int[vertices];
+    int *parent = new int[vertices];
+
     //stos wierzchołków Prima (tzn. obiektów wierzchołek posiadających swój numer, oraz key)
     auto *heap = new Vertex_Min_Heap(vertices);
-    heap->vertexes[start_vertex]->set_key(0);
-    key[start_vertex] = 0;
-    parent[start_vertex] = -1;
+    heap->vertexes[0]->set_key(0);
+    key[0] = 0;
+    parent[0] = -1;
     while (heap->has_elements()) {
         //tworzymy stos (aby mieć wierzchołek o najmniejszej wadze), trzeba co pętlę ponieważ w pętli zmieniają się elementy stosu
         heap->create_min_heap();
@@ -218,6 +260,17 @@ void Graph_Matrix::Prim_algorithm(int *&key, int *&parent, int start_vertex) {
             }
         }
     }
+    cout << "Algorytm Prima macierzowo; wierzcholek: key/parent\n";
+    for (int i = 0; i < vertices; ++i) {
+        cout << i << ": " << key[i] << "/" << parent[i] << "\n";
+    }
+    cout << "\nKrawedzie MST:\n";
+    for (int i = 0; i < vertices; ++i) {
+        if (parent[i] != -1) {
+            cout << i << " - " << parent[i] << " : Waga = " << key[i] << "\n";
+        }
+    }
+
     delete[] key;
     delete[] parent;
     delete heap;
