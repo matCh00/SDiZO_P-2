@@ -6,7 +6,7 @@ Vertex_Min_Heap::Vertex_Min_Heap(int vertices) {
     position = new int[vertices];
     // stworzenie pomocniczych obiektów - wierzchołków (numer wierzchołka, key)
     for (int i = 0; i < vertices; ++i) {
-        vertexes[i] = new Vertex(i, INT_MAX / 2);
+        vertexes[i] = new Vertex(i, INT_MAX);
         position[i] = i;
     }
     heap_size = vertices;
@@ -38,9 +38,10 @@ void Vertex_Min_Heap::min_heapify(int parentIndex) {
     int smallestIndex = parentIndex;
     int leftIndex = 2 * parentIndex + 1;
     int rightIndex = 2 * parentIndex + 2;
-    if ((leftIndex < heap_size) && vertexes[leftIndex]->get_key() < vertexes[smallestIndex]->get_key())
+
+    if ((leftIndex < heap_size) && vertexes[leftIndex]->get_element() < vertexes[smallestIndex]->get_element())
         smallestIndex = leftIndex;
-    if ((rightIndex < heap_size) && vertexes[rightIndex]->get_key() < vertexes[smallestIndex]->get_key())
+    if ((rightIndex < heap_size) && vertexes[rightIndex]->get_element() < vertexes[smallestIndex]->get_element())
         smallestIndex = rightIndex;
     if (smallestIndex != parentIndex) {
         // zamiana elementów stosu oraz odnośników do ich pozycji

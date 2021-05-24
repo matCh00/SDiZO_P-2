@@ -91,7 +91,7 @@ void Graph_Matrix::Dijkstra_algorithm() {
     int *parent = new int[vertices];
 
     auto *heap = new Vertex_Min_Heap(vertices);
-    heap->vertexes[0]->set_distance(0);
+    heap->vertexes[0]->set_element(0);
     distance[0] = 0;
     parent[0] = -1;
     while (heap->has_elements()) {
@@ -105,10 +105,10 @@ void Graph_Matrix::Dijkstra_algorithm() {
                     if (incidence_matrix->get(i, j) == -1) {
                         // 'j' to sąsiad (neighbour)
                         int neighbourPosition = heap->position[j];
-                        int distanceU = vertexU->get_distance();
-                        int distanceV = heap->vertexes[neighbourPosition]->get_distance();
+                        int distanceU = vertexU->get_element();
+                        int distanceV = heap->vertexes[neighbourPosition]->get_element();
                         if (distanceV > distanceU + edgeWeight) {
-                            heap->vertexes[neighbourPosition]->set_distance(distanceU + edgeWeight);
+                            heap->vertexes[neighbourPosition]->set_element(distanceU + edgeWeight);
                             distance[j] = distanceU + edgeWeight;
                             parent[j] = vertexU->get_vertex_index();
                         }
@@ -232,7 +232,7 @@ void Graph_Matrix::Prim_algorithm() {
 
     //stos wierzchołków Prima (tzn. obiektów wierzchołek posiadających swój numer, oraz key)
     auto *heap = new Vertex_Min_Heap(vertices);
-    heap->vertexes[0]->set_key(0);
+    heap->vertexes[0]->set_element(0);
     key[0] = 0;
     parent[0] = -1;
     while (heap->has_elements()) {
@@ -248,8 +248,8 @@ void Graph_Matrix::Prim_algorithm() {
                         // 'j' to sąsiad (neighbour)
                         if (heap->is_in_heap(j)) {
                             int neighbourPosition = heap->position[j];
-                            if (edgeWeight < heap->vertexes[neighbourPosition]->get_key()) {
-                                heap->vertexes[neighbourPosition]->set_key(edgeWeight);
+                            if (edgeWeight < heap->vertexes[neighbourPosition]->get_element()) {
+                                heap->vertexes[neighbourPosition]->set_element(edgeWeight);
                                 key[j] = edgeWeight;
                                 parent[j] = vertexU->get_vertex_index();
                             }
