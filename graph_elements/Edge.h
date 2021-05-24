@@ -1,6 +1,8 @@
 #pragma once
 
 // klasa reprezentująca krawędź
+// użycie: Graph_List, Graph_Matrix
+
 class Edge {
 
     int vertex1;       // wierzchołek początkowy

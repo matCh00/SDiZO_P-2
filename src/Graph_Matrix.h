@@ -1,9 +1,11 @@
 #pragma once
 #include <iostream>
-#include "C:\Users\matic\OneDrive\Pulpit\SDiZO_P-2-v2\graph_elements\Edge.h"
-#include "C:\Users\matic\OneDrive\Pulpit\SDiZO_P-2-v2\graph_elements\Incidence_Matrix.h"
+#include "../graph_elements/Edge.h"
+#include "../graph_elements/Incidence_Matrix.h"
 #include "../graph_elements/Vertex_Min_Heap.h"
 using namespace std;
+
+// klasa reprezentująca graf, który jest reprezentowany jako macierz incydencji
 
 class Graph_Matrix {
 
@@ -18,19 +20,19 @@ public:
     explicit Graph_Matrix(int vertices = 0);   // konstruktor
     ~Graph_Matrix();                           // destruktor
 
-    void add_undirected_edge(int vertex1, int vertex2, int weight);   // dodaj krawędź nieskierowaną
-    void add_directed_edge(int vertex1, int vertex2, int weight);     // dodaj krawędź skierowaną
-    void new_edge_weights(int added_weight);                          // wagi
+    void add_undirected_edge(int vertex1, int vertex2, int weight);   // dodanie krawędzi nieskierowanej
+    void add_directed_edge(int vertex1, int vertex2, int weight);     // dodanie krawędzi skierowanej
+    void new_edge_weights(int added_weight);                          // dodanie wagi krawędzi
 
-    void Prim_algorithm();                // algorytm Prima
-    void Kruskal_algorithm();                                          // algorytm Kruskala
+    void Prim_algorithm();           // algorytm Prima
+    void Kruskal_algorithm();        // algorytm Kruskala
     void Dijkstra_algorithm();       // algorytm Dijkstry
     void Bellman_Ford_algorithm();   // algorytm Bellmana-Forda
 
-    void print();        // wypisz graf w postaci listy sąsiedztwa
-    int get_vertices();  // pobierz liczbę wierzchołków
-    int get_edges();     // pobierz liczbę krawędzi
-    int kruskal_find_setM(int *, int); // funkcja pomocnicza do algorytmu Kruskala
+    void print();        // wypisanie grafu w postaci listy sąsiedztwa
+    int get_vertices();  // pobranie liczby wierzchołków
+    int get_edges();     // pobranie liczby krawędzi
+    int kruskal_find_setM(int *, int);     // funkcja pomocnicza do algorytmu Kruskala
 };
 
 

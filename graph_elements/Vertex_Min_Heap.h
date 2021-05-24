@@ -1,16 +1,19 @@
 #pragma once
 #include "Vertex.h"
 
-// klasa reprezentująca kopiec minimalny wierzchołków
+// klasa reprezentująca kopiec minimalny wierzchołków - lista priorytetowa
+// w algorytmie Dijkstry oraz Prima
+// użycie: Graph_List, Graph_Matrix
+
 class Vertex_Min_Heap {
 
-    int heap_size;
-    int original_size;
+    int heap_size;      // wielkość kopca
+    int original_size;  // początkowa wielkość kopca
 
 public:
 
-    Vertex **vertexes;
-    int *position;        // position[i] - zwrócenie pozycji wierzchołka i
+    Vertex **vertexes;    // zbiór wierzchołków w kopcu
+    int *position;        // pozycja wierzchołka
 
     Vertex_Min_Heap(int);   // konstruktor
     ~Vertex_Min_Heap();     // destruktor
