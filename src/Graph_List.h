@@ -18,8 +18,7 @@ public:
     explicit Graph_List(int vertexes = 0);   // konstruktor (explicit - konstruktor nie może być użyty do niejawnych konwersji)
     ~Graph_List();                           // destruktor
 
-    void add_undirected_edge(int vertex1, int vertex2, int edge_weight);   // dodanie krawędzi nieskierowanej
-    void add_directed_edge(int vertex1, int vertex2, int edge_weight);     // dodanie krawędzi skierowanej
+    void add_edge(int vertex1, int vertex2, int edge_weight, bool directed);   // dodanie krawędzi
 
     void Prim_algorithm();           // algorytm Prima
     void Kruskal_algorithm();        // algorytm Kruskala

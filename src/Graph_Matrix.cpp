@@ -41,20 +41,23 @@ Graph_Matrix::~Graph_Matrix() {
     delete[] edge_weights;
 }
 
-void Graph_Matrix::add_undirected_edge(int vertex1, int vertex2, int weight) {
-    incidence_matrix->add_column();
-    incidence_matrix->set_new_edge(vertex1, 1);
-    incidence_matrix->set_new_edge(vertex2, 1);
-    new_edge_weights(weight);
-    ++edges;
-}
 
-void Graph_Matrix::add_directed_edge(int vertex1, int vertex2, int weight) {
-    incidence_matrix->add_column();
-    incidence_matrix->set_new_edge(vertex1, 1);
-    incidence_matrix->set_new_edge(vertex2, -1);
-    new_edge_weights(weight);
-    ++edges;
+void Graph_Matrix::add_edge(int vertex1, int vertex2, int weight, bool directed) {
+
+    if (directed) {
+        incidence_matrix->add_column();
+        incidence_matrix->set_new_edge(vertex1, 1);
+        incidence_matrix->set_new_edge(vertex2, -1);
+        new_edge_weights(weight);
+        ++edges;
+    }
+    else {
+        incidence_matrix->add_column();
+        incidence_matrix->set_new_edge(vertex1, 1);
+        incidence_matrix->set_new_edge(vertex2, 1);
+        new_edge_weights(weight);
+        ++edges;
+    }
 }
 
 void Graph_Matrix::new_edge_weights(int added_weight) {

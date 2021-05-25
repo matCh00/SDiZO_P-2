@@ -62,14 +62,14 @@ void generate_edges(int vertexes, float density, Graph_List *graph_list, Graph_M
         if (directed) {
             matrix->set(edge_index, vertex_start, 1);
             matrix->set(edge_index, vertices_array[vertex_end], -1);
-            graph_list->add_directed_edge(vertex_start, vertices_array[vertex_end], edge_weights[edge_index]);
-            graph_matrix->add_directed_edge(vertex_start, vertices_array[vertex_end], edge_weights[edge_index]);
+            graph_list->add_edge(vertex_start, vertices_array[vertex_end], edge_weights[edge_index], true);
+            graph_matrix->add_edge(vertex_start, vertices_array[vertex_end], edge_weights[edge_index], true);
         }
         if (directed == false) {
             matrix->set(edge_index, vertex_start, 1);
             matrix->set(edge_index, vertices_array[vertex_end], 1);
-            graph_list->add_undirected_edge(vertex_start, vertices_array[vertex_end], edge_weights[edge_index]);
-            graph_matrix->add_undirected_edge(vertex_start, vertices_array[vertex_end], edge_weights[edge_index]);
+            graph_list->add_edge(vertex_start, vertices_array[vertex_end], edge_weights[edge_index], false);
+            graph_matrix->add_edge(vertex_start, vertices_array[vertex_end], edge_weights[edge_index], false);
         }
 
         ++edge_index;
@@ -81,8 +81,8 @@ void generate_edges(int vertexes, float density, Graph_List *graph_list, Graph_M
     if (directed) {
         matrix->set(edge_index, vertex_start, 1);
         matrix->set(edge_index, 0, -1);
-        graph_list->add_directed_edge(vertex_start, 0, edge_weights[edge_index]);
-        graph_matrix->add_directed_edge(vertex_start, 0, edge_weights[edge_index]);
+        graph_list->add_edge(vertex_start, 0, edge_weights[edge_index], true);
+        graph_matrix->add_edge(vertex_start, 0, edge_weights[edge_index], true);
         ++edge_index;
     }
 
@@ -131,8 +131,8 @@ void generate_edges(int vertexes, float density, Graph_List *graph_list, Graph_M
             }
             matrix->set(edge_index, edge_start[chosen_edge], 1);
             matrix->set(edge_index, edge_end[chosen_edge], -1);
-            graph_list->add_directed_edge(edge_start[chosen_edge], edge_end[chosen_edge], edge_weights[edge_index]);
-            graph_matrix->add_directed_edge(edge_start[chosen_edge], edge_end[chosen_edge], edge_weights[edge_index]);
+            graph_list->add_edge(edge_start[chosen_edge], edge_end[chosen_edge], edge_weights[edge_index], true);
+            graph_matrix->add_edge(edge_start[chosen_edge], edge_end[chosen_edge], edge_weights[edge_index], true);
             edge_start[chosen_edge] = edge_start[possible_edges - 1];
             edge_end[chosen_edge] = edge_end[possible_edges - 1];
             --possible_edges;
@@ -146,8 +146,8 @@ void generate_edges(int vertexes, float density, Graph_List *graph_list, Graph_M
             }
             matrix->set(edge_index, edge_start[chosen_edge], 1);
             matrix->set(edge_index, edge_end[chosen_edge], 11);
-            graph_list->add_undirected_edge(edge_start[chosen_edge], edge_end[chosen_edge], edge_weights[edge_index]);
-            graph_matrix->add_undirected_edge(edge_start[chosen_edge], edge_end[chosen_edge], edge_weights[edge_index]);
+            graph_list->add_edge(edge_start[chosen_edge], edge_end[chosen_edge], edge_weights[edge_index], false);
+            graph_matrix->add_edge(edge_start[chosen_edge], edge_end[chosen_edge], edge_weights[edge_index], false);
             edge_start[chosen_edge] = edge_start[possible_edges - 1];
             edge_end[chosen_edge] = edge_end[possible_edges - 1];
             --possible_edges;
@@ -223,8 +223,8 @@ void SPF() {
     int e = 1;
     Graph_List *graph_list = new Graph_List(2);
     Graph_Matrix *graph_matrix = new Graph_Matrix(2);
-    graph_list->add_directed_edge(0, 1, 1);
-    graph_matrix->add_directed_edge(0, 1, 1);
+    graph_list->add_edge(0, 1, 1, true);
+    graph_matrix->add_edge(0, 1, 1, true);
 
     while (run) {
 
@@ -258,8 +258,8 @@ void SPF() {
                     int v1, v2, weight;
                     for (int j = 0; j < edgesNumber; ++j) {
                         file >> v1 >> v2 >> weight;
-                        graph_list->add_directed_edge(v1, v2, weight);
-                        graph_matrix->add_directed_edge(v1, v2, weight);
+                        graph_list->add_edge(v1, v2, weight, true);
+                        graph_matrix->add_edge(v1, v2, weight, true);
                     }
                 } else
                     cout << "Blad podczas otwierania pliku\n";
@@ -319,8 +319,8 @@ void MST() {
     int e = 1;
     Graph_List *graph_list = new Graph_List(2);
     Graph_Matrix *graph_matrix = new Graph_Matrix(2);
-    graph_list->add_undirected_edge(0, 1, 1);
-    graph_matrix->add_undirected_edge(0, 1, 1);
+    graph_list->add_edge(0, 1, 1, false);
+    graph_matrix->add_edge(0, 1, 1, false);
 
     while (run) {
 
@@ -354,8 +354,8 @@ void MST() {
                     int v1, v2, weight;
                     for (int j = 0; j < edgesNumber; ++j) {
                         file >> v1 >> v2 >> weight;
-                        graph_list->add_undirected_edge(v1, v2, weight);
-                        graph_matrix->add_undirected_edge(v1, v2, weight);
+                        graph_list->add_edge(v1, v2, weight, false);
+                        graph_matrix->add_edge(v1, v2, weight, false);
                     }
                 } else
                     cout << "Blad podczas otwierania pliku\n";

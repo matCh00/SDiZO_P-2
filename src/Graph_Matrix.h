@@ -20,9 +20,8 @@ public:
     explicit Graph_Matrix(int vertexes = 0);   // konstruktor (explicit - konstruktor nie może być użyty do niejawnych konwersji)
     ~Graph_Matrix();                           // destruktor
 
-    void add_undirected_edge(int vertex1, int vertex2, int weight);   // dodanie krawędzi nieskierowanej
-    void add_directed_edge(int vertex1, int vertex2, int weight);     // dodanie krawędzi skierowanej
-    void new_edge_weights(int added_weight);                          // dodanie wagi krawędzi
+    void add_edge(int vertex1, int vertex2, int weight, bool directed);   // dodanie krawędzi
+    void new_edge_weights(int added_weight);                              // dodanie wagi krawędzi
 
     void Prim_algorithm();           // algorytm Prima
     void Kruskal_algorithm();        // algorytm Kruskala

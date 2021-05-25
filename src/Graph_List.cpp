@@ -45,15 +45,17 @@ Graph_List::~Graph_List() {
 }
 
 
-void Graph_List::add_undirected_edge(int vertex1, int vertex2, int edge_weight) {
-    adjacency_list[vertex1]->add_edge(vertex2, edge_weight);
-    adjacency_list[vertex2]->add_edge(vertex1, edge_weight);
-    ++edges;
-}
+void Graph_List::add_edge(int vertex1, int vertex2, int edge_weight, bool directed) {
 
-void Graph_List::add_directed_edge(int vertex1, int vertex2, int edge_weight) {
-    adjacency_list[vertex1]->add_edge(vertex2, edge_weight);
-    ++edges;
+    if (directed) {
+        adjacency_list[vertex1]->add_edge(vertex2, edge_weight);
+        ++edges;
+    }
+    else {
+        adjacency_list[vertex1]->add_edge(vertex2, edge_weight);
+        adjacency_list[vertex2]->add_edge(vertex1, edge_weight);
+        ++edges;
+    }
 }
 
 void Graph_List::print() {
