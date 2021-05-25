@@ -1,10 +1,40 @@
 #include "Graph_List.h"
 #include "Graph_Matrix.h"
+#include <fstream>
 #include <iostream>
 using namespace std;
 
 
-void load_from_file(bool directed){
+void load_from_file(Graph_List *graph_list, Graph_Matrix *graph_matrix, bool directed) {
+    cout << "Podaj nazwe pliku lub jego sciezke: ";
+    int edgesNumber, verticesNumber;
+    string file_name;
+    cin >> file_name;
+    ifstream file;
+    file.open(file_name);
+
+    if (file.good()) {
+        delete graph_list;
+        delete graph_matrix;
+        file >> edgesNumber >> verticesNumber;
+        graph_list = new Graph_List(verticesNumber);
+        graph_matrix = new Graph_Matrix(verticesNumber);
+        int v1, v2, weight;
+        for (int j = 0; j < edgesNumber; ++j) {
+            file >> v1 >> v2 >> weight;
+
+            if (directed) {
+                graph_list->add_directed_edge(v1, v2, weight);
+                graph_matrix->add_directed_edge(v1, v2, weight);
+            }
+            else {
+                graph_list->add_undirected_edge(v1, v2, weight);
+                graph_matrix->add_undirected_edge(v1, v2, weight);
+            }
+
+        }
+    } else cout << "Wystapil problem podczas otwierania pliku\n";
+    file.close();
 }
 
 
