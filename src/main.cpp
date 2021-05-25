@@ -216,7 +216,7 @@ void SPF() {
 
     while (run) {
 
-        cout << "[1]  -  wczytaj graf\n"
+        cout << "\n[1]  -  wczytaj graf\n"
                 "[2]  -  wygeneruj graf\n"
                 "[3]  -  wyswietl graf\n"
                 "[4]  -  algorytm Dijkstry\n"
@@ -250,7 +250,7 @@ void SPF() {
                         graph_matrix->add_directed_edge(v1, v2, weight);
                     }
                 } else
-                    cout << "Wystapil problem podczas otwierania pliku\n";
+                    cout << "Blad podczas otwierania pliku\n";
                 file.close();
                 break;
             }
@@ -271,26 +271,21 @@ void SPF() {
                 break;
 
             case 3:
-                cout << "Graf w postaci listy \n";
+                cout << "\nGraf w postaci listy \n";
                 graph_list->print();
                 cout << endl << endl;
                 cout << "Graf w postaci macierzy \n";
                 graph_matrix->print();
-                cout << endl << endl;
                 break;
 
             case 4:
                 graph_list->Dijkstra_algorithm();
-                cout << endl << endl;
                 graph_matrix->Dijkstra_algorithm();
-                cout << endl << endl;
                 break;
 
             case 5:
                 graph_list->Bellman_Ford_algorithm();
-                cout << endl << endl;
                 graph_matrix->Bellman_Ford_algorithm();
-                cout << endl << endl;
                 break;
 
             case 0:
@@ -315,7 +310,7 @@ void MST() {
 
     while (run) {
 
-        cout << "[1]  -  wczytaj graf\n"
+        cout << "\n[1]  -  wczytaj graf\n"
                 "[2]  -  wygeneruj graf\n"
                 "[3]  -  wyswietl graf\n"
                 "[4]  -  algorytm Prima\n"
@@ -349,7 +344,7 @@ void MST() {
                         graph_matrix->add_undirected_edge(v1, v2, weight);
                     }
                 } else
-                    cout << "Wystapil problem podczas otwierania pliku\n";
+                    cout << "Blad podczas otwierania pliku\n";
                 file.close();
                 break;
             }
@@ -368,26 +363,21 @@ void MST() {
                 break;
 
             case 3:
-                cout << "Graf w postaci listy \n";
+                cout << "\nGraf w postaci listy \n";
                 graph_list->print();
                 cout << endl << endl;
                 cout << "Graf w postaci macierzy \n";
                 graph_matrix->print();
-                cout << endl << endl;
                 break;
 
             case 4:
                 graph_list->Prim_algorithm();
-                cout << endl << endl;
                 graph_matrix->Prim_algorithm();
-                cout << endl << endl;
                 break;
 
             case 5:
                 graph_list->Kruskal_algorithm();
-                cout << endl << endl;
                 graph_matrix->Kruskal_algorithm();
-                cout << endl << endl;
                 break;
 
             case 0:

@@ -122,7 +122,7 @@ void Graph_Matrix::Dijkstra_algorithm() {
         }
     }
 
-    cout << "Algorytm Dijkstry macierzowo; Wierzcholek: distance/parent\n";
+    cout << "\nalgorytm Dijkstry macierzowo: (wierzcholek: dystans/poprzednik)\n";
     for (int i = 0; i < vertices; ++i) {
         cout << i << ": " << distance[i] << "/" << parent[i] << "\n";
     }
@@ -189,9 +189,10 @@ void Graph_Matrix::Bellman_Ford_algorithm() {
     }
 
     if (relaxed) {
-        cout << "Wykryto cykl o lacznej ujemnej wadze\n";
-    } else {
-        cout << "Algorytm Bellmana-Forda macierzowo; Wierzcholek: distance/parent\n";
+        cout << "\nWykryto cykl o ujemnej wadze\n";
+    }
+    else {
+        cout << "\nalgorytm Bellmana-Forda macierzowo: (wierzcholek: dystans/poprzednik)\n";
         for (int i = 0; i < vertices; ++i) {
             cout << i << ": " << distance[i] << "/" << parent[i] << "\n";
         }
@@ -263,14 +264,14 @@ void Graph_Matrix::Prim_algorithm() {
             }
         }
     }
-    cout << "Algorytm Prima macierzowo; wierzcholek: key/parent\n";
+    cout << "\nalgorytm Prima macierzowo: (wierzcholek: klucz/poprzednik)\n";
     for (int i = 0; i < vertices; ++i) {
         cout << i << ": " << key[i] << "/" << parent[i] << "\n";
     }
-    cout << "\nKrawedzie MST:\n";
+    cout << "\nkrawedzie MST: (wierzcholek - poprzednik : waga)\n";
     for (int i = 0; i < vertices; ++i) {
         if (parent[i] != -1) {
-            cout << i << " - " << parent[i] << " : Waga = " << key[i] << "\n";
+            cout << i << " - " << parent[i] << " : " << key[i] << "\n";
         }
     }
 
@@ -350,9 +351,9 @@ void Graph_Matrix::Kruskal_algorithm() {
         delete graphEdges[graphEdgeIndex];
     }
 
-    cout << "Algorytm Kruskala macierzowo; krawedzie MST:\n";
+    cout << "\nalgorytm Kruskala macierzowo: krawedzie MST: (wierzcholek - nastepnik : waga)\n";
     for (int i = 0; i < vertices - 1; ++i) {
-        cout << mstEdges[i]->get_vertex1() << " - " << mstEdges[i]->get_vertex2() << " : Waga = "
+        cout << mstEdges[i]->get_vertex1() << " - " << mstEdges[i]->get_vertex2() << " : "
              << mstEdges[i]->get_edge_weight()
              << "\n";
     }

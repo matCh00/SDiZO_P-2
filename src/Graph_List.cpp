@@ -116,7 +116,7 @@ void Graph_List::Dijkstra_algorithm() {
         }
     }
 
-    cout << "Algorytm Dijkstry listowo; Wierzcholek: distance/parent\n";
+    cout << "\nalgorytm Dijkstry listowo: (wierzcholek: dystans/poprzednik)\n";
     for (int i = 0; i < vertices; ++i) {
         cout << i << ": " << distance[i] << "/" << parent[i] << "\n";
     }
@@ -172,9 +172,9 @@ void Graph_List::Bellman_Ford_algorithm() {
     }
 
     if (relaxed) {
-        cout << "Wykryto cykl o lacznej ujemnej wadze\n";
+        cout << "\nWykryto cykl o ujemnej wadze\n";
     } else {
-        cout << "Algorytm Bellmana-Forda listowo; Wierzcholek: distance/parent\n";
+        cout << "\nalgorytm Bellmana-Forda listowo: (wierzcholek: dystans/poprzednik)\n";
         for (int i = 0; i < vertices; ++i) {
             cout << i << ": " << distance[i] << "/" << parent[i] << "\n";
         }
@@ -241,14 +241,14 @@ void Graph_List::Prim_algorithm() {
         }
     }
 
-    cout << "Algorytm Prima listowo; wierzcholek: key/parent\n";
+    cout << "\nalgorytm Prima listowo: (wierzcholek: klucz/poprzednik)\n";
     for (int i = 0; i < vertices; ++i) {
         cout << i << ": " << key[i] << "/" << parent[i] << "\n";
     }
-    cout << "\nKrawedzie MST:\n";
+    cout << "\nkrawedzie MST: (wierzcholek - poprzednik : waga)\n";
     for (int i = 0; i < vertices; ++i) {
         if (parent[i] != -1) {
-            cout << i << " - " << parent[i] << " : Waga = " << key[i] << "\n";
+            cout << i << " - " << parent[i] << " : " << key[i] << "\n";
         }
     }
 
@@ -315,9 +315,9 @@ void Graph_List::Kruskal_algorithm() {
         delete graphEdges[graphEdgeIndex];
     }
 
-    cout << "Algorytm Kruskala listowo; krawedzie MST:\n";
+    cout << "\nalgorytm Kruskala listowo: krawedzie MST: (wierzcholek - nastepnik : waga)\n";
     for (int i = 0; i < vertices - 1; ++i) {
-        cout << mstEdges[i]->get_vertex1() << " - " << mstEdges[i]->get_vertex2() << " : Waga = "
+        cout << mstEdges[i]->get_vertex1() << " - " << mstEdges[i]->get_vertex2() << " : "
              << mstEdges[i]->get_edge_weight()
              << "\n";
     }
