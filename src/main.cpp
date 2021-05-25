@@ -1,8 +1,12 @@
 #include "Graph_List.h"
 #include "Graph_Matrix.h"
+#include <chrono>
 #include <fstream>
 #include <iostream>
+#include <iomanip>
+
 using namespace std;
+using namespace chrono;
 
 
 void generate_edges(int vertices, float density, Graph_List *graph_list, Graph_Matrix *graph_matrix, bool directed) {
@@ -153,7 +157,7 @@ void generate_edges(int vertices, float density, Graph_List *graph_list, Graph_M
 
 void SPF();
 void MST();
-void measurements();
+void algorithm_measurement();
 
 
 int main() {
@@ -188,7 +192,7 @@ int main() {
                 break;
 
             case 3:
-                measurements();
+                algorithm_measurement();
                 break;
 
             case 0:
@@ -262,9 +266,9 @@ void SPF() {
                 cout << "podaj gestosc: ";
                 cin >> de;
 
-                //delete graph_list;
+                delete graph_list;
                 graph_list = new Graph_List(ve);
-                //delete graph_matrix;
+                delete graph_matrix;
                 graph_matrix = new Graph_Matrix(ve);
 
                 generate_edges(ve, de, graph_list, graph_matrix, true);
@@ -297,6 +301,7 @@ void SPF() {
         }
     }
 }
+
 
 void MST() {
 
@@ -390,9 +395,168 @@ void MST() {
     }
 }
 
-void measurements() {
 
+
+void algorithm_measurement(){
+
+    bool run = true;
+
+    while (run) {
+
+        cout << "[1] - Dijkstra, [2] - Bellman-Ford, [3] - Prim, [4] - Kruskal, [0] - wyjdz" << endl;
+        int alg;
+        cin >> alg;
+
+        int v;
+        float d;
+        int number;
+        double final_time_list = 0;
+        double final_time_matrix = 0;
+
+
+        cout << "liczba wierzcholkow "; cin >> v;
+        cout << "gestosc "; cin >> d;
+        cout << "liczba powtorzen "; cin >> number;
+
+
+        for (int i = 0; i < number; i++) {
+
+            Graph_List *graph_list = new Graph_List(v);
+            Graph_Matrix *graph_matrix = new Graph_Matrix(v);
+
+            if (alg == 1 || alg == 2){
+                generate_edges(v, d, graph_list, graph_matrix, true);
+            }
+            if (alg == 3 || alg == 4){
+                generate_edges(v, d, graph_list, graph_matrix, false);
+            }
+
+            switch (alg) {
+
+                case 1:{
+
+                    //początek pomiaru
+                    high_resolution_clock::time_point t1 = high_resolution_clock::now();
+
+                    graph_list->Dijkstra_algorithm();
+
+                    //koniec pomiaru
+                    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+                    duration<double> time1 = duration_cast<duration<double>>(t2 - t1);
+                    final_time_list += (double)time1.count();
+
+
+                    //początek pomiaru
+                    high_resolution_clock::time_point t3 = high_resolution_clock::now();
+
+                    graph_matrix->Dijkstra_algorithm();
+
+                    //koniec pomiaru
+                    high_resolution_clock::time_point t4 = high_resolution_clock::now();
+                    duration<double> time2 = duration_cast<duration<double>>(t4 - t3);
+                    final_time_matrix += (double)time2.count();
+
+                    break;
+                }
+
+                case 2:{
+
+                    //początek pomiaru
+                    high_resolution_clock::time_point t1 = high_resolution_clock::now();
+
+                    graph_list->Bellman_Ford_algorithm();
+
+                    //koniec pomiaru
+                    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+                    duration<double> time1 = duration_cast<duration<double>>(t2 - t1);
+                    final_time_list += (double)time1.count();
+
+
+                    //początek pomiaru
+                    high_resolution_clock::time_point t3 = high_resolution_clock::now();
+
+                    graph_matrix->Bellman_Ford_algorithm();
+
+                    //koniec pomiaru
+                    high_resolution_clock::time_point t4 = high_resolution_clock::now();
+                    duration<double> time2 = duration_cast<duration<double>>(t4 - t3);
+                    final_time_matrix += (double)time2.count();
+
+                    break;
+                }
+
+                case 3:{
+
+                    //początek pomiaru
+                    high_resolution_clock::time_point t1 = high_resolution_clock::now();
+
+                    graph_list->Prim_algorithm();
+
+                    //koniec pomiaru
+                    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+                    duration<double> time1 = duration_cast<duration<double>>(t2 - t1);
+                    final_time_list += (double)time1.count();
+
+
+                    //początek pomiaru
+                    high_resolution_clock::time_point t3 = high_resolution_clock::now();
+
+                    graph_matrix->Prim_algorithm();
+
+                    //koniec pomiaru
+                    high_resolution_clock::time_point t4 = high_resolution_clock::now();
+                    duration<double> time2 = duration_cast<duration<double>>(t4 - t3);
+                    final_time_matrix += (double)time2.count();
+
+                    break;
+                }
+
+                case 4:{
+
+                    //początek pomiaru
+                    high_resolution_clock::time_point t1 = high_resolution_clock::now();
+
+                    graph_list->Kruskal_algorithm();
+
+                    //koniec pomiaru
+                    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+                    duration<double> time1 = duration_cast<duration<double>>(t2 - t1);
+                    final_time_list += (double)time1.count();
+
+
+                    //początek pomiaru
+                    high_resolution_clock::time_point t3 = high_resolution_clock::now();
+
+                    graph_matrix->Kruskal_algorithm();
+
+                    //koniec pomiaru
+                    high_resolution_clock::time_point t4 = high_resolution_clock::now();
+                    duration<double> time2 = duration_cast<duration<double>>(t4 - t3);
+                    final_time_matrix += (double)time2.count();
+
+                    break;
+                }
+
+                case 0:
+                    run = false;
+                    break;
+
+                default:
+                    run = false;
+                    break;
+            }
+        }
+
+        ofstream measurement;
+        measurement.open("RESULT.txt", ios::app);
+
+        measurement << endl << "LISTA numer algorytmu: " << alg << " wierzcholki: " << v << "  gestosc: " << d << endl
+                    << "  czas: " << fixed << setprecision(10) << final_time_list << endl << "średnia: " << setprecision(10) << final_time_list / number << endl;
+
+        measurement << endl << "MACIERZ numer algorytmu: " << alg << " wierzcholki: " << v << "  gestosc: " << d << endl
+                    << "  czas: " << fixed << setprecision(10) << final_time_matrix << endl << "średnia: " << setprecision(10) << final_time_matrix / number << endl << endl;
+
+        measurement.close();
+    }
 }
-
-
 
