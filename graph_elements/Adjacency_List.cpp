@@ -26,20 +26,6 @@ void Adjacency_List::add_edge(int neighbour, int edgeWeight) {
 }
 
 
-bool Adjacency_List::remove_edge(int neighbour) {
-    List_Element *temp = head;
-
-    while (temp != nullptr) {
-        if (temp->neighbour == neighbour) {
-            remove_vertex(temp);
-            return true;
-        } else
-            temp = temp->next;
-    }
-    return false;
-}
-
-
 void Adjacency_List::remove_vertex(List_Element *temp) {
     --list_size;
     List_Element *left = temp->prev;

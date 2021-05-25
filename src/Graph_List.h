@@ -18,7 +18,6 @@ public:
     explicit Graph_List(int vertices = 0);   // konstruktor
     ~Graph_List();                           // destruktor
 
-    void add_vertex();                         // dodanie wierzchołka
     void add_undirected_edge(int, int, int);   // dodanie krawędzi nieskierowanej
     void add_directed_edge(int, int, int);     // dodanie krawędzi skierowanej
 
@@ -28,8 +27,6 @@ public:
     void Bellman_Ford_algorithm();   // algorytm Bellmana-Forda
 
     void print();        // wypisanie grafu w postaci listy sąsiedztwa
-    int get_vertices();  // pobranie liczby wierzchołków
-    int get_edges();     // pobranie liczby krawędzi
     int kruskal_find_setL(int *, int);   // funkcja pomocnicza do algorytmu Kruskala
 };
 

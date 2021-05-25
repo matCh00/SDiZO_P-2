@@ -368,19 +368,9 @@ void Graph_Matrix::Kruskal_algorithm() {
 }
 
 
-
-
-
 int Graph_Matrix::kruskal_find_setM(int *parent, int x) {
     if (parent[x] != x)
         parent[x] = kruskal_find_setM(parent, parent[x]);
     return parent[x];
 }
 
-int Graph_Matrix::get_vertices() {
-    return vertices;
-}
-
-int Graph_Matrix::get_edges() {
-    return edges;
-}

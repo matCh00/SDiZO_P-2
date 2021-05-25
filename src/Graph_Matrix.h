@@ -30,8 +30,6 @@ public:
     void Bellman_Ford_algorithm();   // algorytm Bellmana-Forda
 
     void print();        // wypisanie grafu w postaci listy sąsiedztwa
-    int get_vertices();  // pobranie liczby wierzchołków
-    int get_edges();     // pobranie liczby krawędzi
     int kruskal_find_setM(int *, int);     // funkcja pomocnicza do algorytmu Kruskala
 };
 

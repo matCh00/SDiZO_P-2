@@ -15,7 +15,6 @@ public:
     ~Adjacency_List();  // destruktor
 
     void add_edge(int , int);             // dodanie krawędzi
-    bool remove_edge(int);                // usunięcie krawędzi
     void remove_vertex(List_Element *);   // usunięcie elementu listy
 
     List_Element *get_head();   // pobieranie wskaźnika na głowę listy

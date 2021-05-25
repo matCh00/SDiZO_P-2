@@ -23,7 +23,7 @@ using namespace std;
 
             ^
             |
-   to jest tablica wskaźników na tablice
+   lista wskaźników na listy
 
 
 */
@@ -44,16 +44,6 @@ Graph_List::~Graph_List() {
     delete[] adjacency_list;
 }
 
-void Graph_List::add_vertex() {
-    auto newAdjacencyLists = new Adjacency_List *[vertices + 1];
-    for (int i = 0; i < vertices; ++i) {
-        newAdjacencyLists[i] = adjacency_list[i];
-        delete adjacency_list[i];
-    }
-    newAdjacencyLists[vertices] = new Adjacency_List();
-    delete[] adjacency_list;
-    ++vertices;
-}
 
 void Graph_List::add_undirected_edge(int vertex1, int vertex2, int edgeWeight) {
     adjacency_list[vertex1]->add_edge(vertex2, edgeWeight);
@@ -332,18 +322,9 @@ void Graph_List::Kruskal_algorithm() {
 }
 
 
-
-
 int Graph_List::kruskal_find_setL(int *parent, int x) {
     if (parent[x] != x)
         parent[x] = kruskal_find_setL(parent, parent[x]);
     return parent[x];
 }
 
-int Graph_List::get_vertices() {
-    return vertices;
-}
-
-int Graph_List::get_edges() {
-    return edges;
-}

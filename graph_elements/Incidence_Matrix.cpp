@@ -73,14 +73,3 @@ bool Incidence_Matrix::are_directed_connected(int x, int y) {
     }
     return false;
 }
-
-void Incidence_Matrix::print() {
-    for (int y = 0; y < size_y; ++y) {
-        cout << "V " << y << "\t";
-        for (int x = 0; x < size_x; ++x) {
-            cout << array[x][y] << "\t";
-        }
-        cout << "\n";
-    }
-    cout << "\n";
-}

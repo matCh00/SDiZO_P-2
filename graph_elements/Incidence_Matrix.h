@@ -23,7 +23,6 @@ public:  // zmienne potrzebne do wypisania macierzy incydencji w klasie Graph_Ma
     void set(int, int, int);       // ustawienie pozycji
     bool are_undirected_connected(int, int);   // sprawdzanie połączenia
     bool are_directed_connected(int, int);     // sprawdzanie połączenia
-    void print();                              // wypisanie grafu
 };
 
 
