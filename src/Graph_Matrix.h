@@ -17,7 +17,7 @@ class Graph_Matrix {
 
 public:
 
-    explicit Graph_Matrix(int vertices = 0);   // konstruktor
+    explicit Graph_Matrix(int vertexes = 0);   // konstruktor (explicit - konstruktor nie może być użyty do niejawnych konwersji)
     ~Graph_Matrix();                           // destruktor
 
     void add_undirected_edge(int vertex1, int vertex2, int weight);   // dodanie krawędzi nieskierowanej
@@ -29,8 +29,8 @@ public:
     void Dijkstra_algorithm();       // algorytm Dijkstry
     void Bellman_Ford_algorithm();   // algorytm Bellmana-Forda
 
-    void print();        // wypisanie grafu w postaci listy sąsiedztwa
-    int kruskal_find_setM(int *, int);     // funkcja pomocnicza do algorytmu Kruskala
+    void print();                                  // wypisanie grafu w postaci listy sąsiedztwa
+    int kruskal_find_setM(int *parent, int x);     // funkcja pomocnicza do algorytmu Kruskala
 };
 
 

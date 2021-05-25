@@ -29,11 +29,11 @@ wierzchołki \     |    E1   |    E2   |    E3   |    E4   |    E5   |
  */
 
 
-Graph_Matrix::Graph_Matrix(int vertices) {
-    this->vertices = vertices;
+Graph_Matrix::Graph_Matrix(int vertexes) {
+    this->vertices = vertexes;
     edges = 0;
     edge_weights = new int[edges];
-    incidence_matrix = new Incidence_Matrix(0, vertices);
+    incidence_matrix = new Incidence_Matrix(0, vertexes);
 }
 
 Graph_Matrix::~Graph_Matrix() {
@@ -58,13 +58,13 @@ void Graph_Matrix::add_directed_edge(int vertex1, int vertex2, int weight) {
 }
 
 void Graph_Matrix::new_edge_weights(int added_weight) {
-    int *newEdgeWeights = new int[edges + 1];
+    int *new_edge_weights = new int[edges + 1];
     for (int i = 0; i < edges; ++i) {
-        newEdgeWeights[i] = edge_weights[i];
+        new_edge_weights[i] = edge_weights[i];
     }
-    newEdgeWeights[edges] = added_weight;
+    new_edge_weights[edges] = added_weight;
     delete[] edge_weights;
-    edge_weights = newEdgeWeights;
+    edge_weights = new_edge_weights;
 }
 
 void Graph_Matrix::print() {

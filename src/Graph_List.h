@@ -15,19 +15,19 @@ class Graph_List {
 
 public:
 
-    explicit Graph_List(int vertices = 0);   // konstruktor
+    explicit Graph_List(int vertexes = 0);   // konstruktor (explicit - konstruktor nie może być użyty do niejawnych konwersji)
     ~Graph_List();                           // destruktor
 
-    void add_undirected_edge(int, int, int);   // dodanie krawędzi nieskierowanej
-    void add_directed_edge(int, int, int);     // dodanie krawędzi skierowanej
+    void add_undirected_edge(int vertex1, int vertex2, int edge_weight);   // dodanie krawędzi nieskierowanej
+    void add_directed_edge(int vertex1, int vertex2, int edge_weight);     // dodanie krawędzi skierowanej
 
     void Prim_algorithm();           // algorytm Prima
     void Kruskal_algorithm();        // algorytm Kruskala
     void Dijkstra_algorithm();       // algorytm Dijkstry
     void Bellman_Ford_algorithm();   // algorytm Bellmana-Forda
 
-    void print();        // wypisanie grafu w postaci listy sąsiedztwa
-    int kruskal_find_setL(int *, int);   // funkcja pomocnicza do algorytmu Kruskala
+    void print();                                // wypisanie grafu w postaci listy sąsiedztwa
+    int kruskal_find_setL(int *parent, int x);   // funkcja pomocnicza do algorytmu Kruskala
 };
 
 

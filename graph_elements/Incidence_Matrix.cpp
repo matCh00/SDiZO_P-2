@@ -24,23 +24,23 @@ Incidence_Matrix::~Incidence_Matrix() {
 
 
 void Incidence_Matrix::add_column() {
-    int **newArray = new int *[size_x + 1];
+    int **new_array = new int *[size_x + 1];
     for (int i = 0; i < size_x; ++i) {
-        newArray[i] = new int[size_y];
+        new_array[i] = new int[size_y];
         for (int j = 0; j < size_y; ++j) {
-            newArray[i][j] = array[i][j];
+            new_array[i][j] = array[i][j];
         }
     }
-    newArray[size_x] = new int[size_y];
+    new_array[size_x] = new int[size_y];
     for (int j = 0; j < size_y; ++j) {
-        newArray[size_x][j] = 0;
+        new_array[size_x][j] = 0;
     }
     for (int i = 0; i < size_x; ++i) {
         delete[] array[i];
     }
     delete[] array;
     ++size_x;
-    array = newArray;
+    array = new_array;
 }
 
 

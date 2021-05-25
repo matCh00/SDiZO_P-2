@@ -15,22 +15,22 @@ Adjacency_List::~Adjacency_List() {
 }
 
 
-void Adjacency_List::add_edge(int neighbour, int edgeWeight) {
-    auto *newElement = new List_Element(neighbour, edgeWeight, tail, nullptr);
+void Adjacency_List::add_edge(int neighbour, int weight) {
+    auto *new_element = new List_Element(neighbour, weight, tail, nullptr);
 
     if (tail == nullptr)
-        head = newElement;   // dodanie elementu będącego ogonem i głową (gdy ogon wskazuje na NULL)
+        head = new_element;   // dodanie elementu będącego ogonem i głową (gdy ogon wskazuje na NULL)
     else
-        tail->next = newElement;
-    tail = newElement;
+        tail->next = new_element;
+    tail = new_element;
 }
 
 
-void Adjacency_List::remove_vertex(List_Element *temp) {
+void Adjacency_List::remove_vertex(List_Element *element) {
     --list_size;
-    List_Element *left = temp->prev;
-    List_Element *right = temp->next;
-    delete temp;
+    List_Element *left = element->prev;
+    List_Element *right = element->next;
+    delete element;
 
     if (left != nullptr)
         left->next = right;

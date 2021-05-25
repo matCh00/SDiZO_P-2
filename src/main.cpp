@@ -9,103 +9,109 @@ using namespace std;
 using namespace chrono;
 
 
-void generate_edges(int vertices, float density, Graph_List *graph_list, Graph_Matrix *graph_matrix, bool directed) {
+void generate_edges(int vertexes, float density, Graph_List *graph_list, Graph_Matrix *graph_matrix, bool directed) {
 
+    // potrzebne do prawidłowego pseudolosowania danych
     srand((unsigned int)time(NULL));
 
-    int possibleEdges;
+    int possible_edges;
 
+    // liczba możliwych krawędzi w zależności od ich typu
     if (directed){
-        possibleEdges = vertices * (vertices - 1);
+        possible_edges = vertexes * (vertexes - 1);
     }
     if (directed == false) {
-        possibleEdges = vertices * (vertices - 1) / 2;
+        possible_edges = vertexes * (vertexes - 1) / 2;
     }
 
-    int edges = (int) ((float) possibleEdges * density / 100);
+    int edges = (int) ((float) possible_edges * density / 100);  // liczba krawędzi w grafie
 
     if (directed) {
-        if (edges < vertices) {
-            edges = vertices;
+        if (edges < vertexes) {
+            edges = vertexes;
         }
     }
     if (directed == false) {
-        if (edges < vertices - 1) {
-            edges = vertices  - 1;
+        if (edges < vertexes - 1) {
+            edges = vertexes - 1;
         }
     }
 
-    int *edgeWeights = new int[edges];
+    int *edge_weights = new int[edges];  // wagi krawędzi
+
+    // losowanie wag krawędzi
     for (int i = 0; i < edges; ++i) {
-        edgeWeights[i] = 1 + rand() % (99 - 1 + 1);
-    }
-    Incidence_Matrix *matrix = new Incidence_Matrix(edges, vertices);
-    int *verticesArray = new int[vertices - 1];
-    for (int i = 0; i < vertices - 1; ++i) {
-        verticesArray[i] = i + 1;
+        edge_weights[i] = 1 + rand() % (99 - 1 + 1);
     }
 
-    int vertexStart = 0;
-    int vertexEnd = 0;
-    int edgeIndex = 0;
+    Incidence_Matrix *matrix = new Incidence_Matrix(edges, vertexes);  // macierz
+    int *vertices_array = new int[vertexes - 1];  // wierzchołki
+
+    for (int i = 0; i < vertexes - 1; ++i) {
+        vertices_array[i] = i + 1;
+    }
+
+    int vertex_start = 0;
+    int vertex_end = 0;
+    int edge_index = 0;
 
     // losowanie krawędzi - nowa zaczyna się tam gdzie skończyła się poprzednia aby dojść do wszystkich
-    for (int i = vertices - 1; i > 0; --i) {
-        vertexEnd =  0 + rand() % ((i - 1) - 0 + 1);
+    for (int i = vertexes - 1; i > 0; --i) {
+        vertex_end = 0 + rand() % ((i - 1) - 0 + 1);  // losowy wierzchołek końcowy
 
         if (directed) {
-            matrix->set(edgeIndex, vertexStart, 1);
-            matrix->set(edgeIndex, verticesArray[vertexEnd], -1);
-            graph_list->add_directed_edge(vertexStart, verticesArray[vertexEnd], edgeWeights[edgeIndex]);
-            graph_matrix->add_directed_edge(vertexStart, verticesArray[vertexEnd], edgeWeights[edgeIndex]);
+            matrix->set(edge_index, vertex_start, 1);
+            matrix->set(edge_index, vertices_array[vertex_end], -1);
+            graph_list->add_directed_edge(vertex_start, vertices_array[vertex_end], edge_weights[edge_index]);
+            graph_matrix->add_directed_edge(vertex_start, vertices_array[vertex_end], edge_weights[edge_index]);
         }
         if (directed == false) {
-            matrix->set(edgeIndex, vertexStart, 1);
-            matrix->set(edgeIndex, verticesArray[vertexEnd], 1);
-            graph_list->add_undirected_edge(vertexStart, verticesArray[vertexEnd], edgeWeights[edgeIndex]);
-            graph_matrix->add_undirected_edge(vertexStart, verticesArray[vertexEnd], edgeWeights[edgeIndex]);
+            matrix->set(edge_index, vertex_start, 1);
+            matrix->set(edge_index, vertices_array[vertex_end], 1);
+            graph_list->add_undirected_edge(vertex_start, vertices_array[vertex_end], edge_weights[edge_index]);
+            graph_matrix->add_undirected_edge(vertex_start, vertices_array[vertex_end], edge_weights[edge_index]);
         }
 
-        ++edgeIndex;
-        vertexStart = verticesArray[vertexEnd];
-        verticesArray[vertexEnd] = verticesArray[i - 1];
+        ++edge_index;
+        vertex_start = vertices_array[vertex_end];  // następny wierzchołek to wierzchołek końcowy poprzedniej krawędzi
+        vertices_array[vertex_end] = vertices_array[i - 1];
     }
-    delete[] verticesArray;
+    delete[] vertices_array;
 
     if (directed) {
-        matrix->set(edgeIndex, vertexStart, 1);
-        matrix->set(edgeIndex, 0, -1);
-        graph_list->add_directed_edge(vertexStart, 0, edgeWeights[edgeIndex]);
-        graph_matrix->add_directed_edge(vertexStart, 0, edgeWeights[edgeIndex]);
-        ++edgeIndex;
+        matrix->set(edge_index, vertex_start, 1);
+        matrix->set(edge_index, 0, -1);
+        graph_list->add_directed_edge(vertex_start, 0, edge_weights[edge_index]);
+        graph_matrix->add_directed_edge(vertex_start, 0, edge_weights[edge_index]);
+        ++edge_index;
     }
 
-    int *edgeStart = new int[possibleEdges];
-    int *edgeEnd = new int[possibleEdges];
+    int *edge_start = new int[possible_edges];
+    int *edge_end = new int[possible_edges];
     int index = 0;
 
     if (directed) {
-        for (int i = 0; i < vertices; ++i) {
-            for (int j = 0; j < vertices; ++j) {
+        for (int i = 0; i < vertexes; ++i) {
+            for (int j = 0; j < vertexes; ++j) {
                 if (i != j) {
-                    edgeStart[index] = i;
-                    edgeEnd[index] = j;
+                    edge_start[index] = i;
+                    edge_end[index] = j;
                     ++index;
                 }
             }
         }
     }
     if (directed == false) {
-        for (int i = 0; i < vertices; ++i) {
-            for (int j = i + 1; j < vertices; ++j) {
-                edgeStart[index] = i;
+        for (int i = 0; i < vertexes; ++i) {
+            for (int j = i + 1; j < vertexes; ++j) {
+                edge_start[index] = i;
                 ++index;
             }
         }
         index = 0;
-        for (int i = 0; i < vertices; ++i) {
-            for (int j = i + 1; j < vertices; ++j) {
-                edgeEnd[index] = j;
+        for (int i = 0; i < vertexes; ++i) {
+            for (int j = i + 1; j < vertexes; ++j) {
+                edge_end[index] = j;
                 ++index;
             }
         }
@@ -113,45 +119,45 @@ void generate_edges(int vertices, float density, Graph_List *graph_list, Graph_M
 
 
     // losowanie krawędzi - jeżeli istnieje to usuwamy ze zbioru możliwych do wygenerowania, jeżeli nie istnieje to dodajemy ją do grafu
-    for (; edgeIndex < edges; ++edgeIndex) {
-        int chosenEdge =  0 + rand() % ((possibleEdges - 1) - 0 + 1);
+    for (edge_index; edge_index < edges; ++edge_index) {
+        int chosen_edge = 0 + rand() % ((possible_edges - 1) - 0 + 1);
 
         if (directed) {
-            while (matrix->are_directed_connected(edgeStart[chosenEdge], edgeEnd[chosenEdge])) {
-                edgeStart[chosenEdge] = edgeStart[possibleEdges - 1];
-                edgeEnd[chosenEdge] = edgeEnd[possibleEdges - 1];
-                --possibleEdges;
-                chosenEdge =  0 + rand() % ((possibleEdges - 1) - 0 + 1);
+            while (matrix->are_directed_connected(edge_start[chosen_edge], edge_end[chosen_edge])) {
+                edge_start[chosen_edge] = edge_start[possible_edges - 1];
+                edge_end[chosen_edge] = edge_end[possible_edges - 1];
+                --possible_edges;
+                chosen_edge = 0 + rand() % ((possible_edges - 1) - 0 + 1);
             }
-            matrix->set(edgeIndex, edgeStart[chosenEdge], 1);
-            matrix->set(edgeIndex, edgeEnd[chosenEdge], -1);
-            graph_list->add_directed_edge(edgeStart[chosenEdge], edgeEnd[chosenEdge], edgeWeights[edgeIndex]);
-            graph_matrix->add_directed_edge(edgeStart[chosenEdge], edgeEnd[chosenEdge], edgeWeights[edgeIndex]);
-            edgeStart[chosenEdge] = edgeStart[possibleEdges - 1];
-            edgeEnd[chosenEdge] = edgeEnd[possibleEdges - 1];
-            --possibleEdges;
+            matrix->set(edge_index, edge_start[chosen_edge], 1);
+            matrix->set(edge_index, edge_end[chosen_edge], -1);
+            graph_list->add_directed_edge(edge_start[chosen_edge], edge_end[chosen_edge], edge_weights[edge_index]);
+            graph_matrix->add_directed_edge(edge_start[chosen_edge], edge_end[chosen_edge], edge_weights[edge_index]);
+            edge_start[chosen_edge] = edge_start[possible_edges - 1];
+            edge_end[chosen_edge] = edge_end[possible_edges - 1];
+            --possible_edges;
         }
         if (directed == false) {
-            while (matrix->are_undirected_connected(edgeStart[chosenEdge], edgeEnd[chosenEdge])) {
-                edgeStart[chosenEdge] = edgeStart[possibleEdges - 1];
-                edgeEnd[chosenEdge] = edgeEnd[possibleEdges - 1];
-                --possibleEdges;
-                chosenEdge =  0 + rand() % ((possibleEdges - 1) - 0 + 1);
+            while (matrix->are_undirected_connected(edge_start[chosen_edge], edge_end[chosen_edge])) {
+                edge_start[chosen_edge] = edge_start[possible_edges - 1];
+                edge_end[chosen_edge] = edge_end[possible_edges - 1];
+                --possible_edges;
+                chosen_edge = 0 + rand() % ((possible_edges - 1) - 0 + 1);
             }
-            matrix->set(edgeIndex, edgeStart[chosenEdge], 1);
-            matrix->set(edgeIndex, edgeEnd[chosenEdge], 11);
-            graph_list->add_undirected_edge(edgeStart[chosenEdge], edgeEnd[chosenEdge], edgeWeights[edgeIndex]);
-            graph_matrix->add_undirected_edge(edgeStart[chosenEdge], edgeEnd[chosenEdge], edgeWeights[edgeIndex]);
-            edgeStart[chosenEdge] = edgeStart[possibleEdges - 1];
-            edgeEnd[chosenEdge] = edgeEnd[possibleEdges - 1];
-            --possibleEdges;
+            matrix->set(edge_index, edge_start[chosen_edge], 1);
+            matrix->set(edge_index, edge_end[chosen_edge], 11);
+            graph_list->add_undirected_edge(edge_start[chosen_edge], edge_end[chosen_edge], edge_weights[edge_index]);
+            graph_matrix->add_undirected_edge(edge_start[chosen_edge], edge_end[chosen_edge], edge_weights[edge_index]);
+            edge_start[chosen_edge] = edge_start[possible_edges - 1];
+            edge_end[chosen_edge] = edge_end[possible_edges - 1];
+            --possible_edges;
         }
 
     }
     delete matrix;
-    delete[] edgeWeights;
-    delete[] edgeStart;
-    delete[] edgeEnd;
+    delete[] edge_weights;
+    delete[] edge_start;
+    delete[] edge_end;
 }
 
 

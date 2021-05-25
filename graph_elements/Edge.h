@@ -11,15 +11,15 @@ class Edge {
 
 public:
 
-    Edge(int, int, int);  // konstruktor
+    Edge(int v1, int v2, int weight);  // konstruktor
 
     int get_vertex1();       // pobranie wierzchołka początkowego
     int get_vertex2();       // pobranie wierzchołka końcowego
     int get_edge_weight();   // pobranie wagi krawędzi
 
-    void set_vertex1(int);       // ustawianie wierzchołka początkowego
-    void set_vertex2(int);       // ustawianie wierzchołka końcowego
-    void set_edge_weight(int);   // ustawianie wagi krawędzi
+    void set_vertex1(int v1);           // ustawianie wierzchołka początkowego
+    void set_vertex2(int v2);           // ustawianie wierzchołka końcowego
+    void set_edge_weight(int weight);   // ustawianie wagi krawędzi
 };
 
 

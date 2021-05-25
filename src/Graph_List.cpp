@@ -29,11 +29,11 @@ using namespace std;
 */
 
 
-Graph_List::Graph_List(int vertices) {
-    this->vertices = vertices;
+Graph_List::Graph_List(int vertexes) {
+    this->vertices = vertexes;
     edges = 0;
-    adjacency_list = new Adjacency_List *[vertices];
-    for (int i = 0; i < vertices; ++i) {
+    adjacency_list = new Adjacency_List *[vertexes];
+    for (int i = 0; i < vertexes; ++i) {
         adjacency_list[i] = new Adjacency_List();
     }
 }
@@ -45,14 +45,14 @@ Graph_List::~Graph_List() {
 }
 
 
-void Graph_List::add_undirected_edge(int vertex1, int vertex2, int edgeWeight) {
-    adjacency_list[vertex1]->add_edge(vertex2, edgeWeight);
-    adjacency_list[vertex2]->add_edge(vertex1, edgeWeight);
+void Graph_List::add_undirected_edge(int vertex1, int vertex2, int edge_weight) {
+    adjacency_list[vertex1]->add_edge(vertex2, edge_weight);
+    adjacency_list[vertex2]->add_edge(vertex1, edge_weight);
     ++edges;
 }
 
-void Graph_List::add_directed_edge(int vertex1, int vertex2, int edgeWeight) {
-    adjacency_list[vertex1]->add_edge(vertex2, edgeWeight);
+void Graph_List::add_directed_edge(int vertex1, int vertex2, int edge_weight) {
+    adjacency_list[vertex1]->add_edge(vertex2, edge_weight);
     ++edges;
 }
 

@@ -12,8 +12,8 @@ public:
     List_Element *next;     // wskaźnik na następny element
     List_Element *prev;     // wskaźnik na poprzedni element
 
-    explicit List_Element(int, int, List_Element *, List_Element *);  // konstruktor - nie może być używany
-                                                                      // jako niejawne operatory przekształcenia
+    explicit List_Element(int neighbour, int edge_weight, List_Element *, List_Element *);  // konstruktor - nie może być używany
+                                                                                            // jako niejawne operatory przekształcenia
 };
 
 
