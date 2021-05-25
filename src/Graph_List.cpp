@@ -71,7 +71,7 @@ void Graph_List::print() {
         cout << "V " << i << ":";
         auto list = adjacency_list[i]->get_head();
         while (list != nullptr) {
-            cout << setw(7) << list->neighbour << " (" << list->edge_weight << ")";
+            cout << setw(8) << list->neighbour << " (" << list->edge_weight << ")";
             list = list->next;
         }
         cout << "\n";

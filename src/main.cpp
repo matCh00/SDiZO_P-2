@@ -5,41 +5,6 @@
 using namespace std;
 
 
-void load_from_file(Graph_List *graph_list, Graph_Matrix *graph_matrix, bool directed) {
-    cout << "Podaj nazwe pliku lub jego sciezke: ";
-    int edgesNumber, verticesNumber;
-    string file_name;
-    cin >> file_name;
-
-    fstream file;
-    file.open(file_name);
-
-    if (file.is_open()) {
-        delete graph_list;
-        delete graph_matrix;
-        file >> edgesNumber >> verticesNumber;
-        graph_list = new Graph_List(verticesNumber);
-        graph_matrix = new Graph_Matrix(verticesNumber);
-        int v1, v2, weight;
-        for (int j = 0; j < edgesNumber; ++j) {
-            file >> v1 >> v2 >> weight;
-
-            if (directed) {
-                graph_list->add_directed_edge(v1, v2, weight);
-                graph_matrix->add_directed_edge(v1, v2, weight);
-            }
-            else {
-                graph_list->add_undirected_edge(v1, v2, weight);
-                graph_matrix->add_undirected_edge(v1, v2, weight);
-            }
-
-        }
-    } else cout << "Wystapil problem podczas otwierania pliku\n";
-    file.close();
-}
-
-
-
 void generate_edges(int vertices, float density, Graph_List *graph_list, Graph_Matrix *graph_matrix, bool directed) {
 
     srand((unsigned int)time(NULL));
@@ -79,8 +44,8 @@ void generate_edges(int vertices, float density, Graph_List *graph_list, Graph_M
     int vertexStart = 0;
     int vertexEnd = 0;
     int edgeIndex = 0;
-    // losujemy krawędzie, gdzie nowa krawędź zaczyna się tam gdzie skończyła poprzednia
-    // aby mieć cykl, żeby dało się dojść z każdego wierzchołka do każdego wierzchołka
+
+    // losowanie krawędzi - nowa zaczyna się tam gdzie skończyła się poprzednia aby dojść do wszystkich
     for (int i = vertices - 1; i > 0; --i) {
         vertexEnd =  0 + rand() % ((i - 1) - 0 + 1);
 
@@ -143,7 +108,7 @@ void generate_edges(int vertices, float density, Graph_List *graph_list, Graph_M
     }
 
 
-    //losujemy krawędź, jeśli już taka krawędź istnieje to usuwamy ze zbioru możliwych krawędzi, jeśli nie to dodajemy do grafu
+    // losowanie krawędzi - jeżeli istnieje to usuwamy ze zbioru możliwych do wygenerowania, jeżeli nie istnieje to dodajemy ją do grafu
     for (; edgeIndex < edges; ++edgeIndex) {
         int chosenEdge =  0 + rand() % ((possibleEdges - 1) - 0 + 1);
 
@@ -186,65 +151,257 @@ void generate_edges(int vertices, float density, Graph_List *graph_list, Graph_M
 }
 
 
+void SPF();
+void MST();
+void measurements();
 
 
+int main() {
 
+    cout << " -----------------------------------------------------------\n"
+            "|             Projekt  SDiZO  -  Mateusz Chalik             |\n"
+            "|                                                           |\n"
+            "|         Badanie efektywnosci algorytmow grafowych         |\n"
+            "|                         maj  2021                         |\n"
+            " -----------------------------------------------------------\n\n\n";
 
-int main(){
+    bool run = true;
 
-    //Graph_Matrix *graphM = new Graph_Matrix(6);
-/*
-    graphM->add_directed_edge(0, 4, 3);
-    graphM->add_directed_edge(0, 2, 2);
-    graphM->add_directed_edge(4, 1, 3);
-    graphM->add_directed_edge(2, 3, 1);
-    graphM->add_directed_edge(3, 4, 5);
-    graphM->add_directed_edge(4, 5, 9);
-*/
-    //graphM->print(); //ok
+    while (run) {
 
-    // directed
-    //graphM->Bellman_Ford_algorithm(); //ok
-    //graphM->Dijkstra_algorithm();  // ok
+        cout << "[1]  -  SPF  (algorytmy Dijkstry i Bellmana-Forda)\n"
+                "[2]  -  MST  (algorytmy Prima i Kruskala)\n"
+                "[3]  -  testy efektywnosci algorytmow grafowych\n"
+                "[0]  -  wyjscie\n";
 
-    // undirected
-    //graphM->Prim_algorithm();  // ok
-    //graphM->Kruskal_algorithm(); //ok
+        int option;
+        cin >> option;
 
+        switch (option) {
 
+            case 1:
+                SPF();
+                break;
 
-    //Graph_List *graphL = new Graph_List(6);
-/*
-    graphL->add_directed_edge(0, 4, 3);
-    graphL->add_directed_edge(0, 2, 2);
-    graphL->add_directed_edge(4, 1, 3);
-    graphL->add_directed_edge(2, 3, 1);
-    graphL->add_directed_edge(3, 4, 5);
-    graphL->add_directed_edge(4, 5, 9);
-*/
-    //graphL->print(); //ok
+            case 2:
+                MST();
+                break;
 
-    // directed
-    //graphL->Bellman_Ford_algorithm(); //ok
-    //graphL->Dijkstra_algorithm();  // ok
+            case 3:
+                measurements();
+                break;
 
-    // undirected
-    //graphL->Kruskal_algorithm(); //ok
-    //graphL->Prim_algorithm();  // ok
+            case 0:
+                run = false;
+                break;
 
-
-    Graph_List *graphL = new Graph_List(5);
-    Graph_Matrix *graphM = new Graph_Matrix(5);
-
-
-    generate_edges(5, 30, graphL, graphM, true);
-    //load_from_file(graphL, graphM, true);
-    graphL->print();
-    cout<<endl<<endl;
-    graphM->print();
-
+            default:
+                break;
+        }
+    }
 
     return 0;
+}
+
+
+void SPF() {
+
+    bool run = true;
+    int v = 2;
+    int e = 1;
+    Graph_List *graph_list = new Graph_List(2);
+    Graph_Matrix *graph_matrix = new Graph_Matrix(2);
+    graph_list->add_directed_edge(0, 1, 1);
+    graph_matrix->add_directed_edge(0, 1, 1);
+
+    while (run) {
+
+        cout << "[1]  -  wczytaj graf\n"
+                "[2]  -  wygeneruj graf\n"
+                "[3]  -  wyswietl graf\n"
+                "[4]  -  algorytm Dijkstry\n"
+                "[5]  -  algorytm Bellmana-Forda\n"
+                "[0]  -  wyjdz\n";
+
+        int choose;
+        cin >> choose;
+
+        switch (choose) {
+
+            case 1: {
+                cout << "Podaj nazwe pliku: ";
+                int edgesNumber, verticesNumber;
+                string file_name;
+                cin >> file_name;
+
+                fstream file;
+                file.open(file_name);
+
+                if (file.is_open()) {
+                    delete graph_list;
+                    delete graph_matrix;
+                    file >> edgesNumber >> verticesNumber;
+                    graph_list = new Graph_List(verticesNumber);
+                    graph_matrix = new Graph_Matrix(verticesNumber);
+                    int v1, v2, weight;
+                    for (int j = 0; j < edgesNumber; ++j) {
+                        file >> v1 >> v2 >> weight;
+                        graph_list->add_directed_edge(v1, v2, weight);
+                        graph_matrix->add_directed_edge(v1, v2, weight);
+                    }
+                } else
+                    cout << "Wystapil problem podczas otwierania pliku\n";
+                file.close();
+                break;
+            }
+
+            case 2:
+                int ve, de;
+                cout << "podaj liczbe wierzcholkow: ";
+                cin >> ve;
+                cout << "podaj gestosc: ";
+                cin >> de;
+
+                //delete graph_list;
+                graph_list = new Graph_List(ve);
+                //delete graph_matrix;
+                graph_matrix = new Graph_Matrix(ve);
+
+                generate_edges(ve, de, graph_list, graph_matrix, true);
+                break;
+
+            case 3:
+                cout << "Graf w postaci listy \n";
+                graph_list->print();
+                cout << endl << endl;
+                cout << "Graf w postaci macierzy \n";
+                graph_matrix->print();
+                cout << endl << endl;
+                break;
+
+            case 4:
+                graph_list->Dijkstra_algorithm();
+                cout << endl << endl;
+                graph_matrix->Dijkstra_algorithm();
+                cout << endl << endl;
+                break;
+
+            case 5:
+                graph_list->Bellman_Ford_algorithm();
+                cout << endl << endl;
+                graph_matrix->Bellman_Ford_algorithm();
+                cout << endl << endl;
+                break;
+
+            case 0:
+                run = false;
+                break;
+
+            default:
+                break;
+        }
+    }
+}
+
+void MST() {
+
+    bool run = true;
+    int v = 2;
+    int e = 1;
+    Graph_List *graph_list = new Graph_List(2);
+    Graph_Matrix *graph_matrix = new Graph_Matrix(2);
+    graph_list->add_undirected_edge(0, 1, 1);
+    graph_matrix->add_undirected_edge(0, 1, 1);
+
+    while (run) {
+
+        cout << "[1]  -  wczytaj graf\n"
+                "[2]  -  wygeneruj graf\n"
+                "[3]  -  wyswietl graf\n"
+                "[4]  -  algorytm Prima\n"
+                "[5]  -  algorytm Kruskala\n"
+                "[0]  -  wyjdz\n";
+
+        int choose;
+        cin >> choose;
+
+        switch (choose) {
+
+            case 1: {
+                cout << "Podaj nazwe pliku: ";
+                int edgesNumber, verticesNumber;
+                string file_name;
+                cin >> file_name;
+
+                fstream file;
+                file.open(file_name);
+
+                if (file.is_open()) {
+                    delete graph_list;
+                    delete graph_matrix;
+                    file >> edgesNumber >> verticesNumber;
+                    graph_list = new Graph_List(verticesNumber);
+                    graph_matrix = new Graph_Matrix(verticesNumber);
+                    int v1, v2, weight;
+                    for (int j = 0; j < edgesNumber; ++j) {
+                        file >> v1 >> v2 >> weight;
+                        graph_list->add_undirected_edge(v1, v2, weight);
+                        graph_matrix->add_undirected_edge(v1, v2, weight);
+                    }
+                } else
+                    cout << "Wystapil problem podczas otwierania pliku\n";
+                file.close();
+                break;
+            }
+
+            case 2:
+                int ve, de;
+                cout << "podaj liczbe wierzcholkow: "; cin >> ve;
+                cout << "podaj gestosc: "; cin >> de;
+
+                delete graph_list;
+                graph_list = new Graph_List(ve);
+                delete graph_matrix;
+                graph_matrix = new Graph_Matrix(ve);
+
+                generate_edges(ve, de, graph_list, graph_matrix, false);
+                break;
+
+            case 3:
+                cout << "Graf w postaci listy \n";
+                graph_list->print();
+                cout << endl << endl;
+                cout << "Graf w postaci macierzy \n";
+                graph_matrix->print();
+                cout << endl << endl;
+                break;
+
+            case 4:
+                graph_list->Prim_algorithm();
+                cout << endl << endl;
+                graph_matrix->Prim_algorithm();
+                cout << endl << endl;
+                break;
+
+            case 5:
+                graph_list->Kruskal_algorithm();
+                cout << endl << endl;
+                graph_matrix->Kruskal_algorithm();
+                cout << endl << endl;
+                break;
+
+            case 0:
+                run = false;
+                break;
+
+            default:
+                break;
+        }
+    }
+}
+
+void measurements() {
+
 }
 
 
