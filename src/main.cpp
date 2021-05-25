@@ -166,6 +166,7 @@ void MST();
 void algorithm_measurement();
 
 
+
 int main() {
 
     cout << " -----------------------------------------------------------\n"
@@ -212,6 +213,7 @@ int main() {
 
     return 0;
 }
+
 
 
 void SPF() {
@@ -307,6 +309,7 @@ void SPF() {
         }
     }
 }
+
 
 
 void MST() {
@@ -409,15 +412,14 @@ void algorithm_measurement(){
 
     while (run) {
 
-        cout << "[1] - Dijkstra, [2] - Bellman-Ford, [3] - Prim, [4] - Kruskal, [0] - wyjdz" << endl;
+        cout << "[1] - Dijkstra, [2] - Bellman-Ford, [3] - Prim, [4] - Kruskal (x1 - lista, x2 - macierz np 32 - Prim macierz), [0] - wyjdz" << endl;
         int alg;
         cin >> alg;
 
         int v;
         float d;
         int number;
-        double final_time_list = 0;
-        double final_time_matrix = 0;
+        double final_time = 0;
 
 
         cout << "liczba wierzcholkow "; cin >> v;
@@ -439,7 +441,7 @@ void algorithm_measurement(){
 
             switch (alg) {
 
-                case 1:{
+                case 11:{
 
                     //początek pomiaru
                     high_resolution_clock::time_point t1 = high_resolution_clock::now();
@@ -449,8 +451,12 @@ void algorithm_measurement(){
                     //koniec pomiaru
                     high_resolution_clock::time_point t2 = high_resolution_clock::now();
                     duration<double> time1 = duration_cast<duration<double>>(t2 - t1);
-                    final_time_list += (double)time1.count();
+                    final_time += (double)time1.count();
 
+                    break;
+                }
+
+                case 12:{
 
                     //początek pomiaru
                     high_resolution_clock::time_point t3 = high_resolution_clock::now();
@@ -460,12 +466,12 @@ void algorithm_measurement(){
                     //koniec pomiaru
                     high_resolution_clock::time_point t4 = high_resolution_clock::now();
                     duration<double> time2 = duration_cast<duration<double>>(t4 - t3);
-                    final_time_matrix += (double)time2.count();
+                    final_time += (double)time2.count();
 
                     break;
                 }
 
-                case 2:{
+                case 21:{
 
                     //początek pomiaru
                     high_resolution_clock::time_point t1 = high_resolution_clock::now();
@@ -475,8 +481,12 @@ void algorithm_measurement(){
                     //koniec pomiaru
                     high_resolution_clock::time_point t2 = high_resolution_clock::now();
                     duration<double> time1 = duration_cast<duration<double>>(t2 - t1);
-                    final_time_list += (double)time1.count();
+                    final_time += (double)time1.count();
 
+                    break;
+                }
+
+                case 22:{
 
                     //początek pomiaru
                     high_resolution_clock::time_point t3 = high_resolution_clock::now();
@@ -486,12 +496,12 @@ void algorithm_measurement(){
                     //koniec pomiaru
                     high_resolution_clock::time_point t4 = high_resolution_clock::now();
                     duration<double> time2 = duration_cast<duration<double>>(t4 - t3);
-                    final_time_matrix += (double)time2.count();
+                    final_time += (double)time2.count();
 
                     break;
                 }
 
-                case 3:{
+                case 31:{
 
                     //początek pomiaru
                     high_resolution_clock::time_point t1 = high_resolution_clock::now();
@@ -501,8 +511,12 @@ void algorithm_measurement(){
                     //koniec pomiaru
                     high_resolution_clock::time_point t2 = high_resolution_clock::now();
                     duration<double> time1 = duration_cast<duration<double>>(t2 - t1);
-                    final_time_list += (double)time1.count();
+                    final_time += (double)time1.count();
 
+                    break;
+                }
+
+                case 32:{
 
                     //początek pomiaru
                     high_resolution_clock::time_point t3 = high_resolution_clock::now();
@@ -512,12 +526,12 @@ void algorithm_measurement(){
                     //koniec pomiaru
                     high_resolution_clock::time_point t4 = high_resolution_clock::now();
                     duration<double> time2 = duration_cast<duration<double>>(t4 - t3);
-                    final_time_matrix += (double)time2.count();
+                    final_time += (double)time2.count();
 
                     break;
                 }
 
-                case 4:{
+                case 41:{
 
                     //początek pomiaru
                     high_resolution_clock::time_point t1 = high_resolution_clock::now();
@@ -527,8 +541,12 @@ void algorithm_measurement(){
                     //koniec pomiaru
                     high_resolution_clock::time_point t2 = high_resolution_clock::now();
                     duration<double> time1 = duration_cast<duration<double>>(t2 - t1);
-                    final_time_list += (double)time1.count();
+                    final_time += (double)time1.count();
 
+                    break;
+                }
+
+                case 42:{
 
                     //początek pomiaru
                     high_resolution_clock::time_point t3 = high_resolution_clock::now();
@@ -538,7 +556,7 @@ void algorithm_measurement(){
                     //koniec pomiaru
                     high_resolution_clock::time_point t4 = high_resolution_clock::now();
                     duration<double> time2 = duration_cast<duration<double>>(t4 - t3);
-                    final_time_matrix += (double)time2.count();
+                    final_time += (double)time2.count();
 
                     break;
                 }
@@ -556,11 +574,8 @@ void algorithm_measurement(){
         ofstream measurement;
         measurement.open("RESULT.txt", ios::app);
 
-        measurement << endl << "LISTA numer algorytmu: " << alg << " wierzcholki: " << v << "  gestosc: " << d << endl
-                    << "  czas: " << fixed << setprecision(10) << final_time_list << endl << "średnia: " << setprecision(10) << final_time_list / number << endl;
-
-        measurement << endl << "MACIERZ numer algorytmu: " << alg << " wierzcholki: " << v << "  gestosc: " << d << endl
-                    << "  czas: " << fixed << setprecision(10) << final_time_matrix << endl << "średnia: " << setprecision(10) << final_time_matrix / number << endl << endl;
+        measurement << endl << "ID algorytmu: " << alg << " wierzcholki: " << v << "  gestosc: " << d << endl
+                    << "  czas: " << fixed << setprecision(10) << final_time << endl << "średnia: " << setprecision(10) << final_time / number << endl << endl;
 
         measurement.close();
     }
