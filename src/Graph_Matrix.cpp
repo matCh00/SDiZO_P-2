@@ -91,32 +91,57 @@ void Graph_Matrix::print() {
 
 // algorytm Dijkstry służy do wyznaczania najkrótszej drogi
 // pomędzy wierzchołkiem startowym do wszystkich wierzchołków
+// algorytm pracuje na grafach skierowanych
 
 void Graph_Matrix::Dijkstra_algorithm() {
-    int *distance = new int[vertices];
-    int *parent = new int[vertices];
 
+    int *distance = new int[vertices];  // odległość od wierzchołka startowego
+    int *parent = new int[vertices];    // wierzchołek poprzedzający
+
+    // kolejka priorytetowa - kopiec minimalny wierzchołków (każdy przechowuje wartość i dystans)
     auto *heap = new Vertex_Min_Heap(vertices);
-    heap->vertexes[0]->set_element(0);
+
+    heap->vertexes[0]->set_element(0);  // ustawianie początkowego wierzchołka w kopcu
     distance[0] = 0;
     parent[0] = -1;
+
+    // dla każdego wierzchołka
     while (heap->has_elements()) {
+
+        // tworzymy / aktualizujemy kopiec minimalny
         heap->create_min_heap();
+
+        // wybieramy wierzchołek o najmniejszej wartości
         Vertex *vertexU = heap->extract_min();
-        int vertexNumber = vertexU->get_vertex_index();
-        for (int i = 0; i < edges; ++i) {
-            if (incidence_matrix->get(i, vertexNumber) == 1) {
-                int edgeWeight = edge_weights[i];
-                for (int j = 0; j < vertices; ++j) {
-                    if (incidence_matrix->get(i, j) == -1) {
-                        // 'j' to sąsiad (neighbour)
-                        int neighbourPosition = heap->position[j];
-                        int distanceU = vertexU->get_element();
-                        int distanceV = heap->vertexes[neighbourPosition]->get_element();
-                        if (distanceV > distanceU + edgeWeight) {
-                            heap->vertexes[neighbourPosition]->set_element(distanceU + edgeWeight);
-                            distance[j] = distanceU + edgeWeight;
-                            parent[j] = vertexU->get_vertex_index();
+
+        // ustawiamy wartość wybranego wierzchołka
+        int vertex_number = vertexU->get_vertex_index();
+
+        // spośród wszystkich krawędzi
+        for (int U = 0; U < edges; ++U) {
+
+            // szukamy wierzchołek startowy (początek krawędzi == 1)
+            if (incidence_matrix->get(U, vertex_number) == 1) {
+
+                int edge_weight = edge_weights[U];   // waga krawędzi
+
+                // spośród wszystkich wierzchołków
+                for (int V = 0; V < vertices; ++V) {
+
+                    // szukamy sąsiada (wierzchołek końcowy krawędzi == -1)
+                    // V jest sąsiadem U
+                    if (incidence_matrix->get(U, V) == -1) {
+
+                        int neighbour_position = heap->position[V];                        // ustawienie pozycji sąsiada
+                        int distanceU = vertexU->get_element();                            // dystans do wierzchołka U
+                        int distanceV = heap->vertexes[neighbour_position]->get_element(); // dystans do wierzchołka V
+
+                        // dokonujemy relaksacji krawędzi - sprawdzenie, czy przy przejściu daną
+                        // krawędzią grafu nie otrzymamy krótszej ścieżki niż dotychczasowa
+                        if (distanceV > distanceU + edge_weight) {
+                            heap->vertexes[neighbour_position]->set_element(distanceU + edge_weight);
+                            distance[V] = distanceU + edge_weight;
+                            parent[V] = vertexU->get_vertex_index();
                         }
                         break;
                     }

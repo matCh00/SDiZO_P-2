@@ -77,34 +77,50 @@ void Graph_List::print() {
 
 // algorytm Dijkstry służy do wyznaczania najkrótszej drogi
 // pomędzy wierzchołkiem startowym do wszystkich wierzchołków
+// algorytm pracuje na grafach skierowanych
 
 void Graph_List::Dijkstra_algorithm() {
-    int *distance = new int[vertices];
-    int *parent = new int[vertices];
 
-    //stos wierzchołków Dijkstry (tzn. obiektów wierzchołek posiadających swój numer, oraz distance)
+    int *distance = new int[vertices];  // odległość od wierzchołka startowego
+    int *parent = new int[vertices];    // wierzchołek poprzedzający
+
+    // kolejka priorytetowa - kopiec minimalny wierzchołków (każdy przechowuje wartość i dystans)
     auto *heap = new Vertex_Min_Heap(vertices);
-    heap->vertexes[0]->set_element(0);
+
+    heap->vertexes[0]->set_element(0);  // ustawianie początkowego wierzchołka w kopcu
     distance[0] = 0;
     parent[0] = -1;
+
+    // dla każdego wierzchołka
     while (heap->has_elements()) {
-        //tworzymy stos (aby mieć wierzchołek o najmniejszym dystansie), trzeba co pętlę ponieważ w pętli zmieniają się elementy stosu
+
+        // tworzymy / aktualizujemy kopiec minimalny
         heap->create_min_heap();
-        Vertex *vertexU = heap->extract_min();
-        //neighbourTraverse - obiekt (ListElement) za pomocą którego dobieramy się do wszystkich sąsiadów wierzchołka z listy sąsiedztwa
-        auto neighbourTraverse = adjacency_list[vertexU->get_vertex_index()]->get_head();
-        while (neighbourTraverse != nullptr) {
-            int neighbour = neighbourTraverse->neighbour;
-            int edgeWeight = neighbourTraverse->edge_weight;
-            int neighbourPosition = heap->position[neighbour];
-            int distanceU = vertexU->get_element();
-            int distanceV = heap->vertexes[neighbourPosition]->get_element();
-            if (distanceV > distanceU + edgeWeight) {
-                heap->vertexes[neighbourPosition]->set_element(distanceU + edgeWeight);
-                distance[neighbour] = distanceU + edgeWeight;
-                parent[neighbour] = vertexU->get_vertex_index();
+
+        // wybieramy wierzchołek o najmniejszej wartości
+        Vertex *vertex_min = heap->extract_min();
+
+        // tworzymy obiekt za pomocą którego mamy dostęp do wszystkich sąsiadów danego wierzchołka
+        auto check_neighbours = adjacency_list[vertex_min->get_vertex_index()]->get_head();
+
+       // dla wszystkich sąsiadów wierzchołka
+        while (check_neighbours != nullptr) {
+
+            int neighbour = check_neighbours->neighbour;        // ustawienie sąsiada
+            int edge_weight = check_neighbours->edge_weight;    // ustawienie wagi krawędzi
+            int neighbour_position = heap->position[neighbour]; // ustawienie pozycji sąsiada
+            int distanceU = vertex_min->get_element();                          // dystans do wierzchołka U
+            int distanceV = heap->vertexes[neighbour_position]->get_element();  // dystans do wierzchołka V
+
+            // dokonujemy relaksacji krawędzi - sprawdzenie, czy przy przejściu daną
+            // krawędzią grafu nie otrzymamy krótszej ścieżki niż dotychczasowa
+            if (distanceV > distanceU + edge_weight) {
+                heap->vertexes[neighbour_position]->set_element(distanceU + edge_weight);
+                distance[neighbour] = distanceU + edge_weight;
+                parent[neighbour] = vertex_min->get_vertex_index();
             }
-            neighbourTraverse = neighbourTraverse->next;
+            // przechodzimy do kolejnego sąsiada
+            check_neighbours = check_neighbours->next;
         }
     }
 
