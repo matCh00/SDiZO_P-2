@@ -79,6 +79,9 @@ void Graph_List::print() {
 // pomędzy wierzchołkiem startowym do wszystkich wierzchołków
 // algorytm pracuje na grafach skierowanych
 
+// idea: tworzenie kolejki priorytetowej wierzchołków i dokonanie relaksacji
+//       dla każdego wierzchołka usuniętego z tej kolejki
+
 void Graph_List::Dijkstra_algorithm() {
 
     int *distance = new int[vertices];  // odległość od wierzchołka startowego
@@ -88,8 +91,8 @@ void Graph_List::Dijkstra_algorithm() {
     auto *heap = new Vertex_Min_Heap(vertices);
 
     heap->vertexes[0]->set_element(0);  // ustawianie początkowego wierzchołka w kopcu
-    distance[0] = 0;
-    parent[0] = -1;
+    distance[0] = 0;   // dystans = 0
+    parent[0] = -1;    // poprzednik nieokreślony
 
     // dla każdego wierzchołka
     while (heap->has_elements()) {
@@ -140,45 +143,68 @@ void Graph_List::Dijkstra_algorithm() {
 //                               ALGORYTM  FORDA-BELLMANA
 //=============================================================================================
 
-// algorytm Forda-Bellmana służy do wyznaczania najkrótszej drogi
-// pomędzy wierzchołkiem startowym do wszystkich wierzchołków
-// w porównaniu do Dijkstry opiera się na metodzie relaksacji
+// algorytm Forda-Bellmana służy do wyznaczania najkrótszej drogi pomędzy wierzchołkiem startowym
+// do wszystkich wierzchołków w porównaniu do Dijkstry opiera się na metodzie relaksacji
 // nie opiera się na założeniu że wagi w grafie są nieujemne
+// algorytm pracuje na grafach skierowanych
+
+// idea: relaksacja następuje (wierzchołki - 1) razy każdej krawędzi
 
 void Graph_List::Bellman_Ford_algorithm() {
-    Edge **graphEdges = new Edge *[edges];
-    int *distance = new int[vertices];
-    int *parent = new int[vertices];
 
+    Edge **graph_edges = new Edge *[edges];  // zbiór krawędzi
+    int *distance = new int[vertices];       // odległość od wierzchołka startowego
+    int *parent = new int[vertices];         // wierzchołek poprzedzający
+
+    // ustawienie początkowych wartości
     int i = 0;
     for (int j = 0; j < vertices; ++j) {
-        distance[j] = INT_MAX / 2;
-        parent[j] = -1;
-        auto listTraverse = adjacency_list[j]->get_head();
-        while (listTraverse != nullptr) {
-            graphEdges[i] = new Edge(j, listTraverse->neighbour, listTraverse->edge_weight);
+
+        distance[j] = INT_MAX;  // dystans = inf
+        parent[j] = -1;         // poprzednik nieokreślony
+
+        // pobieranie głowy listy
+        auto check_neighbours = adjacency_list[j]->get_head();
+
+        // dla każdego wierzchołka
+        while (check_neighbours != nullptr) {
+
+            // dodanie do zbioru nowej krawędzi wychodzącej z tego wierzchołka
+            graph_edges[i] = new Edge(j, check_neighbours->neighbour, check_neighbours->edge_weight);
             ++i;
-            listTraverse = listTraverse->next;
+
+            // przejście do kolejnego wierzchołka
+            check_neighbours = check_neighbours->next;
         }
     }
+
     parent[0] = 0;
     distance[0] = 0;
     bool relaxed = true;
+
+    // (liczba wierzchołków - 1) razy
     for (int ii = 1; ii < vertices && relaxed; ++ii) {
         relaxed = false;
+
+        // (liczba krawędzi) razy
         for (int j = 0; j < edges; ++j) {
-            Edge *edge = graphEdges[j];
-            int u = edge->get_vertex1();
-            int v = edge->get_vertex2();
-            int weight = edge->get_edge_weight();
-            if (distance[v] > distance[u] + weight) {
-                distance[v] = distance[u] + weight;
-                parent[v] = u;
+
+            Edge *edge = graph_edges[j];           // krawędź
+            int U = edge->get_vertex1();           // wierzchołek początkowy
+            int V = edge->get_vertex2();           // wierzchołek końcowy
+            int weight = edge->get_edge_weight();  // waga
+
+            // dokonujemy relaksacji krawędzi - sprawdzenie, czy przy przejściu daną
+            // krawędzią grafu nie otrzymamy krótszej ścieżki niż dotychczasowa
+            if (distance[V] > distance[U] + weight) {
+                distance[V] = distance[U] + weight;
+                parent[V] = U;
                 relaxed = true;
             }
         }
     }
 
+    // jeżeli wykryto cykl o ujemnej wadze - z założenia krawędzie mogą mieć ujemną wagę
     if (relaxed) {
         cout << "\nWykryto cykl o ujemnej wadze\n";
     } else {
@@ -190,7 +216,7 @@ void Graph_List::Bellman_Ford_algorithm() {
 
     if (relaxed) {
         for (int j = 0; j < edges; ++j) {
-            Edge *edge = graphEdges[j];
+            Edge *edge = graph_edges[j];
             int u = edge->get_vertex1();
             int v = edge->get_vertex2();
             int weight = edge->get_edge_weight();
@@ -201,12 +227,12 @@ void Graph_List::Bellman_Ford_algorithm() {
         }
     }
     for (int j = 0; j < edges; ++j) {
-        delete graphEdges[j];
+        delete graph_edges[j];
     }
 
     delete[] distance;
     delete[] parent;
-    delete[] graphEdges;
+    delete[] graph_edges;
 }
 
 
