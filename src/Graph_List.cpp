@@ -100,7 +100,7 @@ void Graph_List::Dijkstra_algorithm() {
         // tworzymy / aktualizujemy kopiec minimalny
         heap->create_min_heap();
 
-        // wybieramy wierzchołek o najmniejszej wartości
+        // wybieramy wierzchołek o najmniejszej wartości i usuwamy go z kolejki
         Vertex *vertex_min = heap->extract_min();
 
         // tworzymy obiekt za pomocą którego mamy dostęp do wszystkich sąsiadów danego wierzchołka
@@ -183,13 +183,13 @@ void Graph_List::Bellman_Ford_algorithm() {
     bool relaxed = true;
 
     // (liczba wierzchołków - 1) razy
-    for (int ii = 1; ii < vertices && relaxed; ++ii) {
+    for (int x = 1; x < vertices && relaxed; ++x) {
         relaxed = false;
 
         // (liczba krawędzi) razy
-        for (int j = 0; j < edges; ++j) {
+        for (int y = 0; y < edges; ++y) {
 
-            Edge *edge = graph_edges[j];           // krawędź
+            Edge *edge = graph_edges[y];           // krawędź
             int U = edge->get_vertex1();           // wierzchołek początkowy
             int V = edge->get_vertex2();           // wierzchołek końcowy
             int weight = edge->get_edge_weight();  // waga
@@ -242,36 +242,63 @@ void Graph_List::Bellman_Ford_algorithm() {
 //                                     ALGORYTM  PRIMA
 //=============================================================================================
 
-// MST - minimalne drzewo rozpinające (graf nieskierowany)
+// algorytm Prima służy do wyznaczania minimalnego drzewa rozpinającego
 // MST zawiera wszystkie wierzchołki grafu i podzbiór jego krawędzi
 // MST grafu to jego podgraf z którego usunięto niektóre krawędzie (aby nie było cykli)
+// algorytm pracuje na grafach nieskierowanych
+
+// idea: tworzenie kolejki priorytetowej wierzchołków oraz listę wierzchołków rozpatrzonych,
+//       wybieranie krawędzi o najmniejszej wadze dodając wierzchołki do listy wierzchołków
+//       rozpatrzonych i dodawanie krawędzi do zbioru MST aż lista wierzchołków rozpatrzonych
+//       nie będzie zawierała wszystkich wierzchołków
 
 void Graph_List::Prim_algorithm() {
-    int *key = new int[vertices];
-    int *parent = new int[vertices];
-    //stos wierzchołków Prima (tzn. obiektów wierzchołek posiadających swój numer, oraz key)
+
+    int *key = new int[vertices];      // wagi krawędzi
+    int *parent = new int[vertices];   // wierzchołek poprzedzający
+
+    // kolejka priorytetowa - kopiec minimalny wierzchołków (każdy przechowuje wartość i klucz/wagę)
     auto *heap = new Vertex_Min_Heap(vertices);
-    heap->vertexes[0]->set_element(0);
-    key[0] = 0;
-    parent[0] = -1;
+
+    heap->vertexes[0]->set_element(0);  // ustawianie początkowego wierzchołka w kopcu
+    key[0] = 0;        // klucz/waga = 0
+    parent[0] = -1;    // poprzednik nieokreślony
+
+    // dla każdego wierzchołka
     while (heap->has_elements()) {
-        //tworzymy stos (aby mieć wierzchołek o najmniejszej wadze), trzeba co pętlę ponieważ w pętli zmieniają się elementy stosu
+
+        // tworzymy / aktualizujemy kopiec minimalny
         heap->create_min_heap();
+
+        // wybieramy wierzchołek o najmniejszej wartości i usuwamy go z kolejki
         Vertex *vertexU = heap->extract_min();
-        //neighbourTraverse - obiekt (ListElement) za pomocą którego dobieramy się do wszystkich sąsiadów wierzchołka z listy sąsiedztwa
-        auto neighbourTraverse = adjacency_list[vertexU->get_vertex_index()]->get_head();
-        while (neighbourTraverse != nullptr) {
-            int neighbour = neighbourTraverse->neighbour;
+
+        // tworzymy obiekt za pomocą którego mamy dostęp do wszystkich sąsiadów danego wierzchołka
+        auto check_neighbours = adjacency_list[vertexU->get_vertex_index()]->get_head();
+
+        // dla wszystkich sąsiadów wierzchołka
+        while (check_neighbours != nullptr) {
+
+            int neighbour = check_neighbours->neighbour;  // ustawienie sąsiada
+
+            // sprawdzamy czy sąsiad wierzchołka należy do kolejki
+            // (wierzchołek został już z kolejki usunięty)
             if (heap->is_in_heap(neighbour)) {
-                int edgeWeight = neighbourTraverse->edge_weight;
-                int neighbourPosition = heap->position[neighbour];
-                if (edgeWeight < heap->vertexes[neighbourPosition]->get_element()) {
-                    heap->vertexes[neighbourPosition]->set_element(edgeWeight);
-                    key[neighbour] = edgeWeight;
+                int edge_weight = check_neighbours->edge_weight;      // ustawienie wagi krawędzi
+                int neighbour_position = heap->position[neighbour];   // ustawienie pozycji sąsiada
+
+                // sprawdzamy czy waga krawędzi jest mniejsza od klucza/wagi
+                if (edge_weight < heap->vertexes[neighbour_position]->get_element()) {
+
+                    // coś w rodzaju relaksacji
+                    // aktualizujemy krawędź oraz jej wagę
+                    heap->vertexes[neighbour_position]->set_element(edge_weight);
+                    key[neighbour] = edge_weight;
                     parent[neighbour] = vertexU->get_vertex_index();
                 }
             }
-            neighbourTraverse = neighbourTraverse->next;
+            // przechodzimy do kolejnego sąsiada
+            check_neighbours = check_neighbours->next;
         }
     }
 
@@ -297,6 +324,15 @@ void Graph_List::Prim_algorithm() {
 //=============================================================================================
 //                                     ALGORYTM  KRUSKALA
 //=============================================================================================
+
+// algorytm Kruskala służy do wyznaczania minimalnego drzewa rozpinającego
+// MST zawiera wszystkie wierzchołki grafu i podzbiór jego krawędzi
+// MST grafu to jego podgraf z którego usunięto niektóre krawędzie (aby nie było cykli)
+// algorytm pracuje na grafach nieskierowanych
+
+// idea: dla każdego wierzchołka tworzymy jego poddrzewo, sortujemy krawędzie niemalejąco,
+//       sprawdzamy czy wierzchołki tworzące krawędź należą do różnych poddrzew,
+//       jeżeli tak to dodajemy krawędź do MST
 
 void Graph_List::Kruskal_algorithm() {
     Edge **mstEdges = new Edge *[vertices - 1];
