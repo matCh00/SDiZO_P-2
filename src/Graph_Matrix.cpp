@@ -382,60 +382,88 @@ void Graph_Matrix::Prim_algorithm() {
 //       jeżeli tak to dodajemy krawędź do MST
 
 void Graph_Matrix::Kruskal_algorithm() {
-    Edge **mstEdges = new Edge *[vertices - 1];
-    for (int i = 0; i < vertices-1; i++)
-    {
-        mstEdges[i] = new Edge(0,0,0);
+
+    Edge **mst_edges = new Edge *[vertices - 1];  // gotowe krawędzie MST
+
+    // dla każdego wierzchołka
+    for (int i = 0; i < vertices-1; i++) {
+
+        // tworzymy poddrzewo tego wierzchołka
+        kruskal_make_setM(mst_edges, i);
     }
 
-    int *parent = new int[vertices];
+    int *parent = new int[vertices];  // wierzchołek poprzedzający
     int *rank = new int[vertices];
-    Edge **graphEdges = new Edge *[edges];
-    int graphEdgeIndex = 0;
-    int mstEdgeIndex = 0;
+    int graph_edge_index = 0;
+    int mst_edge_index = 0;
+    Edge **graph_edges = new Edge *[edges];
+
+    // uzupełniamy dane startowe
     for (int i = 0; i < vertices; ++i) {
         parent[i] = i;
         rank[i] = 0;
     }
-    //tworzenie pomocniczych obiektów - krawędzi oraz ich sortowanie metodą insertionsort
+
+    // sortujemy niemalejąco wagi które składają się na graf
     for (int i = 0; i < edges; ++i) {
-        int vertex1 = 0;
-        int vertex2 = 0;
+
+        int vertex1 = 0;  // wierzchołek początkowy
+        int vertex2 = 0;  // wierzchołek końcowy
         int j = 0;
-        for (; j < edges; ++j) {
+
+        // szukamy wierzchołka początkowego (v == 1)
+        for (j; j < edges; ++j) {
             if (incidence_matrix->get(i, j) == 1) {
                 vertex1 = j;
                 ++j;
                 break;
             }
         }
-        for (; j < edges; ++j) {
+        // szukamy wierzchołka początkowego (v == 1)
+        for (j; j < edges; ++j) {
             if (incidence_matrix->get(i, j) == 1) {
                 vertex2 = j;
                 break;
             }
         }
-        graphEdges[graphEdgeIndex] = new Edge(vertex1, vertex2, edge_weights[i]);
-        Edge *swap = graphEdges[graphEdgeIndex];
-        int k = graphEdgeIndex - 1;
-        while (k >= 0 && graphEdges[k]->get_edge_weight() > swap->get_edge_weight()) {
-            graphEdges[k + 1] = graphEdges[k];
+
+        // tworzymy zmienne pomocnicze
+        graph_edges[graph_edge_index] = new Edge(vertex1, vertex2, edge_weights[i]);
+        Edge *swap = graph_edges[graph_edge_index];
+        int k = graph_edge_index - 1;
+
+        // przesuwanie elementów (dokonujemy sortowania krawędzi)
+        while (k >= 0 && graph_edges[k]->get_edge_weight() > swap->get_edge_weight()) {
+            graph_edges[k + 1] = graph_edges[k];
             --k;
         }
-        graphEdges[k + 1] = swap;
-        ++graphEdgeIndex;
+        // dodanie na koniec
+        graph_edges[k + 1] = swap;
+        ++graph_edge_index;
     }
-    for (graphEdgeIndex = 0; graphEdgeIndex < edges; ++graphEdgeIndex) {
-        Edge *edge = graphEdges[graphEdgeIndex];
-        int v1 = edge->get_vertex1();
-        int v2 = edge->get_vertex2();
-        int set1 = kruskal_find_setM(parent, v1);
-        int set2 = kruskal_find_setM(parent, v2);
+
+    // wykonujemy dla wszystkich krawędzi
+    for (graph_edge_index = 0; graph_edge_index < edges; ++graph_edge_index) {
+
+        // pobieramy krawędź
+        Edge *edge = graph_edges[graph_edge_index];
+
+        int U = edge->get_vertex1();              // wierzchołek początkowy
+        int V = edge->get_vertex2();              // wierzchołek końcowy
+        int set1 = kruskal_find_setM(parent, U);  // poddrzewo dla wierzchołka początkowego
+        int set2 = kruskal_find_setM(parent, V);  // poddrzewo dla wierzchołka końcowego
+
+        // sprawdzamy czy wierzchołki danej krawędzi należą do dwóch różnych poddrzew
+        // jeżeli należą do różnych poddrzew to
         if (set1 != set2) {
-            mstEdges[mstEdgeIndex]->set_vertex1(v1);
-            mstEdges[mstEdgeIndex]->set_vertex2(v2);
-            mstEdges[mstEdgeIndex]->set_edge_weight(edge->get_edge_weight());
-            ++mstEdgeIndex;
+
+            // dodajemy krawędź do rozwiązania
+            mst_edges[mst_edge_index]->set_vertex1(U);
+            mst_edges[mst_edge_index]->set_vertex2(V);
+            mst_edges[mst_edge_index]->set_edge_weight(edge->get_edge_weight());
+            ++mst_edge_index;
+
+            // UNION - łączymy dwa poddrzewa w jedno
             if (rank[set1] < rank[set2])
                 parent[set1] = set2;
             else
@@ -443,27 +471,35 @@ void Graph_Matrix::Kruskal_algorithm() {
             if (rank[set1] == rank[set2])
                 ++rank[set1];
         }
-        delete graphEdges[graphEdgeIndex];
+        delete graph_edges[graph_edge_index];
     }
 
     cout << "\nalgorytm Kruskala macierzowo: krawedzie MST: (wierzcholek - nastepnik : waga)\n";
     for (int i = 0; i < vertices - 1; ++i) {
-        cout << mstEdges[i]->get_vertex1() << " - " << mstEdges[i]->get_vertex2() << " : "
-             << mstEdges[i]->get_edge_weight()
+        cout << mst_edges[i]->get_vertex1() << " - " << mst_edges[i]->get_vertex2() << " : "
+             << mst_edges[i]->get_edge_weight()
              << "\n";
     }
 
     for (int i = 0; i < vertices - 1; ++i) {
-        delete mstEdges[i];
+        delete mst_edges[i];
     }
-    delete[] mstEdges;
+    delete[] mst_edges;
     delete[] parent;
     delete[] rank;
-    delete[] graphEdges;
+    delete[] graph_edges;
 }
 
 
+// tworzenie poddrzewa
+void Graph_Matrix::kruskal_make_setM(Edge **mst_edges, int i) {
+
+    mst_edges[i] = new Edge(0, 0, 0);
+}
+
+// szukanie poddrzewa
 int Graph_Matrix::kruskal_find_setM(int *parent, int x) {
+
     if (parent[x] != x)
         parent[x] = kruskal_find_setM(parent, parent[x]);
     return parent[x];

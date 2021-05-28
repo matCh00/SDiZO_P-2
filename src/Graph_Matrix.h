@@ -28,8 +28,9 @@ public:
     void Dijkstra_algorithm();       // algorytm Dijkstry
     void Bellman_Ford_algorithm();   // algorytm Bellmana-Forda
 
-    void print();                                  // wypisanie grafu w postaci listy sąsiedztwa
-    int kruskal_find_setM(int *parent, int x);     // funkcja pomocnicza do algorytmu Kruskala
+    void print();                                     // wypisanie grafu w postaci listy sąsiedztwa
+    int kruskal_find_setM(int *parent, int x);        // funkcja pomocnicza do algorytmu Kruskala
+    void kruskal_make_setM(Edge **mst_edges, int i);  // funkcja pomocnicza do algorytmu Kruskala
 };
 
 
