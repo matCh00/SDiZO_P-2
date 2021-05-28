@@ -153,9 +153,16 @@ void Graph_Matrix::Dijkstra_algorithm() {
         }
     }
 
-    cout << "\nalgorytm Dijkstry macierzowo: (wierzcholek: dystans/poprzednik)\n";
+    cout << "\nalgorytm Dijkstry macierzowo: (wierzcholek: <- (poprzednicy) [dystans]\n";
     for (int i = 0; i < vertices; ++i) {
-        cout << i << ": " << distance[i] << "/" << parent[i] << "\n";
+        cout << i << ": ";
+
+        int x = i;
+        while (parent[x] > 0 && parent[x] < vertices) {
+            cout << " <- (" << parent[x] <<")";
+            x = parent[x];
+        }
+        cout <<" <- (0)  [" << distance[i] << "]" << endl;
     }
 
     delete heap;
@@ -181,8 +188,8 @@ void Graph_Matrix::Bellman_Ford_algorithm() {
     int *parent = new int[vertices];    // wierzchołek poprzedzający
 
     for (int i = 0; i < vertices; ++i) {
-        distance[i] = INT_MAX;  // dystans = inf
-        parent[i] = -1;         // poprzednik nieokreślony
+        distance[i] = INT_MAX / 2;  // dystans = inf
+        parent[i] = -1;             // poprzednik nieokreślony
     }
 
     int graph_edge_index = 0;
@@ -245,9 +252,16 @@ void Graph_Matrix::Bellman_Ford_algorithm() {
         cout << "\nWykryto cykl o ujemnej wadze\n";
     }
     else {
-        cout << "\nalgorytm Bellmana-Forda macierzowo: (wierzcholek: dystans/poprzednik)\n";
+        cout << "\nalgorytm Bellmana-Forda macierzowo: (wierzcholek: <- (poprzednicy) [dystans]\n";
         for (int i = 0; i < vertices; ++i) {
-            cout << i << ": " << distance[i] << "/" << parent[i] << "\n";
+            cout << i << ": ";
+
+            int x = i;
+            while (parent[x] > 0 && parent[x] < vertices) {
+                cout << " <- (" << parent[x] <<")";
+                x = parent[x];
+            }
+            cout <<" <- (0)  [" << distance[i] << "]" << endl;
         }
     }
 
@@ -350,11 +364,7 @@ void Graph_Matrix::Prim_algorithm() {
             }
         }
     }
-    cout << "\nalgorytm Prima macierzowo: (wierzcholek: klucz/poprzednik)\n";
-    for (int i = 0; i < vertices; ++i) {
-        cout << i << ": " << key[i] << "/" << parent[i] << "\n";
-    }
-    cout << "\nkrawedzie MST: (wierzcholek - poprzednik : waga)\n";
+    cout << "\nalgorytm Prima macierzowo: krawedzie MST: (wierzcholek - poprzednik : waga)\n";
     for (int i = 0; i < vertices; ++i) {
         if (parent[i] != -1) {
             cout << i << " - " << parent[i] << " : " << key[i] << "\n";

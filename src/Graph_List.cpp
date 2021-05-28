@@ -7,17 +7,17 @@ using namespace std;
 /*-----------------------------LISTA SĄSIEDZTWA-----------------------------
 
         ----------
-       |          |           ------                  ------
-       |   V1  <--|------->  |  V4  |  <---------->  |  V3  |  <---------->   ...
-       |          |           ------                  ------
+       |          |          ------                 ------
+       |   V1  <--|-------  |  V4  |  <----------  |  V3  |  <----------   ...
+       |          |          ------                 ------
        |          |
-       |          |           ------                  ------
-       |   V2  <--|------->  |  V5  |  <---------->  |  V8  |  <---------->   ...
-       |          |           ------                  ------
+       |          |          ------                 ------
+       |   V2  <--|-------  |  V5  |  <----------  |  V8  |  <----------   ...
+       |          |          ------                 ------
        |          |
-       |          |           ------                  ------
-       |   V3  <--|------->  |  V6  |  <---------->  |  V1  |  <---------->   ...
-       |          |           ------                  ------
+       |          |          ------                 ------
+       |   V3  <--|-------  |  V6  |  <----------  |  V1  |  <----------   ...
+       |          |          ------                 ------
        |          |
         ----------
 
@@ -127,9 +127,16 @@ void Graph_List::Dijkstra_algorithm() {
         }
     }
 
-    cout << "\nalgorytm Dijkstry listowo: (wierzcholek: dystans/poprzednik)\n";
+    cout << "\nalgorytm Dijkstry listowo: (wierzcholek: <- (poprzednicy) [dystans]\n";
     for (int i = 0; i < vertices; ++i) {
-        cout << i << ": " << distance[i] << "/" << parent[i] << "\n";
+        cout << i << ": ";
+
+        int x = i;
+        while (parent[x] > 0 && parent[x] < vertices) {
+            cout << " <- (" << parent[x] <<")";
+            x = parent[x];
+        }
+        cout <<" <- (0)  [" << distance[i] << "]" << endl;
     }
 
     delete heap;
@@ -160,8 +167,8 @@ void Graph_List::Bellman_Ford_algorithm() {
     int i = 0;
     for (int j = 0; j < vertices; ++j) {
 
-        distance[j] = INT_MAX;  // dystans = inf
-        parent[j] = -1;         // poprzednik nieokreślony
+        distance[j] = INT_MAX / 2;  // dystans = inf
+        parent[j] = -1;             // poprzednik nieokreślony
 
         // pobieranie głowy listy
         auto check_neighbours = adjacency_list[j]->get_head();
@@ -208,9 +215,16 @@ void Graph_List::Bellman_Ford_algorithm() {
     if (relaxed) {
         cout << "\nWykryto cykl o ujemnej wadze\n";
     } else {
-        cout << "\nalgorytm Bellmana-Forda listowo: (wierzcholek: dystans/poprzednik)\n";
+        cout << "\nalgorytm Bellmana-Forda listowo: (wierzcholek: <- (poprzednicy) [dystans]\n";
         for (int i = 0; i < vertices; ++i) {
-            cout << i << ": " << distance[i] << "/" << parent[i] << "\n";
+            cout << i << ": ";
+
+            int x = i;
+            while (parent[x] > 0 && parent[x] < vertices) {
+                cout << " <- (" << parent[x] << ")";
+                x = parent[x];
+            }
+            cout <<" <- (0)  [" << distance[i] << "]" << endl;
         }
     }
 
@@ -302,11 +316,7 @@ void Graph_List::Prim_algorithm() {
         }
     }
 
-    cout << "\nalgorytm Prima listowo: (wierzcholek: klucz/poprzednik)\n";
-    for (int i = 0; i < vertices; ++i) {
-        cout << i << ": " << key[i] << "/" << parent[i] << "\n";
-    }
-    cout << "\nkrawedzie MST: (wierzcholek - poprzednik : waga)\n";
+    cout << "\nalgorytm Prima listowo: krawedzie MST: (wierzcholek - poprzednik : waga)\n";
     for (int i = 0; i < vertices; ++i) {
         if (parent[i] != -1) {
             cout << i << " - " << parent[i] << " : " << key[i] << "\n";
@@ -339,7 +349,7 @@ void Graph_List::Kruskal_algorithm() {
     Edge **mst_edges = new Edge *[vertices - 1];  // gotowe krawędzie MST
 
     // dla każdego wierzchołka
-    for (int i = 0; i < vertices-1; i++) {
+    for (int i = 0; i < vertices - 1; i++) {
 
         // tworzymy poddrzewo tego wierzchołka
         kruskal_make_setL(mst_edges, i);

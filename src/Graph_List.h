@@ -9,7 +9,7 @@ using namespace std;
 class Graph_List {
 
     int vertices;    // liczba wierzchołków
-    int edges;       // liczba krawędzi
+    int edges;        // liczba krawędzi
 
     Adjacency_List **adjacency_list;     // lista sąsiedztwa
 
