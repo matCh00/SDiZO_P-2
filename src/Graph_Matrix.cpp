@@ -152,7 +152,8 @@ void Graph_Matrix::Dijkstra_algorithm() {
             }
         }
     }
-
+// wypisanie wyniku (pominięte w pomiarach)
+/*
     cout << "\nalgorytm Dijkstry macierzowo: (wierzcholek: <- (poprzednicy) [dystans]\n";
     for (int i = 0; i < vertices; ++i) {
         cout << i << ": ";
@@ -164,7 +165,8 @@ void Graph_Matrix::Dijkstra_algorithm() {
         }
         cout <<" <- (0)  [" << distance[i] << "]" << endl;
     }
-
+*/
+// koniec wypisania wyniku (pominięte w pomiarach)
     delete heap;
 }
 
@@ -246,7 +248,8 @@ void Graph_Matrix::Bellman_Ford_algorithm() {
             }
         }
     }
-
+// wypisanie wyniku (pominięte w pomiarach)
+/*
     // jeżeli wykryto cykl o ujemnej wadze - z założenia krawędzie mogą mieć ujemną wagę
     if (relaxed) {
         cout << "\nWykryto cykl o ujemnej wadze\n";
@@ -264,7 +267,8 @@ void Graph_Matrix::Bellman_Ford_algorithm() {
             cout <<" <- (0)  [" << distance[i] << "]" << endl;
         }
     }
-
+*/
+// koniec wypisania wyniku (pominięte w pomiarach)
     if (relaxed) {
         for (int j = 0; j < edges; ++j) {
             Edge *edge = graph_edges[j];
@@ -364,13 +368,16 @@ void Graph_Matrix::Prim_algorithm() {
             }
         }
     }
+// wypisanie wyniku (pominięte w pomiarach)
+/*
     cout << "\nalgorytm Prima macierzowo: krawedzie MST: (wierzcholek - poprzednik : waga)\n";
     for (int i = 0; i < vertices; ++i) {
         if (parent[i] != -1) {
             cout << i << " - " << parent[i] << " : " << key[i] << "\n";
         }
     }
-
+*/
+// koniec wypisania wyniku (pominięte w pomiarach)
     delete[] key;
     delete[] parent;
     delete heap;
@@ -483,13 +490,16 @@ void Graph_Matrix::Kruskal_algorithm() {
         }
         delete graph_edges[graph_edge_index];
     }
-
+// wypisanie wyniku (pominięte w pomiarach)
+/*
     cout << "\nalgorytm Kruskala macierzowo: krawedzie MST: (wierzcholek - nastepnik : waga)\n";
     for (int i = 0; i < vertices - 1; ++i) {
         cout << mst_edges[i]->get_vertex1() << " - " << mst_edges[i]->get_vertex2() << " : "
              << mst_edges[i]->get_edge_weight()
              << "\n";
     }
+*/
+// koniec wypisania wyniku (pominięte w pomiarach)
 
     for (int i = 0; i < vertices - 1; ++i) {
         delete mst_edges[i];

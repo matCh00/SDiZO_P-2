@@ -408,174 +408,244 @@ void MST() {
 
 void algorithm_measurement(){
 
-    bool run = true;
+    double final_time_list_1;
+    double final_time_matrix_1;
+    double final_time_list_2;
+    double final_time_matrix_2;
+    int number = 20;
+    int v;
+    float d;
 
-    while (run) {
+    // tyle różnych kombinacji
+    for (int i = 12; i <= 20; i++) {
 
-        cout << "[1] - Dijkstra, [2] - Bellman-Ford, [3] - Prim, [4] - Kruskal (x1 - lista, x2 - macierz np 32 - Prim macierz), [0] - wyjdz" << endl;
-        int alg;
-        cin >> alg;
+        if (i == 1) {
+            v = 20;
+            d = 25;
+        }
+        else if (i == 2) {
+            v = 20;
+            d = 50;
+        }
+        else if (i == 3) {
+            v = 20;
+            d = 75;
+        }
+        else if (i == 4) {
+            v = 20;
+            d = 99;
+        }
+        else if (i == 5) {
+            v = 40;
+            d = 25;
+        }
+        else if (i == 6) {
+            v = 40;
+            d = 50;
+        }
+        else if (i == 7) {
+            v = 40;
+            d = 75;
+        }
+        else if (i == 8) {
+            v = 40;
+            d = 99;
+        }
+        else if (i == 9) {
+            v = 60;
+            d = 25;
+        }
+        else if (i == 10) {
+            v = 60;
+            d = 50;
+        }
+        else if (i == 11) {
+            v = 60;
+            d = 75;
+        }
+        else if (i == 12) {
+            v = 60;
+            d = 99;
+        }
+        else if (i == 13) {
+            v = 80;
+            d = 25;
+        }
+        else if (i == 14) {
+            v = 80;
+            d = 50;
+        }
+        else if (i == 15) {
+            v = 80;
+            d = 75;
+        }
+        else if (i == 16) {
+            v = 80;
+            d = 99;
+        }
+        else if (i == 17) {
+            v = 100;
+            d = 25;
+        }
+        else if (i == 18) {
+            v = 100;
+            d = 50;
+        }
+        else if (i == 19) {
+            v = 100;
+            d = 75;
+        }
+        else if (i == 20) {
+            v = 100;
+            d = 99;
+        }
+        else {
+            cout << "error";
+            return;
+        }
 
-        int v;
-        float d;
-        int number;
-        double final_time = 0;
 
+        final_time_list_1 = 0;
+        final_time_matrix_1 = 0;
+        final_time_list_2 = 0;
+        final_time_matrix_2 = 0;
 
-        cout << "liczba wierzcholkow "; cin >> v;
-        cout << "gestosc "; cin >> d;
-        cout << "liczba powtorzen "; cin >> number;
-
-
-        for (int i = 0; i < number; i++) {
+        for (int i = 0; i < number; i++){
 
             Graph_List *graph_list = new Graph_List(v);
             Graph_Matrix *graph_matrix = new Graph_Matrix(v);
+            generate_edges(v, d, graph_list, graph_matrix, true);
 
-            if (alg == 1 || alg == 2){
-                generate_edges(v, d, graph_list, graph_matrix, true);
-            }
-            if (alg == 3 || alg == 4){
-                generate_edges(v, d, graph_list, graph_matrix, false);
-            }
+            //początek pomiaru
+            high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-            switch (alg) {
+            graph_list->Dijkstra_algorithm();
 
-                case 11:{
+            //koniec pomiaru
+            high_resolution_clock::time_point t2 = high_resolution_clock::now();
+            duration<double> time1 = duration_cast<duration<double>>(t2 - t1);
+            final_time_list_1 += (double)time1.count();
 
-                    //początek pomiaru
-                    high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-                    graph_list->Dijkstra_algorithm();
+            //początek pomiaru
+            high_resolution_clock::time_point t3 = high_resolution_clock::now();
 
-                    //koniec pomiaru
-                    high_resolution_clock::time_point t2 = high_resolution_clock::now();
-                    duration<double> time1 = duration_cast<duration<double>>(t2 - t1);
-                    final_time += (double)time1.count();
+            graph_matrix->Dijkstra_algorithm();
 
-                    break;
-                }
+            //koniec pomiaru
+            high_resolution_clock::time_point t4 = high_resolution_clock::now();
+            duration<double> time2 = duration_cast<duration<double>>(t4 - t3);
+            final_time_matrix_1 += (double)time2.count();
 
-                case 12:{
 
-                    //początek pomiaru
-                    high_resolution_clock::time_point t3 = high_resolution_clock::now();
+            //początek pomiaru
+            high_resolution_clock::time_point t5 = high_resolution_clock::now();
 
-                    graph_matrix->Dijkstra_algorithm();
+            graph_list->Dijkstra_algorithm();
 
-                    //koniec pomiaru
-                    high_resolution_clock::time_point t4 = high_resolution_clock::now();
-                    duration<double> time2 = duration_cast<duration<double>>(t4 - t3);
-                    final_time += (double)time2.count();
+            //koniec pomiaru
+            high_resolution_clock::time_point t6 = high_resolution_clock::now();
+            duration<double> time3 = duration_cast<duration<double>>(t6 - t5);
+            final_time_list_2 += (double)time3.count();
 
-                    break;
-                }
 
-                case 21:{
+            //początek pomiaru
+            high_resolution_clock::time_point t7 = high_resolution_clock::now();
 
-                    //początek pomiaru
-                    high_resolution_clock::time_point t1 = high_resolution_clock::now();
+            graph_matrix->Dijkstra_algorithm();
 
-                    graph_list->Bellman_Ford_algorithm();
-
-                    //koniec pomiaru
-                    high_resolution_clock::time_point t2 = high_resolution_clock::now();
-                    duration<double> time1 = duration_cast<duration<double>>(t2 - t1);
-                    final_time += (double)time1.count();
-
-                    break;
-                }
-
-                case 22:{
-
-                    //początek pomiaru
-                    high_resolution_clock::time_point t3 = high_resolution_clock::now();
-
-                    graph_matrix->Bellman_Ford_algorithm();
-
-                    //koniec pomiaru
-                    high_resolution_clock::time_point t4 = high_resolution_clock::now();
-                    duration<double> time2 = duration_cast<duration<double>>(t4 - t3);
-                    final_time += (double)time2.count();
-
-                    break;
-                }
-
-                case 31:{
-
-                    //początek pomiaru
-                    high_resolution_clock::time_point t1 = high_resolution_clock::now();
-
-                    graph_list->Prim_algorithm();
-
-                    //koniec pomiaru
-                    high_resolution_clock::time_point t2 = high_resolution_clock::now();
-                    duration<double> time1 = duration_cast<duration<double>>(t2 - t1);
-                    final_time += (double)time1.count();
-
-                    break;
-                }
-
-                case 32:{
-
-                    //początek pomiaru
-                    high_resolution_clock::time_point t3 = high_resolution_clock::now();
-
-                    graph_matrix->Prim_algorithm();
-
-                    //koniec pomiaru
-                    high_resolution_clock::time_point t4 = high_resolution_clock::now();
-                    duration<double> time2 = duration_cast<duration<double>>(t4 - t3);
-                    final_time += (double)time2.count();
-
-                    break;
-                }
-
-                case 41:{
-
-                    //początek pomiaru
-                    high_resolution_clock::time_point t1 = high_resolution_clock::now();
-
-                    graph_list->Kruskal_algorithm();
-
-                    //koniec pomiaru
-                    high_resolution_clock::time_point t2 = high_resolution_clock::now();
-                    duration<double> time1 = duration_cast<duration<double>>(t2 - t1);
-                    final_time += (double)time1.count();
-
-                    break;
-                }
-
-                case 42:{
-
-                    //początek pomiaru
-                    high_resolution_clock::time_point t3 = high_resolution_clock::now();
-
-                    graph_matrix->Kruskal_algorithm();
-
-                    //koniec pomiaru
-                    high_resolution_clock::time_point t4 = high_resolution_clock::now();
-                    duration<double> time2 = duration_cast<duration<double>>(t4 - t3);
-                    final_time += (double)time2.count();
-
-                    break;
-                }
-
-                case 0:
-                    run = false;
-                    break;
-
-                default:
-                    run = false;
-                    break;
-            }
+            //koniec pomiaru
+            high_resolution_clock::time_point t8 = high_resolution_clock::now();
+            duration<double> time4 = duration_cast<duration<double>>(t8 - t7);
+            final_time_matrix_2 += (double)time4.count();
         }
 
         ofstream measurement;
         measurement.open("RESULT.txt", ios::app);
 
-        measurement << endl << "ID algorytmu: " << alg << " wierzcholki: " << v << "  gestosc: " << d << endl
-                    << "  czas: " << fixed << setprecision(10) << final_time << endl << "średnia: " << setprecision(10) << final_time / number << endl << endl;
+        measurement << endl << "List Dijkstra:  wierzcholki: " << v << "  gestosc: " << d << endl
+                    << "  czas: " << fixed << setprecision(10) << final_time_list_1 << endl << "średnia: " << setprecision(10) << final_time_list_1 / number << endl << endl;
+
+        measurement << endl << "Matrix Dijkstra:  wierzcholki: " << v << "  gestosc: " << d << endl
+                    << "  czas: " << fixed << setprecision(10) << final_time_matrix_1 << endl << "średnia: " << setprecision(10) << final_time_matrix_1 / number << endl << endl;
+
+        measurement << endl << "List Bellman-Ford:  wierzcholki: " << v << "  gestosc: " << d << endl
+                    << "  czas: " << fixed << setprecision(10) << final_time_list_2 << endl << "średnia: " << setprecision(10) << final_time_list_2 / number << endl << endl;
+
+        measurement << endl << "Matrix Bellman-Ford:  wierzcholki: " << v << "  gestosc: " << d << endl
+                    << "  czas: " << fixed << setprecision(10) << final_time_matrix_2 << endl << "średnia: " << setprecision(10) << final_time_matrix_2 / number << endl << endl;
+
+        measurement.close();
+
+
+
+        final_time_list_1 = 0;
+        final_time_matrix_1 = 0;
+        final_time_list_2 = 0;
+        final_time_matrix_2 = 0;
+
+        for (int i = 0; i < number; i++){
+
+            Graph_List *graph_list = new Graph_List(v);
+            Graph_Matrix *graph_matrix = new Graph_Matrix(v);
+            generate_edges(v, d, graph_list, graph_matrix, false);
+            //początek pomiaru
+            high_resolution_clock::time_point t1 = high_resolution_clock::now();
+
+            graph_list->Prim_algorithm();
+
+            //koniec pomiaru
+            high_resolution_clock::time_point t2 = high_resolution_clock::now();
+            duration<double> time1 = duration_cast<duration<double>>(t2 - t1);
+            final_time_list_1 += (double)time1.count();
+
+
+            //początek pomiaru
+            high_resolution_clock::time_point t3 = high_resolution_clock::now();
+
+            graph_matrix->Prim_algorithm();
+
+            //koniec pomiaru
+            high_resolution_clock::time_point t4 = high_resolution_clock::now();
+            duration<double> time2 = duration_cast<duration<double>>(t4 - t3);
+            final_time_matrix_1 += (double)time2.count();
+
+
+            //początek pomiaru
+            high_resolution_clock::time_point t5 = high_resolution_clock::now();
+
+            graph_list->Kruskal_algorithm();
+
+            //koniec pomiaru
+            high_resolution_clock::time_point t6 = high_resolution_clock::now();
+            duration<double> time3 = duration_cast<duration<double>>(t6 - t5);
+            final_time_list_2 += (double)time3.count();
+
+
+            //początek pomiaru
+            high_resolution_clock::time_point t7 = high_resolution_clock::now();
+
+            graph_matrix->Kruskal_algorithm();
+
+            //koniec pomiaru
+            high_resolution_clock::time_point t8 = high_resolution_clock::now();
+            duration<double> time4 = duration_cast<duration<double>>(t8 - t7);
+            final_time_matrix_2 += (double)time4.count();
+        }
+
+        measurement.open("RESULT.txt", ios::app);
+
+        measurement << endl << "List Prim:  wierzcholki: " << v << "  gestosc: " << d << endl
+                    << "  czas: " << fixed << setprecision(10) << final_time_list_1 << endl << "średnia: " << setprecision(10) << final_time_list_1 / number << endl << endl;
+
+        measurement << endl << "Matrix Prim:  wierzcholki: " << v << "  gestosc: " << d << endl
+                    << "  czas: " << fixed << setprecision(10) << final_time_matrix_1 << endl << "średnia: " << setprecision(10) << final_time_matrix_1 / number << endl << endl;
+
+        measurement << endl << "List Kruskal:  wierzcholki: " << v << "  gestosc: " << d << endl
+                    << "  czas: " << fixed << setprecision(10) << final_time_list_2 << endl << "średnia: " << setprecision(10) << final_time_list_2 / number << endl << endl;
+
+        measurement << endl << "Matrix Kruskal:  wierzcholki: " << v << "  gestosc: " << d << endl
+                    << "  czas: " << fixed << setprecision(10) << final_time_matrix_2 << endl << "średnia: " << setprecision(10) << final_time_matrix_2 / number << endl << endl;
 
         measurement.close();
     }
