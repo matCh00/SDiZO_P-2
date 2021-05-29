@@ -417,7 +417,7 @@ void algorithm_measurement(){
     float d;
 
     // tyle różnych kombinacji
-    for (int i = 12; i <= 20; i++) {
+    for (int i = 13; i <= 16; i++) {
 
         if (i == 1) {
             v = 20;
