@@ -408,6 +408,8 @@ void MST() {
 
 void algorithm_measurement(){
 
+    Graph_List *graph_list;
+    Graph_Matrix *graph_matrix;
     double final_time_list_1;
     double final_time_matrix_1;
     double final_time_list_2;
@@ -417,7 +419,7 @@ void algorithm_measurement(){
     float d;
 
     // tyle różnych kombinacji
-    for (int i = 13; i <= 16; i++) {
+    for (int i = 1; i <= 20; i++) {
 
         if (i == 1) {
             v = 20;
@@ -510,10 +512,10 @@ void algorithm_measurement(){
         final_time_list_2 = 0;
         final_time_matrix_2 = 0;
 
-        for (int i = 0; i < number; i++){
+        for (int n = 0; n < number; n++){
 
-            Graph_List *graph_list = new Graph_List(v);
-            Graph_Matrix *graph_matrix = new Graph_Matrix(v);
+            graph_list = new Graph_List(v);
+            graph_matrix = new Graph_Matrix(v);
             generate_edges(v, d, graph_list, graph_matrix, true);
 
             int *distance = new int[v];
@@ -576,6 +578,8 @@ void algorithm_measurement(){
 
             delete[] distance;
             delete[] parent;
+            delete graph_list;
+            delete graph_matrix;
         }
 
         ofstream measurement;
@@ -597,20 +601,20 @@ void algorithm_measurement(){
 
 
 
-
         final_time_list_1 = 0;
         final_time_matrix_1 = 0;
         final_time_list_2 = 0;
         final_time_matrix_2 = 0;
 
-        for (int i = 0; i < number; i++){
+        for (int nn = 0; nn < number; nn++){
 
-            Graph_List *graph_list = new Graph_List(v);
-            Graph_Matrix *graph_matrix = new Graph_Matrix(v);
+            graph_list = new Graph_List(v);
+            graph_matrix = new Graph_Matrix(v);
             generate_edges(v, d, graph_list, graph_matrix, false);
 
             int *key = new int[v];
             int *parent = new int[v];
+            Edge **mst_edges;
 
             //początek pomiaru
             high_resolution_clock::time_point t1 = high_resolution_clock::now();
@@ -639,7 +643,10 @@ void algorithm_measurement(){
 
             delete[] key;
             delete[] parent;
-            Edge **mst_edges = new Edge *[v - 1];
+            mst_edges = new Edge *[v - 1];
+            for (int i = 0; i < v - 1; i++) {
+                mst_edges[i] = new Edge(0, 0, 0);
+            }
 
             //początek pomiaru
             high_resolution_clock::time_point t5 = high_resolution_clock::now();
@@ -653,6 +660,9 @@ void algorithm_measurement(){
 
             delete[] mst_edges;
             mst_edges = new Edge *[v - 1];
+            for (int i = 0; i < v - 1; i++) {
+                mst_edges[i] = new Edge(0, 0, 0);
+            }
 
             //początek pomiaru
             high_resolution_clock::time_point t7 = high_resolution_clock::now();
@@ -665,6 +675,8 @@ void algorithm_measurement(){
             final_time_matrix_2 += (double)time4.count();
 
             delete[] mst_edges;
+            delete graph_list;
+            delete graph_matrix;
         }
 
         measurement.open("RESULT.txt", ios::app);
