@@ -291,13 +291,13 @@ void SPF() {
                 break;
 
             case 4:
-                graph_list->Dijkstra_algorithm();
-                graph_matrix->Dijkstra_algorithm();
+                graph_list->Dijkstra();
+                graph_matrix->Dijkstra();
                 break;
 
             case 5:
-                graph_list->Bellman_Ford_algorithm();
-                graph_matrix->Bellman_Ford_algorithm();
+                graph_list->Bellman_Ford();
+                graph_matrix->Bellman_Ford();
                 break;
 
             case 0:
@@ -385,13 +385,13 @@ void MST() {
                 break;
 
             case 4:
-                graph_list->Prim_algorithm();
-                graph_matrix->Prim_algorithm();
+                graph_list->Prim();
+                graph_matrix->Prim();
                 break;
 
             case 5:
-                graph_list->Kruskal_algorithm();
-                graph_matrix->Kruskal_algorithm();
+                graph_list->Kruskal();
+                graph_matrix->Kruskal();
                 break;
 
             case 0:
@@ -516,48 +516,66 @@ void algorithm_measurement(){
             Graph_Matrix *graph_matrix = new Graph_Matrix(v);
             generate_edges(v, d, graph_list, graph_matrix, true);
 
+            int *distance = new int[v];
+            int *parent = new int[v];
+
             //początek pomiaru
             high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-            graph_list->Dijkstra_algorithm();
+            graph_list->Dijkstra_algorithm(distance, parent);
 
             //koniec pomiaru
             high_resolution_clock::time_point t2 = high_resolution_clock::now();
             duration<double> time1 = duration_cast<duration<double>>(t2 - t1);
             final_time_list_1 += (double)time1.count();
 
+            delete[] distance;
+            delete[] parent;
+            distance = new int[v];
+            parent = new int[v];
 
             //początek pomiaru
             high_resolution_clock::time_point t3 = high_resolution_clock::now();
 
-            graph_matrix->Dijkstra_algorithm();
+            graph_matrix->Dijkstra_algorithm(distance, parent);
 
             //koniec pomiaru
             high_resolution_clock::time_point t4 = high_resolution_clock::now();
             duration<double> time2 = duration_cast<duration<double>>(t4 - t3);
             final_time_matrix_1 += (double)time2.count();
 
+            delete[] distance;
+            delete[] parent;
+            distance = new int[v];
+            parent = new int[v];
 
             //początek pomiaru
             high_resolution_clock::time_point t5 = high_resolution_clock::now();
 
-            graph_list->Dijkstra_algorithm();
+            graph_list->Bellman_Ford_algorithm(distance, parent);
 
             //koniec pomiaru
             high_resolution_clock::time_point t6 = high_resolution_clock::now();
             duration<double> time3 = duration_cast<duration<double>>(t6 - t5);
             final_time_list_2 += (double)time3.count();
 
+            delete[] distance;
+            delete[] parent;
+            distance = new int[v];
+            parent = new int[v];
 
             //początek pomiaru
             high_resolution_clock::time_point t7 = high_resolution_clock::now();
 
-            graph_matrix->Dijkstra_algorithm();
+            graph_matrix->Bellman_Ford_algorithm(distance, parent);
 
             //koniec pomiaru
             high_resolution_clock::time_point t8 = high_resolution_clock::now();
             duration<double> time4 = duration_cast<duration<double>>(t8 - t7);
             final_time_matrix_2 += (double)time4.count();
+
+            delete[] distance;
+            delete[] parent;
         }
 
         ofstream measurement;
@@ -579,6 +597,7 @@ void algorithm_measurement(){
 
 
 
+
         final_time_list_1 = 0;
         final_time_matrix_1 = 0;
         final_time_list_2 = 0;
@@ -589,48 +608,63 @@ void algorithm_measurement(){
             Graph_List *graph_list = new Graph_List(v);
             Graph_Matrix *graph_matrix = new Graph_Matrix(v);
             generate_edges(v, d, graph_list, graph_matrix, false);
+
+            int *key = new int[v];
+            int *parent = new int[v];
+
             //początek pomiaru
             high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-            graph_list->Prim_algorithm();
+            graph_list->Prim_algorithm(key, parent);
 
             //koniec pomiaru
             high_resolution_clock::time_point t2 = high_resolution_clock::now();
             duration<double> time1 = duration_cast<duration<double>>(t2 - t1);
             final_time_list_1 += (double)time1.count();
 
+            delete[] key;
+            delete[] parent;
+            key = new int[v];
+            parent = new int[v];
 
             //początek pomiaru
             high_resolution_clock::time_point t3 = high_resolution_clock::now();
 
-            graph_matrix->Prim_algorithm();
+            graph_matrix->Prim_algorithm(key, parent);
 
             //koniec pomiaru
             high_resolution_clock::time_point t4 = high_resolution_clock::now();
             duration<double> time2 = duration_cast<duration<double>>(t4 - t3);
             final_time_matrix_1 += (double)time2.count();
 
+            delete[] key;
+            delete[] parent;
+            Edge **mst_edges = new Edge *[v - 1];
 
             //początek pomiaru
             high_resolution_clock::time_point t5 = high_resolution_clock::now();
 
-            graph_list->Kruskal_algorithm();
+            graph_list->Kruskal_algorithm(mst_edges);
 
             //koniec pomiaru
             high_resolution_clock::time_point t6 = high_resolution_clock::now();
             duration<double> time3 = duration_cast<duration<double>>(t6 - t5);
             final_time_list_2 += (double)time3.count();
 
+            delete[] mst_edges;
+            mst_edges = new Edge *[v - 1];
 
             //początek pomiaru
             high_resolution_clock::time_point t7 = high_resolution_clock::now();
 
-            graph_matrix->Kruskal_algorithm();
+            graph_matrix->Kruskal_algorithm(mst_edges);
 
             //koniec pomiaru
             high_resolution_clock::time_point t8 = high_resolution_clock::now();
             duration<double> time4 = duration_cast<duration<double>>(t8 - t7);
             final_time_matrix_2 += (double)time4.count();
+
+            delete[] mst_edges;
         }
 
         measurement.open("RESULT.txt", ios::app);

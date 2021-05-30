@@ -71,6 +71,7 @@ void Graph_List::print() {
 }
 
 
+
 //=============================================================================================
 //                                     ALGORYTM  DIJKSTRY
 //=============================================================================================
@@ -82,10 +83,7 @@ void Graph_List::print() {
 // idea: tworzenie kolejki priorytetowej wierzchołków i dokonanie relaksacji
 //       dla każdego wierzchołka usuniętego z tej kolejki
 
-void Graph_List::Dijkstra_algorithm() {
-
-    int *distance = new int[vertices];  // odległość od wierzchołka startowego
-    int *parent = new int[vertices];    // wierzchołek poprzedzający
+void Graph_List::Dijkstra_algorithm(int *&distance, int *&parent) {
 
     // kolejka priorytetowa - kopiec minimalny wierzchołków (każdy przechowuje wartość i dystans)
     auto *heap = new Vertex_Min_Heap(vertices);
@@ -126,7 +124,19 @@ void Graph_List::Dijkstra_algorithm() {
             check_neighbours = check_neighbours->next;
         }
     }
-// wypisanie wyniku (pominięte w pomiarach)
+
+    delete heap;
+}
+
+
+
+void Graph_List::Dijkstra() {
+
+    int *distance = new int[vertices];  // odległość od wierzchołka startowego
+    int *parent = new int[vertices];    // wierzchołek poprzedzający
+
+    Dijkstra_algorithm(distance, parent);
+
     cout << "\nalgorytm Dijkstry listowo: (wierzcholek: <- (poprzednicy) [dystans]\n";
     for (int i = 0; i < vertices; ++i) {
         cout << i << ": ";
@@ -138,12 +148,10 @@ void Graph_List::Dijkstra_algorithm() {
         }
         cout <<" <- (0)  [" << distance[i] << "]" << endl;
     }
-// koniec wypisania wyniku (pominięte w pomiarach)
 
-    delete heap;
+    delete[] distance;
+    delete [] parent;
 }
-
-
 
 
 
@@ -158,11 +166,9 @@ void Graph_List::Dijkstra_algorithm() {
 
 // idea: relaksacja następuje (wierzchołki - 1) razy każdej krawędzi
 
-void Graph_List::Bellman_Ford_algorithm() {
+bool Graph_List::Bellman_Ford_algorithm(int *&distance, int *&parent) {
 
     Edge **graph_edges = new Edge *[edges];  // zbiór krawędzi
-    int *distance = new int[vertices];       // odległość od wierzchołka startowego
-    int *parent = new int[vertices];         // wierzchołek poprzedzający
 
     // ustawienie początkowych wartości
     int i = 0;
@@ -211,9 +217,39 @@ void Graph_List::Bellman_Ford_algorithm() {
             }
         }
     }
-// wypisanie wyniku (pominięte w pomiarach)
-    // jeżeli wykryto cykl o ujemnej wadze - z założenia krawędzie mogą mieć ujemną wagę
+
     if (relaxed) {
+        for (int j = 0; j < edges; ++j) {
+            Edge *edge = graph_edges[j];
+            int u = edge->get_vertex1();
+            int v = edge->get_vertex2();
+            int weight = edge->get_edge_weight();
+            if (distance[v] > distance[u] + weight) {
+                delete[] distance;
+                delete[] parent;
+                return false;
+            }
+        }
+    }
+    for (int j = 0; j < edges; ++j) {
+        delete graph_edges[j];
+    }
+
+    delete[] graph_edges;
+    return true;
+}
+
+
+
+void Graph_List::Bellman_Ford() {
+
+    int *distance = new int[vertices];       // odległość od wierzchołka startowego
+    int *parent = new int[vertices];         // wierzchołek poprzedzający
+
+    bool bf = Bellman_Ford_algorithm(distance, parent);
+
+    // jeżeli wykryto cykl o ujemnej wadze - z założenia krawędzie mogą mieć ujemną wagę
+    if (!bf) {
         cout << "\nWykryto cykl o ujemnej wadze\n";
     } else {
         cout << "\nalgorytm Bellmana-Forda listowo: (wierzcholek: <- (poprzednicy) [dystans]\n";
@@ -228,29 +264,10 @@ void Graph_List::Bellman_Ford_algorithm() {
             cout <<" <- (0)  [" << distance[i] << "]" << endl;
         }
     }
-// koniec wypisania wyniku (pominięte w pomiarach)
-
-    if (relaxed) {
-        for (int j = 0; j < edges; ++j) {
-            Edge *edge = graph_edges[j];
-            int u = edge->get_vertex1();
-            int v = edge->get_vertex2();
-            int weight = edge->get_edge_weight();
-            if (distance[v] > distance[u] + weight) {
-                delete[] distance;
-                delete[] parent;
-            }
-        }
-    }
-    for (int j = 0; j < edges; ++j) {
-        delete graph_edges[j];
-    }
 
     delete[] distance;
     delete[] parent;
-    delete[] graph_edges;
 }
-
 
 
 
@@ -268,10 +285,7 @@ void Graph_List::Bellman_Ford_algorithm() {
 //       rozpatrzonych i dodawanie krawędzi do zbioru MST aż lista wierzchołków rozpatrzonych
 //       nie będzie zawierała wszystkich wierzchołków
 
-void Graph_List::Prim_algorithm() {
-
-    int *key = new int[vertices];      // wagi krawędzi
-    int *parent = new int[vertices];   // wierzchołek poprzedzający
+void Graph_List::Prim_algorithm(int *&key, int *&parent) {
 
     // kolejka priorytetowa - kopiec minimalny wierzchołków (każdy przechowuje wartość i klucz/wagę)
     auto *heap = new Vertex_Min_Heap(vertices);
@@ -317,20 +331,28 @@ void Graph_List::Prim_algorithm() {
             check_neighbours = check_neighbours->next;
         }
     }
-// wypisanie wyniku (pominięte w pomiarach)
+    delete heap;
+}
+
+
+
+void Graph_List::Prim() {
+
+    int *key = new int[vertices];
+    int *parent = new int[vertices];
+
+    Prim_algorithm(key, parent);
+
     cout << "\nalgorytm Prima listowo: krawedzie MST: (wierzcholek - poprzednik : waga)\n";
     for (int i = 0; i < vertices; ++i) {
         if (parent[i] != -1) {
             cout << i << " - " << parent[i] << " : " << key[i] << "\n";
         }
     }
-// koniec wypisania wyniku (pominięte w pomiarach)
 
     delete[] key;
     delete[] parent;
-    delete heap;
 }
-
 
 
 
@@ -347,21 +369,13 @@ void Graph_List::Prim_algorithm() {
 //       sprawdzamy czy wierzchołki tworzące krawędź należą do różnych poddrzew,
 //       jeżeli tak to dodajemy krawędź do MST
 
-void Graph_List::Kruskal_algorithm() {
-
-    Edge **mst_edges = new Edge *[vertices - 1];  // gotowe krawędzie MST
-
-    // dla każdego wierzchołka
-    for (int i = 0; i < vertices - 1; i++) {
-
-        // tworzymy poddrzewo tego wierzchołka
-        kruskal_make_setL(mst_edges, i);
-    }
+void Graph_List::Kruskal_algorithm(Edge **mst_edges) {
 
     int *parent = new int[vertices];  // wierzchołek poprzedzający
     int *rank = new int[vertices];
     int graph_edge_index = 0;
     Edge **graph_edges = new Edge *[2 * edges];  // [2*edges] ponieważ będą duplikaty krawędzi
+
 
     // sortujemy niemalejąco wagi które składają się na graf
     for (int j = 0; j < vertices; ++j) {
@@ -425,30 +439,41 @@ void Graph_List::Kruskal_algorithm() {
         }
         delete graph_edges[graph_edge_index];
     }
-// wypisanie wyniku (pominięte w pomiarach)
-    cout << "\nalgorytm Kruskala listowo: krawedzie MST: (wierzcholek - nastepnik : waga)\n";
-    for (int i = 0; i < vertices - 1; ++i) {
-        cout << mst_edges[i]->get_vertex1() << " - " << mst_edges[i]->get_vertex2() << " : "
-             << mst_edges[i]->get_edge_weight()
-             << "\n";
-    }
-// koniec wypisania wyniku (pominięte w pomiarach)
 
-    for (int i = 0; i < vertices - 1; ++i) {
-        delete mst_edges[i];
-    }
-    delete[] mst_edges;
     delete[] parent;
     delete[] rank;
     delete[] graph_edges;
 }
 
 
-// tworzenie poddrzewa
-void Graph_List::kruskal_make_setL(Edge **mst_edges, int i) {
 
-    mst_edges[i] = new Edge(0, 0, 0);
+void Graph_List::Kruskal() {
+
+    Edge **mst_edges = new Edge *[vertices - 1];  // gotowe krawędzie MST
+
+    // dla każdego wierzchołka
+    for (int i = 0; i < vertices - 1; i++) {
+
+        // tworzymy poddrzewo tego wierzchołka
+        mst_edges[i] = new Edge(0, 0, 0);
+    }
+
+    Kruskal_algorithm(mst_edges);
+
+    cout << "\nalgorytm Kruskala listowo: krawedzie MST: (wierzcholek - nastepnik : waga)\n";
+    for (int i = 0; i < vertices - 1; ++i) {
+        cout << mst_edges[i]->get_vertex1() << " - " << mst_edges[i]->get_vertex2() << " : "
+             << mst_edges[i]->get_edge_weight()
+             << "\n";
+    }
+
+    for (int i = 0; i < vertices - 1; ++i) {
+        delete mst_edges[i];
+    }
+    delete[] mst_edges;
 }
+
+
 
 // szukanie poddrzewa
 int Graph_List::kruskal_find_setL(int *parent, int x) {

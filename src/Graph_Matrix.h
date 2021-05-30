@@ -23,14 +23,18 @@ public:
     void add_edge(int vertex1, int vertex2, int weight, bool directed);   // dodanie krawędzi
     void new_edge_weights(int added_weight);                              // dodanie wagi krawędzi
 
-    void Prim_algorithm();           // algorytm Prima
-    void Kruskal_algorithm();        // algorytm Kruskala
-    void Dijkstra_algorithm();       // algorytm Dijkstry
-    void Bellman_Ford_algorithm();   // algorytm Bellmana-Forda
+    void Prim_algorithm(int *&key, int *&parent);                // algorytm Prima
+    void Kruskal_algorithm(Edge **mst_edges);                    // algorytm Kruskala
+    void Dijkstra_algorithm(int *&distance, int *&parent);       // algorytm Dijkstry
+    bool Bellman_Ford_algorithm(int *&distance, int *&parent);   // algorytm Bellmana-Forda
+
+    void Dijkstra();      // algorytm wraz z wypisaniem
+    void Bellman_Ford();  // algorytm wraz z wypisaniem
+    void Prim();          // algorytm wraz z wypisaniem
+    void Kruskal();       // algorytm wraz z wypisaniem
 
     void print();                                     // wypisanie grafu w postaci listy sąsiedztwa
     int kruskal_find_setM(int *parent, int x);        // funkcja pomocnicza do algorytmu Kruskala
-    void kruskal_make_setM(Edge **mst_edges, int i);  // funkcja pomocnicza do algorytmu Kruskala
 };
 
 
