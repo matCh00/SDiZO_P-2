@@ -83,14 +83,14 @@ void Graph_List::print() {
 // idea: tworzenie kolejki priorytetowej wierzchołków i dokonanie relaksacji
 //       dla każdego wierzchołka usuniętego z tej kolejki
 
-void Graph_List::Dijkstra_algorithm(int *&distance, int *&parent) {
+void Graph_List::Dijkstra_algorithm(int *&distance, int *&parent, int starting_vertex) {
 
     // kolejka priorytetowa - kopiec minimalny wierzchołków (każdy przechowuje wartość i dystans)
     auto *heap = new Vertex_Min_Heap(vertices);
 
-    heap->vertexes[0]->set_element(0);  // ustawianie początkowego wierzchołka w kopcu
-    distance[0] = 0;   // dystans = 0
-    parent[0] = -1;    // poprzednik nieokreślony
+    heap->vertexes[starting_vertex]->set_element(0);  // ustawianie początkowego wierzchołka w kopcu
+    distance[starting_vertex] = 0;   // dystans = 0
+    parent[starting_vertex] = -1;    // poprzednik nieokreślony
 
     // dla każdego wierzchołka
     while (heap->has_elements()) {
@@ -134,19 +134,28 @@ void Graph_List::Dijkstra() {
 
     int *distance = new int[vertices];  // odległość od wierzchołka startowego
     int *parent = new int[vertices];    // wierzchołek poprzedzający
+    int start = 0;
+/*
+    cout << "\npodaj wierzcholek poczatkowy";
+    cin >> start;
 
-    Dijkstra_algorithm(distance, parent);
+    if (start < 0 || start >= vertices) {
+        cout << "zly wierzcholek";
+        return;
+    }
+*/
+    Dijkstra_algorithm(distance, parent, start);
 
     cout << "\nalgorytm Dijkstry listowo: (wierzcholek: <- (poprzednicy) [dystans]\n";
     for (int i = 0; i < vertices; ++i) {
         cout << i << ": ";
 
         int x = i;
-        while (parent[x] > 0 && parent[x] < vertices) {
+        while (parent[x] > 0 && parent[x] < vertices && parent[x] != start) {
             cout << " <- (" << parent[x] <<")";
             x = parent[x];
         }
-        cout <<" <- (0)  [" << distance[i] << "]" << endl;
+        cout <<" <- (" << start << ")  [" << distance[i] << "]" << endl;
     }
 
     delete[] distance;
@@ -166,7 +175,7 @@ void Graph_List::Dijkstra() {
 
 // idea: relaksacja następuje (wierzchołki - 1) razy każdej krawędzi
 
-bool Graph_List::Bellman_Ford_algorithm(int *&distance, int *&parent) {
+bool Graph_List::Bellman_Ford_algorithm(int *&distance, int *&parent, int starting_vertex) {
 
     Edge **graph_edges = new Edge *[edges];  // zbiór krawędzi
 
@@ -192,8 +201,8 @@ bool Graph_List::Bellman_Ford_algorithm(int *&distance, int *&parent) {
         }
     }
 
-    parent[0] = 0;
-    distance[0] = 0;
+    parent[starting_vertex] = starting_vertex;
+    distance[starting_vertex] = 0;
     bool relaxed = true;
 
     // (liczba wierzchołków - 1) razy
@@ -243,10 +252,19 @@ bool Graph_List::Bellman_Ford_algorithm(int *&distance, int *&parent) {
 
 void Graph_List::Bellman_Ford() {
 
-    int *distance = new int[vertices];       // odległość od wierzchołka startowego
-    int *parent = new int[vertices];         // wierzchołek poprzedzający
+    int *distance = new int[vertices];  // odległość od wierzchołka startowego
+    int *parent = new int[vertices];    // wierzchołek poprzedzający
+    int start = 0;
+/*
+    cout << "\npodaj wierzcholek poczatkowy";
+    cin >> start;
 
-    bool bf = Bellman_Ford_algorithm(distance, parent);
+    if (start < 0 || start >= vertices) {
+        cout << "zly wierzcholek";
+        return;
+    }
+*/
+    bool bf = Bellman_Ford_algorithm(distance, parent, start);
 
     // jeżeli wykryto cykl o ujemnej wadze - z założenia krawędzie mogą mieć ujemną wagę
     if (!bf) {
@@ -257,11 +275,11 @@ void Graph_List::Bellman_Ford() {
             cout << i << ": ";
 
             int x = i;
-            while (parent[x] > 0 && parent[x] < vertices) {
-                cout << " <- (" << parent[x] << ")";
+            while (parent[x] > 0 && parent[x] < vertices && parent[x] != start) {
+                cout << " <- (" << parent[x] <<")";
                 x = parent[x];
             }
-            cout <<" <- (0)  [" << distance[i] << "]" << endl;
+            cout <<" <- (" << start << ")  [" << distance[i] << "]" << endl;
         }
     }
 
@@ -338,8 +356,8 @@ void Graph_List::Prim_algorithm(int *&key, int *&parent) {
 
 void Graph_List::Prim() {
 
-    int *key = new int[vertices];
-    int *parent = new int[vertices];
+    int *key = new int[vertices];       // klucze
+    int *parent = new int[vertices];    // wierzchołek poprzedzający
 
     Prim_algorithm(key, parent);
 

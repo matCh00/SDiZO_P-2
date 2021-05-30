@@ -524,7 +524,7 @@ void algorithm_measurement(){
             //początek pomiaru
             high_resolution_clock::time_point t1 = high_resolution_clock::now();
 
-            graph_list->Dijkstra_algorithm(distance, parent);
+            graph_list->Dijkstra_algorithm(distance, parent, 0);
 
             //koniec pomiaru
             high_resolution_clock::time_point t2 = high_resolution_clock::now();
@@ -539,7 +539,7 @@ void algorithm_measurement(){
             //początek pomiaru
             high_resolution_clock::time_point t3 = high_resolution_clock::now();
 
-            graph_matrix->Dijkstra_algorithm(distance, parent);
+            graph_matrix->Dijkstra_algorithm(distance, parent, 0);
 
             //koniec pomiaru
             high_resolution_clock::time_point t4 = high_resolution_clock::now();
@@ -554,7 +554,7 @@ void algorithm_measurement(){
             //początek pomiaru
             high_resolution_clock::time_point t5 = high_resolution_clock::now();
 
-            graph_list->Bellman_Ford_algorithm(distance, parent);
+            graph_list->Bellman_Ford_algorithm(distance, parent, 0);
 
             //koniec pomiaru
             high_resolution_clock::time_point t6 = high_resolution_clock::now();
@@ -569,7 +569,7 @@ void algorithm_measurement(){
             //początek pomiaru
             high_resolution_clock::time_point t7 = high_resolution_clock::now();
 
-            graph_matrix->Bellman_Ford_algorithm(distance, parent);
+            graph_matrix->Bellman_Ford_algorithm(distance, parent, 0);
 
             //koniec pomiaru
             high_resolution_clock::time_point t8 = high_resolution_clock::now();
