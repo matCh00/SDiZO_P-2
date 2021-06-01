@@ -158,16 +158,16 @@ void Graph_Matrix::Dijkstra() {
 
     int *distance = new int[vertices];  // odległość od wierzchołka startowego
     int *parent = new int[vertices];    // wierzchołek poprzedzający
-    int start = 0;
-/*
-    cout << "\npodaj wierzcholek poczatkowy";
+    int start;
+
+    cout << "\npodaj wierzcholek poczatkowy ";
     cin >> start;
 
     if (start < 0 || start >= vertices) {
         cout << "zly wierzcholek";
         return;
     }
-*/
+
     Dijkstra_algorithm(distance, parent, start);
 
     cout << "\nalgorytm Dijkstry macierzowo: (wierzcholek: <- (poprzednicy) [dystans]\n";
@@ -175,11 +175,18 @@ void Graph_Matrix::Dijkstra() {
         cout << i << ": ";
 
         int x = i;
+        int c = 0;
         while (parent[x] > 0 && parent[x] < vertices && parent[x] != start) {
             cout << " <- (" << parent[x] <<")";
             x = parent[x];
+            c++;
         }
-        cout <<" <- (" << start << ")  [" << distance[i] << "]" << endl;
+        if (i == start)
+            cout <<" <- start" << endl;
+        else if (c == 0 && (distance[i] > 10000000 || distance[i] < -10000000))  // gdy jest jakiś śmieć w distance[i]
+            cout <<" <- nieosiagalny" << endl;
+        else
+            cout <<" <- (" << start << ")  [" << distance[i] << "]" << endl;
     }
 
     delete[] distance;
@@ -201,6 +208,7 @@ void Graph_Matrix::Dijkstra() {
 
 bool Graph_Matrix::Bellman_Ford_algorithm(int *&distance, int *&parent, int starting_vertex) {
 
+    // ustawienie początkowych wartości
     for (int i = 0; i < vertices; ++i) {
         distance[i] = INT_MAX / 2;  // dystans = inf
         parent[i] = -1;             // poprzednik nieokreślony
@@ -288,16 +296,16 @@ void Graph_Matrix::Bellman_Ford() {
 
     int *distance = new int[vertices];  // odległość od wierzchołka startowego
     int *parent = new int[vertices];    // wierzchołek poprzedzający
-    int start = 0;
-/*
-    cout << "\npodaj wierzcholek poczatkowy";
+    int start;
+
+    cout << "\npodaj wierzcholek poczatkowy ";
     cin >> start;
 
     if (start < 0 || start >= vertices) {
         cout << "zly wierzcholek";
         return;
     }
-*/
+
     bool bf = Bellman_Ford_algorithm(distance, parent, start);
 
     // jeżeli wykryto cykl o ujemnej wadze - z założenia krawędzie mogą mieć ujemną wagę
@@ -310,11 +318,18 @@ void Graph_Matrix::Bellman_Ford() {
             cout << i << ": ";
 
             int x = i;
+            int c = 0;
             while (parent[x] > 0 && parent[x] < vertices && parent[x] != start) {
                 cout << " <- (" << parent[x] <<")";
                 x = parent[x];
+                c++;
             }
-            cout <<" <- (" << start << ")  [" << distance[i] << "]" << endl;
+            if (i == start)
+                cout <<" <- start" << endl;
+            else if (c == 0 && (distance[i] > 10000000 || distance[i] < -10000000))  // gdy jest jakiś śmieć w distance[i]
+                cout <<" <- nieosiagalny" << endl;
+            else
+                cout <<" <- (" << start << ")  [" << distance[i] << "]" << endl;
         }
     }
 
