@@ -4,9 +4,10 @@
 Vertex_Min_Heap::Vertex_Min_Heap(int v) {
     vertexes = new Vertex *[v];
     position = new int[v];
+
     // stworzenie pomocniczych obiektów - wierzchołków (numer wierzchołka, key)
     for (int i = 0; i < v; ++i) {
-        vertexes[i] = new Vertex(i, INT_MAX);
+        vertexes[i] = new Vertex(i, 999999999);  // po zamianie z INT_MAX nie ma błędów
         position[i] = i;
     }
     heap_size = v;

@@ -60,7 +60,7 @@ void Graph_List::add_edge(int vertex1, int vertex2, int edge_weight, bool direct
 
 void Graph_List::print() {
     for (int i = 0; i < vertices; ++i) {
-        cout << "V " << i << ":";
+        cout << "  V " << i << ":";
         auto list = adjacency_list[i]->get_head();
         while (list != nullptr) {
             cout << setw(8) << list->neighbour << " (" << list->edge_weight << ")";
@@ -87,12 +87,6 @@ void Graph_List::Dijkstra_algorithm(int *&distance, int *&parent, int starting_v
 
     // kolejka priorytetowa - kopiec minimalny wierzchołków (każdy przechowuje wartość i dystans)
     auto *heap = new Vertex_Min_Heap(vertices);
-
-    // ustawienie początkowych wartości
-    for (int i = 0; i < vertices; ++i) {
-        distance[i] = INT_MAX / 2;  // dystans = inf
-        parent[i] = i;             // poprzednik nieokreślony
-    }
 
     heap->vertexes[starting_vertex]->set_element(0);  // ustawianie początkowego wierzchołka w kopcu
     distance[starting_vertex] = 0;   // dystans = 0
@@ -142,19 +136,19 @@ void Graph_List::Dijkstra() {
     int *parent = new int[vertices];    // wierzchołek poprzedzający
     int start;
 
-    cout << "\npodaj wierzcholek poczatkowy ";
+    cout << "\n podaj wierzcholek poczatkowy ";
     cin >> start;
 
     if (start < 0 || start >= vertices) {
-        cout << "zly wierzcholek";
+        cout << " zly wierzcholek";
         return;
     }
 
     Dijkstra_algorithm(distance, parent, start);
 
-    cout << "\nalgorytm Dijkstry listowo: (wierzcholek: <- (poprzednicy) [dystans]\n";
+    cout << "\n algorytm Dijkstry listowo: (wierzcholek: <- (poprzednicy) [dystans]\n";
     for (int i = 0; i < vertices; ++i) {
-        cout << i << ": ";
+        cout << "  " << i << ": ";
 
         int x = i;
         int c = 0;
@@ -269,11 +263,11 @@ void Graph_List::Bellman_Ford() {
     int *parent = new int[vertices];    // wierzchołek poprzedzający
     int start;
 
-    cout << "\npodaj wierzcholek poczatkowy ";
+    cout << "\n podaj wierzcholek poczatkowy ";
     cin >> start;
 
     if (start < 0 || start >= vertices) {
-        cout << "zly wierzcholek";
+        cout << " zly wierzcholek";
         return;
     }
 
@@ -281,11 +275,11 @@ void Graph_List::Bellman_Ford() {
 
     // jeżeli wykryto cykl o ujemnej wadze - z założenia krawędzie mogą mieć ujemną wagę
     if (!bf) {
-        cout << "\nWykryto cykl o ujemnej wadze\n";
+        cout << "\n Wykryto cykl o ujemnej wadze\n";
     } else {
-        cout << "\nalgorytm Bellmana-Forda listowo: (wierzcholek: <- (poprzednicy) [dystans]\n";
+        cout << "\n algorytm Bellmana-Forda listowo: (wierzcholek: <- (poprzednicy) [dystans]\n";
         for (int i = 0; i < vertices; ++i) {
-            cout << i << ": ";
+            cout << "  " << i << ": ";
 
             int x = i;
             int c = 0;
@@ -378,15 +372,18 @@ void Graph_List::Prim() {
 
     int *key = new int[vertices];       // klucze
     int *parent = new int[vertices];    // wierzchołek poprzedzający
+    int sum = 0;
 
     Prim_algorithm(key, parent);
 
-    cout << "\nalgorytm Prima listowo: krawedzie MST: (wierzcholek - poprzednik : waga)\n";
+    cout << "\n algorytm Prima listowo: krawedzie MST: (wierzcholek1 - wierzcholek2 : waga)\n";
     for (int i = 0; i < vertices; ++i) {
         if (parent[i] != -1) {
-            cout << i << " - " << parent[i] << " : " << key[i] << "\n";
+            cout << "  " << i << " - " << parent[i] << " : " << key[i] << "\n";
+            sum += key[i];
         }
     }
+    cout << "   waga calkowita MST: " << sum << endl;
 
     delete[] key;
     delete[] parent;
@@ -488,6 +485,7 @@ void Graph_List::Kruskal_algorithm(Edge **mst_edges) {
 void Graph_List::Kruskal() {
 
     Edge **mst_edges = new Edge *[vertices - 1];  // gotowe krawędzie MST
+    int sum = 0;
 
     // dla każdego wierzchołka
     for (int i = 0; i < vertices - 1; i++) {
@@ -498,12 +496,13 @@ void Graph_List::Kruskal() {
 
     Kruskal_algorithm(mst_edges);
 
-    cout << "\nalgorytm Kruskala listowo: krawedzie MST: (wierzcholek - nastepnik : waga)\n";
+    cout << "\n algorytm Kruskala listowo: krawedzie MST: (wierzcholek1 - wierzcholek2 : waga)\n";
     for (int i = 0; i < vertices - 1; ++i) {
-        cout << mst_edges[i]->get_vertex1() << " - " << mst_edges[i]->get_vertex2() << " : "
-             << mst_edges[i]->get_edge_weight()
-             << "\n";
+        cout << "  " << mst_edges[i]->get_vertex1() << " - " << mst_edges[i]->get_vertex2() << " : "
+             << mst_edges[i]->get_edge_weight() << "\n";
+        sum += mst_edges[i]->get_edge_weight();
     }
+    cout << "   waga calkowita MST: " << sum << endl;
 
     for (int i = 0; i < vertices - 1; ++i) {
         delete mst_edges[i];

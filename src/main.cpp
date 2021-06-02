@@ -174,16 +174,16 @@ int main() {
             "|                                                           |\n"
             "|         Badanie efektywnosci algorytmow grafowych         |\n"
             "|                         maj  2021                         |\n"
-            " -----------------------------------------------------------\n\n\n";
+            " -----------------------------------------------------------\n\n";
 
     bool run = true;
 
     while (run) {
 
-        cout << "[1]  -  SPF  (algorytmy Dijkstry i Bellmana-Forda)\n"
-                "[2]  -  MST  (algorytmy Prima i Kruskala)\n"
-                "[3]  -  testy efektywnosci algorytmow grafowych\n"
-                "[0]  -  wyjscie\n";
+        cout << "\n [1]  -  SPF  (algorytmy Dijkstry i Bellmana-Forda)\n"
+                " [2]  -  MST  (algorytmy Prima i Kruskala)\n"
+                " [3]  -  testy efektywnosci algorytmow grafowych\n"
+                " [0]  -  wyjscie\n";
 
         int option;
         cin >> option;
@@ -228,12 +228,12 @@ void SPF() {
 
     while (run) {
 
-        cout << "\n[1]  -  wczytaj graf\n"
-                "[2]  -  wygeneruj graf\n"
-                "[3]  -  wyswietl graf\n"
-                "[4]  -  algorytm Dijkstry\n"
-                "[5]  -  algorytm Bellmana-Forda\n"
-                "[0]  -  wyjdz\n";
+        cout << "\n [1]  -  wczytaj graf\n"
+                " [2]  -  wygeneruj graf\n"
+                " [3]  -  wyswietl graf\n"
+                " [4]  -  algorytm Dijkstry\n"
+                " [5]  -  algorytm Bellmana-Forda\n"
+                " [0]  -  wyjdz\n";
 
         int choose;
         cin >> choose;
@@ -241,7 +241,7 @@ void SPF() {
         switch (choose) {
 
             case 1: {
-                cout << "Podaj nazwe pliku: ";
+                cout << " Podaj nazwe pliku: ";
                 int edgesNumber, verticesNumber;
                 string file_name;
                 cin >> file_name;
@@ -262,16 +262,16 @@ void SPF() {
                         graph_matrix->add_edge(v1, v2, weight, true);
                     }
                 } else
-                    cout << "Blad podczas otwierania pliku\n";
+                    cout << " Blad podczas otwierania pliku\n";
                 file.close();
                 break;
             }
 
             case 2:
                 int ve, de;
-                cout << "podaj liczbe wierzcholkow: ";
+                cout << " podaj liczbe wierzcholkow: ";
                 cin >> ve;
-                cout << "podaj gestosc: ";
+                cout << " podaj gestosc: ";
                 cin >> de;
 
                 delete graph_list;
@@ -283,10 +283,10 @@ void SPF() {
                 break;
 
             case 3:
-                cout << "\nGraf w postaci listy \n";
+                cout << "\n Graf w postaci listy \n";
                 graph_list->print();
                 cout << endl << endl;
-                cout << "Graf w postaci macierzy \n";
+                cout << " Graf w postaci macierzy \n";
                 graph_matrix->print();
                 break;
 
@@ -324,12 +324,12 @@ void MST() {
 
     while (run) {
 
-        cout << "\n[1]  -  wczytaj graf\n"
-                "[2]  -  wygeneruj graf\n"
-                "[3]  -  wyswietl graf\n"
-                "[4]  -  algorytm Prima\n"
-                "[5]  -  algorytm Kruskala\n"
-                "[0]  -  wyjdz\n";
+        cout << "\n [1]  -  wczytaj graf\n"
+                " [2]  -  wygeneruj graf\n"
+                " [3]  -  wyswietl graf\n"
+                " [4]  -  algorytm Prima\n"
+                " [5]  -  algorytm Kruskala\n"
+                " [0]  -  wyjdz\n";
 
         int choose;
         cin >> choose;
@@ -337,7 +337,7 @@ void MST() {
         switch (choose) {
 
             case 1: {
-                cout << "Podaj nazwe pliku: ";
+                cout << " Podaj nazwe pliku: ";
                 int edgesNumber, verticesNumber;
                 string file_name;
                 cin >> file_name;
@@ -358,15 +358,15 @@ void MST() {
                         graph_matrix->add_edge(v1, v2, weight, false);
                     }
                 } else
-                    cout << "Blad podczas otwierania pliku\n";
+                    cout << " Blad podczas otwierania pliku\n";
                 file.close();
                 break;
             }
 
             case 2:
                 int ve, de;
-                cout << "podaj liczbe wierzcholkow: "; cin >> ve;
-                cout << "podaj gestosc: "; cin >> de;
+                cout << " podaj liczbe wierzcholkow: "; cin >> ve;
+                cout << " podaj gestosc: "; cin >> de;
 
                 delete graph_list;
                 graph_list = new Graph_List(ve);
@@ -377,10 +377,10 @@ void MST() {
                 break;
 
             case 3:
-                cout << "\nGraf w postaci listy \n";
+                cout << "\n Graf w postaci listy \n";
                 graph_list->print();
                 cout << endl << endl;
-                cout << "Graf w postaci macierzy \n";
+                cout << " Graf w postaci macierzy \n";
                 graph_matrix->print();
                 break;
 

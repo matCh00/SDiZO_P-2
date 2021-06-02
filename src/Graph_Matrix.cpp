@@ -73,7 +73,7 @@ void Graph_Matrix::new_edge_weights(int added_weight) {
 void Graph_Matrix::print() {
 
     for (int y = 0; y < incidence_matrix->size_y; ++y) {
-        cout << "V " << y << ":";
+        cout << "  V " << y << ":";
         for (int x = 0; x < incidence_matrix->size_x; ++x) {
             cout << setw(7) << incidence_matrix->array[x][y] * edge_weights[x];
         }
@@ -160,19 +160,19 @@ void Graph_Matrix::Dijkstra() {
     int *parent = new int[vertices];    // wierzchołek poprzedzający
     int start;
 
-    cout << "\npodaj wierzcholek poczatkowy ";
+    cout << "\n podaj wierzcholek poczatkowy ";
     cin >> start;
 
     if (start < 0 || start >= vertices) {
-        cout << "zly wierzcholek";
+        cout << " zly wierzcholek";
         return;
     }
 
     Dijkstra_algorithm(distance, parent, start);
 
-    cout << "\nalgorytm Dijkstry macierzowo: (wierzcholek: <- (poprzednicy) [dystans]\n";
+    cout << "\n algorytm Dijkstry macierzowo: (wierzcholek: <- (poprzednicy) [dystans]\n";
     for (int i = 0; i < vertices; ++i) {
-        cout << i << ": ";
+        cout << "  " << i << ": ";
 
         int x = i;
         int c = 0;
@@ -298,11 +298,11 @@ void Graph_Matrix::Bellman_Ford() {
     int *parent = new int[vertices];    // wierzchołek poprzedzający
     int start;
 
-    cout << "\npodaj wierzcholek poczatkowy ";
+    cout << "\n podaj wierzcholek poczatkowy ";
     cin >> start;
 
     if (start < 0 || start >= vertices) {
-        cout << "zly wierzcholek";
+        cout << " zly wierzcholek";
         return;
     }
 
@@ -310,12 +310,12 @@ void Graph_Matrix::Bellman_Ford() {
 
     // jeżeli wykryto cykl o ujemnej wadze - z założenia krawędzie mogą mieć ujemną wagę
     if (!bf) {
-        cout << "\nWykryto cykl o ujemnej wadze\n";
+        cout << "\n Wykryto cykl o ujemnej wadze\n";
     }
     else {
-        cout << "\nalgorytm Bellmana-Forda macierzowo: (wierzcholek: <- (poprzednicy) [dystans]\n";
+        cout << "\n algorytm Bellmana-Forda macierzowo: (wierzcholek: <- (poprzednicy) [dystans]\n";
         for (int i = 0; i < vertices; ++i) {
-            cout << i << ": ";
+            cout << "  " << i << ": ";
 
             int x = i;
             int c = 0;
@@ -420,15 +420,18 @@ void Graph_Matrix::Prim() {
 
     int *key = new int[vertices];       // klucze
     int *parent = new int[vertices];    // wierzchołek poprzedzający
+    int sum = 0;
 
     Prim_algorithm(key, parent);
 
-    cout << "\nalgorytm Prima macierzowo: krawedzie MST: (wierzcholek - poprzednik : waga)\n";
+    cout << "\n algorytm Prima macierzowo: krawedzie MST: (wierzcholek1 - wierzcholek2 : waga)\n";
     for (int i = 0; i < vertices; ++i) {
         if (parent[i] != -1) {
-            cout << i << " - " << parent[i] << " : " << key[i] << "\n";
+            cout << "  " << i << " - " << parent[i] << " : " << key[i] << "\n";
+            sum += key[i];
         }
     }
+    cout << "   waga calkowita MST: " << sum << endl;
 
     delete[] key;
     delete[] parent;
@@ -543,6 +546,7 @@ void Graph_Matrix::Kruskal_algorithm(Edge **mst_edges) {
 void Graph_Matrix::Kruskal() {
 
     Edge **mst_edges = new Edge *[vertices - 1];  // gotowe krawędzie MST
+    int sum = 0;
 
     // dla każdego wierzchołka
     for (int i = 0; i < vertices-1; i++) {
@@ -553,12 +557,13 @@ void Graph_Matrix::Kruskal() {
 
     Kruskal_algorithm(mst_edges);
 
-    cout << "\nalgorytm Kruskala macierzowo: krawedzie MST: (wierzcholek - nastepnik : waga)\n";
+    cout << "\n algorytm Kruskala macierzowo: krawedzie MST: (wierzcholek1 - wierzcholek2 : waga)\n";
     for (int i = 0; i < vertices - 1; ++i) {
-        cout << mst_edges[i]->get_vertex1() << " - " << mst_edges[i]->get_vertex2() << " : "
-             << mst_edges[i]->get_edge_weight()
-             << "\n";
+        cout << "  " << mst_edges[i]->get_vertex1() << " - " << mst_edges[i]->get_vertex2() << " : "
+             << mst_edges[i]->get_edge_weight() << "\n";
+        sum += mst_edges[i]->get_edge_weight();
     }
+    cout << "   waga calkowita MST: " << sum << endl;
 
     for (int i = 0; i < vertices - 1; ++i) {
         delete mst_edges[i];
