@@ -4,6 +4,7 @@
 
 ### Badanie efektywności algorytmów grafowych w zależności od sposobu reprezentacji grafu
 
+
 + reprezentacje grafu:
    - lista sąsiedztwa
    - macierz incydencji
@@ -13,6 +14,7 @@
    - Bellman-Ford
    - Prim
    - Kruskal
+
 
 kod obiektowy
 
