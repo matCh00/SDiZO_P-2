@@ -2,16 +2,17 @@
 
 ## Część druga
 
-+ algorytmy:
-   - Dijkstra
-   - Bellman-Ford
-   - Prim
-   - Kruskal
+### Badanie efektywności algorytmów grafowych w zależności od sposobu reprezentacji grafu
 
 + reprezentacje grafu:
    - lista sąsiedztwa
    - macierz incydencji
 
++ algorytmy:
+   - Dijkstra
+   - Bellman-Ford
+   - Prim
+   - Kruskal
 
 kod obiektowy
 
